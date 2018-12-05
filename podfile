@@ -1,0 +1,13 @@
+target 'YLGoodCard' do
+
+#pod 'AMapLocation'
+
+pod 'SDWebImage'
+pod 'Masonry'
+pod 'AFNetwork'
+pod 'MJExtension'
+pod 'MJRefresh'
+pod 'SDCycleScrollView'
+
+
+end

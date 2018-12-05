@@ -1,0 +1,77 @@
+//
+//  PrefixHeader.pch
+//  YLGoodCard
+//
+//  Created by lm on 2018/11/1.
+//  Copyright © 2018 Chenzhiming. All rights reserved.
+//
+
+#ifndef PrefixHeader_pch
+#define PrefixHeader_pch
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+// 间距
+#define YLMargin 10
+
+// 屏幕宽高
+#define YLScreenWidth [UIScreen mainScreen].bounds.size.width
+#define YLScreenHeight [UIScreen mainScreen].bounds.size.height
+
+// 左右上下边距
+#define YLLeftMargin 15
+#define YLRighthMargin YLLeftMargin
+#define YLTopMargin 12
+#define YLBottomMargin YLTopMargin
+
+// 文本与文本间距
+#define textMargin 5
+
+
+// 强弱引用
+//#define YLWeakSelf(type) __weak typeof(type) weak##type = type;
+//#define YLStrongSelf(type) __strong typeof(type) type = weak##type;
+
+// 用户信息路径
+#define YLUserPath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"userInfo.archive"]
+
+// 历史搜索记录路径
+#define YLSearchHistoryPath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"searchHistory.plist"]
+//// 用户预约卖车和估价信息路径
+//#define YLOrderAndAppraisePath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"orderAndAppraise.plist"]
+// 浏览记录路径
+#define YLBrowsingHistoryPath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"browsingHistory.plist"]
+
+// RGB颜色
+#define YLColor(r, g, b) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:1.0]
+// 随机色
+#define YLRandomColor YLColor(arc4random_uniform(256), arc4random_uniform(256), arc4random_uniform(256))
+
+// 是否为iOS7
+#define iOS7 ([[UIDevice currentDevice].systemVersion doubleValue] >= 7.0)
+
+// 头文件
+
+#import "YLSingleton.h"
+#import "UIImage+Extension.h"
+#import "UIView+Extension.h"
+#import "NSString+Extension.h"
+#import "UITextView+Extension.h"
+#import "MJExtension.h"
+#import "MJRefresh.h"
+#import "UIImageView+WebCache.h"
+#import "UIBarButtonItem+Extension.h"
+
+#import "AFNetworking.h"
+
+//1. 对于约束参数可以省去"mas_"
+#define MAS_SHORTHAND
+//2. 对于默认的约束参数自动装箱
+#define MAS_SHORTHAND_GLOBALS
+#import "Masonry.h"
+
+
+
+
+#endif /* PrefixHeader_pch */

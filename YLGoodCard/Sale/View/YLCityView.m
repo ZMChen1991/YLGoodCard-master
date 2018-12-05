@@ -1,0 +1,79 @@
+//
+//  YLCityView.m
+//  YLGoodCard
+//
+//  Created by lm on 2018/11/27.
+//  Copyright © 2018 Chenzhiming. All rights reserved.
+//
+
+#import "YLCityView.h"
+#import "YLCondition.h"
+
+@interface YLCityView ()
+
+@property (nonatomic, strong) UITextField *textField;
+
+@end
+
+@implementation YLCityView
+
+- (instancetype)initWithFrame:(CGRect)frame {
+    
+    self = [super initWithFrame:frame];
+    if (self) {
+        self.backgroundColor = [UIColor whiteColor];
+        self.layer.cornerRadius = 5.0f;
+        self.layer.masksToBounds = YES;
+        [self setupUI];
+    }
+    return self;
+}
+
+- (void)setupUI {
+    
+    UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(YLLeftMargin, YLLeftMargin, self.frame.size.width-YLLeftMargin * 2, self.frame.size.height-70)];
+    textField.placeholder = @"请输入上牌城市";
+    [textField setValue:[UIFont boldSystemFontOfSize:12] forKeyPath:@"_placeholderLabel.font"];
+    textField.layer.borderWidth = 0.5;
+    textField.layer.borderColor = [UIColor grayColor].CGColor;
+    textField.clearsOnBeginEditing = YES;
+    textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+    [self addSubview:textField];
+    self.textField = textField;
+    
+    YLCondition *cancelBtn = [YLCondition buttonWithType:UIButtonTypeCustom];
+    cancelBtn.frame = CGRectMake(0, CGRectGetMaxY(textField.frame)+YLLeftMargin, self.frame.size.width / 2, 40);
+    cancelBtn.type = YLConditionTypeWhite;
+    [cancelBtn setTitle:@"取消" forState:UIControlStateNormal];
+    [cancelBtn addTarget:self action:@selector(cancelClick) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:cancelBtn];
+    
+    YLCondition *sureBtn = [YLCondition buttonWithType:UIButtonTypeCustom];
+    sureBtn.frame = CGRectMake(self.frame.size.width / 2, CGRectGetMaxY(textField.frame)+YLLeftMargin, self.frame.size.width / 2, 40);
+    sureBtn.type = YLConditionTypeBlue;
+    [sureBtn setTitle:@"确定" forState:UIControlStateNormal];
+    [sureBtn addTarget:self action:@selector(sureClick) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:sureBtn];
+}
+
+- (void)cancelClick {
+    NSLog(@"点击取消，清空文本框");
+    [self.textField resignFirstResponder];
+    
+    if (self.cancelBlock) {
+        self.cancelBlock();
+    }
+    self.textField.text = @"";
+}
+
+- (void)sureClick {
+    
+    NSLog(@"点击确定");
+    [self.textField resignFirstResponder];
+    
+    if (self.sureBlock) {
+        self.sureBlock(self.textField.text);
+    }
+}
+
+@end
