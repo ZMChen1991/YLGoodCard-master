@@ -77,6 +77,7 @@
     
     UITextField *telephone = [[UITextField alloc] init];
     telephone.placeholder = @"请输入手机号";
+    telephone.font = [UIFont systemFontOfSize:14];
     telephone.layer.borderWidth = 0.6;
     telephone.layer.borderColor = YLColor(233.f, 233.f, 233.f).CGColor;
     telephone.layer.cornerRadius = 5;
@@ -84,6 +85,26 @@
     telephone.backgroundColor = [UIColor whiteColor];
     [self addSubview:telephone];
     self.telephoneT = telephone;
+    
+//    UILabel *telephone = [[UILabel alloc] init];
+//    telephone.text = @" 请输入手机号码";
+//    telephone.textAlignment = NSTextAlignmentLeft;
+//    telephone.font = [UIFont systemFontOfSize:14];
+//    telephone.textColor = YLColor(155.f, 155.f, 155.f);
+//    telephone.layer.borderWidth = 0.6;
+//    telephone.layer.borderColor = YLColor(233.f, 233.f, 233.f).CGColor;
+//    telephone.layer.cornerRadius = 5;
+//    telephone.layer.masksToBounds = YES;
+//    telephone.backgroundColor = [UIColor whiteColor];
+//    [self addSubview:telephone];
+//    self.telephoneT = telephone;
+//
+//    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(sale)];
+//    [self.telephoneT addGestureRecognizer:tap];
+}
+
+- (void)sale {
+    NSLog(@"点击了电话");
 }
 
 - (void)layoutSubviews {
@@ -142,7 +163,7 @@
         [self.appraiseBtn.delegate pushController:sender];
     }
     if (self.appraiseBlock) {
-        self.appraiseBlock(self.telephoneT.text);
+        self.appraiseBlock();
     }
 }
 // 咨询
@@ -163,7 +184,7 @@
         [self.saleBtn.delegate pushController:sender];
     }
     if (self.saleTelBlock) {
-        self.saleTelBlock(self.telephoneT.text);
+        self.saleTelBlock();
     }
 }
 
@@ -175,6 +196,7 @@
 - (void)setTelephone:(NSString *)telephone {
     _telephone = telephone;
     self.telephoneT.text = telephone;
+//    [self.telephoneT setTitle:telephone forState:UIControlStateNormal];
 }
 
 @end

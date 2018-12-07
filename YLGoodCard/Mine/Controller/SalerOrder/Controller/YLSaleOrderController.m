@@ -29,10 +29,8 @@
     for (NSInteger i = 0; i < self.titles.count; i++) {
         YLSubSaleOrderController *ctr = [[YLSubSaleOrderController alloc] init];
         [param setValue:self.params[i] forKey:@"status"];
-//        ctr.param = param;
-        ctr.view.backgroundColor = YLRandomColor;
-        // 传请求
-//        NSLog(@"%@", ctr.param);
+        ctr.param = param;
+        
         [self addChildViewController:ctr];
         [ctrs addObject:ctr];
     }

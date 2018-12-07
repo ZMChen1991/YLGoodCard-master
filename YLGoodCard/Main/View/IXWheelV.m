@@ -37,6 +37,7 @@ UICollectionViewDataSource
 {
     if (self = [super initWithFrame:frame]) {
         _stoped = NO;
+        self.backgroundColor = [UIColor whiteColor];
         [self addSubview:self.collectionV];
         [self addSubview:self.pageControl];
         self.collectionV.contentOffset = CGPointMake(frame.size.width, 0);

@@ -12,9 +12,12 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef void(^BuySeriesBlock)(NSString *series);
+
 @interface YLSeriesController : UITableViewController
 
 @property (nonatomic, strong) YLBrandModel *model;
+@property (nonatomic, copy) BuySeriesBlock buySeriesBlock;
 
 @end
 

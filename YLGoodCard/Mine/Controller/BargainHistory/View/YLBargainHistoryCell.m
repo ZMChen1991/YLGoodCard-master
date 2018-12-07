@@ -79,7 +79,7 @@
     
     
     UIView *line = [[UIView alloc] init];
-    line.backgroundColor = [UIColor grayColor];
+    line.backgroundColor = YLColor(233.f, 233.f, 233.f);
     [self addSubview:line];
     self.line = line;
     

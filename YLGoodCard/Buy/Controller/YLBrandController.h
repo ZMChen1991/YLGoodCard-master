@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+typedef void(^BuyBrandBlock)(NSString *brand, NSString *series);
+
 @interface YLBrandController : UITableViewController
+
+@property (nonatomic, copy) BuyBrandBlock buyBrandBlock;
 
 @end

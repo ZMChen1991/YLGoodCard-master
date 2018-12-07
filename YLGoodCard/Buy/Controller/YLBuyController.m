@@ -33,6 +33,7 @@
 #import "YLSearchParamModel.h"
 #import "YLRequest.h"
 #import "YLSearchParamView.h"
+#import "YLHomeTool.h"
 
 /*
  品牌列表
@@ -61,6 +62,8 @@
 @property (nonatomic, strong) YLBuyTableViewCell *cell;
 
 @property (nonatomic, strong) NSMutableArray *paramArray;
+//@property (nonatomic, strong) NSMutableDictionary *param1;// 请求参数
+@property (nonatomic, strong) NSMutableDictionary *selectParam;// 选择参数
 
 @end
 
@@ -70,10 +73,25 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
    
+    // 添加标题
+    [self.view addSubview:self.linkageView];
+    [self.view addSubview:self.tableView];
+    // 添加蒙版
+    [self.view addSubview:self.coverView];
+    [self.coverView addSubview:self.sortView];
+    [self.coverView addSubview:self.customPrice];
+    [self.coverView addSubview:self.selectView];
+    [self.view addSubview:self.noneView];
+    
+    self.coverView.hidden = YES;
+    self.sortView.hidden = YES;
+    self.customPrice.hidden = YES;
+    self.selectView.hidden = YES;
+    self.isSelect = NO;
+    
     [self getParamArrayForParam];
     [self loadData];
     [self setNav];
-    [self setUI];
     self.isLarge = NO;
     
     if (![self isBlankString:self.searchTitle]) {
@@ -86,13 +104,14 @@
 // 加载数据
 - (void)loadData {
     // 获取搜索列表数据
-    [self.recommends removeAllObjects];
+//    [self.recommends removeAllObjects];
     NSString *urlString = @"http://ucarjava.bceapp.com/detail?method=search";
-    [YLRequest GET:urlString parameters:self.param success:^(id  _Nonnull responseObject) {
+    [YLRequest GET:urlString parameters:self.selectParam success:^(id  _Nonnull responseObject) {
         if ([responseObject[@"code"] isEqualToNumber:[NSNumber numberWithInt:400]]) {
             NSLog(@"buyCar:%@", responseObject[@"message"]);
         } else {
             NSLog(@"%@", responseObject);
+            [self.recommends removeAllObjects];
             self.modelArray = [YLTableViewModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"]];
             for (YLTableViewModel *model in self.modelArray) {
                 YLBuyCellFrame *cellFrame = [[YLBuyCellFrame alloc] init];
@@ -109,8 +128,13 @@
 
 - (void)getParamArrayForParam {
     
-    self.paramArray = [NSMutableArray arrayWithArray:[self.param allValues]];
+    self.paramArray = [NSMutableArray arrayWithArray:[self.selectParam allValues]];
     NSLog(@"self.paramArray%@", self.paramArray);
+    self.searchParamView = [[YLSearchParamView alloc] init];
+    self.searchParamView.frame = CGRectMake(0, 0, YLScreenWidth, 30);
+    self.searchParamView.backgroundColor = YLColor(233.f, 233.f, 233.f);
+    self.tableView.tableHeaderView = self.searchParamView;
+    
     if (!self.paramArray.count) {
         self.searchParamView.frame = CGRectMake(0, 0, 0, 0);
         self.searchParamView.hidden = YES;
@@ -148,42 +172,6 @@
     self.navigationItem.titleView = self.titleBar;
 }
 
-- (void)setUI {
-    
-    // 添加标题
-    [self.view addSubview:self.linkageView];
-    
-    // 添加列表
-//    float y = CGRectGetMaxY(linkageView.frame)+1;
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 100, YLScreenWidth, YLScreenHeight-100)];
-    self.tableView.delegate = self;
-    self.tableView.dataSource = self;
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    [self.view addSubview:self.tableView];
-    
-    YLSearchParamView *searchParamView = [[YLSearchParamView alloc] init];
-//    searchParamView.frame = CGRectMake(0, 0, YLScreenWidth, 30);
-    searchParamView.backgroundColor = YLColor(233.f, 233.f, 233.f);
-    self.tableView.tableHeaderView = searchParamView;
-    self.searchParamView = searchParamView;
-    
-    self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(refreshHeader)];
-//    self.tableView.mj_footer = [MJRefreshAutoFooter footerWithRefreshingTarget:self refreshingAction:@selector(refreshFooter)];
-    
-    // 添加蒙版
-    [self.view addSubview:self.coverView];
-    [self.coverView addSubview:self.sortView];
-    [self.coverView addSubview:self.customPrice];
-    [self.coverView addSubview:self.selectView];
-    [self.view addSubview:self.noneView];
-    
-    self.coverView.hidden = YES;
-    self.sortView.hidden = YES;
-    self.customPrice.hidden = YES;
-    self.selectView.hidden = YES;
-    self.isSelect = NO;
-}
-
 - (void)refreshHeader {
     NSLog(@"下拉刷新");
     [self loadData];
@@ -201,8 +189,17 @@
     NSLog(@"title被点击了！");
     self.coverView.hidden = YES;
     self.isSelect = NO;
-    YLSearchController *searchVc = [[YLSearchController alloc] init];
-    [self.navigationController pushViewController:searchVc animated:YES];
+//    YLSearchController *searchVc = [[YLSearchController alloc] init];
+//    [self.navigationController pushViewController:searchVc animated:YES];
+    
+    NSMutableDictionary *param = [NSMutableDictionary dictionary];
+    [YLHomeTool hotBrandWithParam:param success:^(NSDictionary * _Nonnull result) {
+        NSMutableArray *hotBrands = (NSMutableArray *)result[@"data"][@"keyword"];
+        YLSearchController *search = [[YLSearchController alloc] init];
+        search.hotSearch = hotBrands;
+        [self.navigationController pushViewController:search animated:YES];
+    } failure:^(NSError * _Nonnull error) {
+    }];
 }
 
 - (void)leftBarButtonItemClick {
@@ -243,7 +240,17 @@
             self.customPrice.hidden = YES;
             self.selectView.hidden = YES;
             self.isSelect = NO;
+            
+            __weak typeof(self) weakSelf = self;
             YLBrandController *brand = [[YLBrandController alloc] init];
+            brand.buyBrandBlock = ^(NSString *brand, NSString *series) {
+                NSLog(@"%@-%@", brand, series);
+                [weakSelf.selectParam setValue:brand forKey:@"brand"];
+                [weakSelf.selectParam setValue:series forKey:@"series"];
+                NSLog(@"selectParam:%@", weakSelf.selectParam);
+                [weakSelf getParamArrayForParam];
+                [weakSelf loadData];
+            };
             [self.navigationController pushViewController:brand animated:YES];
 
         }else if (sender.tag == 102) {
@@ -278,28 +285,13 @@
     self.isSelect = NO;
     // 根据价格视图传过来的低价和高价，重新加载数据，刷新列表
     NSLog(@"%@--%@", lowPrice, highPrice);
-//    NSMutableDictionary *param = [NSMutableDictionary dictionary];
     NSString *tempStr = [NSString stringWithFormat:@"%.ffgf%.f", [lowPrice floatValue] * 10000, [highPrice floatValue] * 10000];
-//    param[@"price"] = tempStr;
-    [self.param setValue:tempStr forKey:@"price"];
+    [self.selectParam setValue:tempStr forKey:@"price"];
+    NSLog(@"%@", self.selectParam);
     
-    [YLBuyTool buyWithParam:self.param success:^(NSArray<YLTableViewModel *> * _Nonnull result) {
-        [self.recommends removeAllObjects];
-        for (YLTableViewModel *model in result) {
-            YLBuyCellFrame *cellFrame = [[YLBuyCellFrame alloc] init];
-            cellFrame.model = model;
-            [self.modelArray addObject:model];
-            [self.recommends addObject:cellFrame];
-        }
-        NSLog(@"recommend:%lu", self.recommends.count);
-        // 如果搜索结果为空，那么显示noneView
-        [self noneToSearchResult];
-        [self.tableView reloadData]; // 获取到数据刷新表格
-    } failure:^(NSError * _Nonnull error) {
-        
-    }];
+    [self getParamArrayForParam];
+    [self loadData];
 }
-
 
 /**
  排序，根据排序重新获取数据
@@ -308,43 +300,27 @@
  */
 - (void)didSelectSort:(NSInteger)index {
 
-    [self.recommends removeAllObjects];
     NSString *sort = [NSString stringWithFormat:@"%ld", index + 1];
     // 重新请求数据
-    self.param[@"sort"] = sort;
-    // 获取推荐列表数组
-    [YLBuyTool buyWithParam:self.param success:^(NSArray<YLTableViewModel *> * _Nonnull result) {
-        [self.recommends removeAllObjects];
-        for (YLTableViewModel *model in result) {
-            YLBuyCellFrame *cellFrame = [[YLBuyCellFrame alloc] init];
-            cellFrame.model = model;
-            [self.modelArray addObject:model];
-            [self.recommends addObject:cellFrame];
-        }
-        [self noneToSearchResult];
-        [self.tableView reloadData]; // 获取到数据刷新表格
-        NSLog(@"请求成功!----%lu", (unsigned long)self.recommends.count);
-    } failure:^(NSError * _Nonnull error) {
-        NSLog(@"请求失败!");
-    }];
+    [self.selectParam setValue:sort forKey:@"sort"];
+    NSLog(@"selectParam:%@", self.selectParam);
+    [self getParamArrayForParam];
+    [self loadData];
     self.coverView.hidden = YES;
     self.isSelect = NO;
 }
 
 #pragma mark UItableViewDelegate/UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    
-        return 1;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    
-        return self.recommends.count;
+    return self.recommends.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 
-    
     self.cell = [YLBuyTableViewCell cellWithTableView:tableView];
     self.cell.selectionStyle = UITableViewCellSelectionStyleNone;
     self.cell.cellFrame = self.recommends[indexPath.row];
@@ -373,8 +349,10 @@
         self.noneView.hidden = NO;
         __weak typeof(self) weakSelf = self;
         self.noneView.noneViewBlock = ^{
-            [weakSelf.param removeAllObjects];
+            // 清空搜索条件
+            [weakSelf.selectParam removeAllObjects];
             [weakSelf.titleBar setTitle:@"搜索您想要的车" forState:UIControlStateNormal];
+            [weakSelf getParamArrayForParam];
             [weakSelf loadData];
             weakSelf.noneView.hidden = YES;
         };
@@ -437,22 +415,11 @@
             weakSelf.isSelect = NO;
             // 重新加载数据，刷新表格
             NSInteger tag = sender.tag - 100;
-            NSArray *array = @[@"0fgf9999999", @"0fgf30000", @"30000fgf50000", @"50000fgf70000", @"70000fgf90000", @"90000fgf120000", @"120000fgf160000", @"160000fgf200000", @"200000fgf99999999"];
-            weakSelf.param[@"price"] = array[tag];
-            [YLBuyTool buyWithParam:weakSelf.param success:^(NSArray<YLTableViewModel *> * _Nonnull result) {
-                [weakSelf.recommends removeAllObjects];
-                for (YLTableViewModel *model in result) {
-                    YLBuyCellFrame *cellFrame = [[YLBuyCellFrame alloc] init];
-                    cellFrame.model = model;
-                    [weakSelf.modelArray addObject:model];
-                    [weakSelf.recommends addObject:cellFrame];
-                }
-                [weakSelf noneToSearchResult];
-                NSLog(@"recommend:%lu", weakSelf.recommends.count);
-                [weakSelf.tableView reloadData]; // 获取到数据刷新表格
-            } failure:^(NSError * _Nonnull error) {
-            }];
-            [weakSelf.tableView reloadData];
+            NSArray *array = @[@"", @"0fgf30000", @"30000fgf50000", @"50000fgf70000", @"70000fgf90000", @"90000fgf120000", @"120000fgf160000", @"160000fgf200000", @"200000fgf99999999"];
+            // 添加请求参数
+            [weakSelf.selectParam setValue:array[tag] forKey:@"price"];
+            [weakSelf getParamArrayForParam];
+            [weakSelf loadData];
         };
     }
     return _customPrice;
@@ -506,18 +473,54 @@
 
 
 - (void)setParam:(NSMutableDictionary *)param {
-    
-    _param = param;
+
+    _param = [NSMutableDictionary dictionaryWithDictionary:param];
     NSLog(@"param:%@", param);
+    
+    
+    // 保存请求参数
+    [self.selectParam removeAllObjects];
+    [self.selectParam addEntriesFromDictionary:param];
+    NSLog(@"selectParam:%@", self.selectParam);
+    
+    
     [self getParamArrayForParam];
     [self loadData];
 }
+
+- (NSMutableDictionary *)selectParam {
+    if (!_selectParam) {
+        _selectParam = [NSMutableDictionary dictionary];
+    }
+    return _selectParam;
+}
+
+//- (NSMutableDictionary *)param1 {
+//    if (!_param1) {
+//        _param1 = [[NSMutableDictionary alloc] initWithContentsOfFile:YLBuyParamPath];
+//        if (!_param1) {
+//            _param1 = [NSMutableDictionary dictionary];
+//        }
+//    }
+//    return _param1;
+//}
 
 - (NSMutableArray *)paramArray {
     if (!_paramArray) {
         _paramArray = [NSMutableArray array];
     }
     return _paramArray;
+}
+
+- (UITableView *)tableView {
+    if (!_tableView) {
+        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 100, YLScreenWidth, YLScreenHeight-100)];
+        _tableView.delegate = self;
+        _tableView.dataSource = self;
+        _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(refreshHeader)];
+    }
+    return _tableView;
 }
 
 @end

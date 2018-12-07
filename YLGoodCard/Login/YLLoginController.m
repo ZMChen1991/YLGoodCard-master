@@ -171,6 +171,7 @@
                 if (self.loginBlock) {
                     self.loginBlock(@"登录成功");
                 }
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"REFRESHVIEW" object:nil];
                 [self.navigationController popViewControllerAnimated:YES];
             }
         } failure:^(NSError * _Nonnull error) {

@@ -15,6 +15,8 @@ typedef void(^myBlock)(NSString *title);
 
 @property (nonatomic, strong) YLTableViewModel *model;
 
+//@property (nonatomic, strong) NSString *carID;
+
 //@property (nonatomic, copy) myBlock block;
 
 @end

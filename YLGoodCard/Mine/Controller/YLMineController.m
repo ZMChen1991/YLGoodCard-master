@@ -91,8 +91,9 @@
 - (void)loadDate {
     
     // 获取本地浏览记录个数
+    self.browsingHistory = [NSKeyedUnarchiver unarchiveObjectWithFile:YLBrowsingHistoryPath];
     self.browsingHistoryCount = self.browsingHistory.count;
-    NSLog(@"count:%ld", self.browsingHistoryCount);
+//    NSLog(@"count:%ld", self.browsingHistoryCount);
     
     if (self.account) {
         // 获取我的收藏个数
@@ -230,11 +231,11 @@
     NSLog(@"点击了%@跳转%@控制器", array[index], array[index]);
     
     if (index == 0) {
-        NSArray *titles = @[@"在售", @"已下架"];
+        NSArray *titles = @[@"在售"];
 //        NSMutableDictionary *param = [NSMutableDictionary dictionary];
 //        [param setValue:self.account.telephone forKey:@"telephone"];
 //        [param setValue:@"1" forKey:@"status"]; // 1：待约定 2：合同签署 3：复检过户 4：交易完成
-        NSArray *params = @[@"1", @"4"];
+        NSArray *params = @[@"1"];
         YLFunctionController *fun = [[YLFunctionController alloc] init];
         fun.title = array[index];
         fun.titles = titles;
@@ -327,21 +328,22 @@
 
 - (void)callTelephone {
     
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"13800138000" delegate:nil cancelButtonTitle:@"取消" otherButtonTitles:@"呼叫", nil];
-    alert.delegate = self;
-    [alert show];
+//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"4008301282" delegate:nil cancelButtonTitle:@"取消" otherButtonTitles:@"呼叫", nil];
+//    alert.delegate = self;
+//    [alert show];
+    [self test];
 }
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    NSLog(@"buttonIndex:%ld", buttonIndex);
-    if (buttonIndex == 1) {
-        [self test];
-        NSLog(@"拨打电话");
-    }
-}
+//
+//- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+//    NSLog(@"buttonIndex:%ld", buttonIndex);
+//    if (buttonIndex == 1) {
+//        [self test];
+//        NSLog(@"拨打电话");
+//    }
+//}
 
 - (void)test {
-    NSString *callPhone = [NSString stringWithFormat:@"telprompt://%@", @"10086"];
+    NSString *callPhone = [NSString stringWithFormat:@"telprompt://%@", @"4008301282"];
     if (@available(iOS 10.0, *)) {
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:callPhone] options:@{} completionHandler:nil];
     } else {

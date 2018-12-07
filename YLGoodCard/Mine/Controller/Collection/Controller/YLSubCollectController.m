@@ -11,6 +11,8 @@
 #import "YLCollectionModel.h"
 #import "YLCollectCellFrame.h"
 #import "YLCollectCell.h"
+#import "YLDetailController.h"
+#import "YLTableViewModel.h"
 
 @interface YLSubCollectController ()
 
@@ -66,6 +68,17 @@
     YLCollectCellFrame *cellFrame = self.collectArray[indexPath.row];
     return cellFrame.cellHeight;
 }
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+
+    YLCollectCellFrame *cellFrame = self.collectArray[indexPath.row];
+    YLTableViewModel *model = [YLTableViewModel mj_objectWithKeyValues:cellFrame.collectionModel.detail];
+    YLDetailController *detail = [[YLDetailController alloc] init];
+    detail.model = model;
+    [self.navigationController pushViewController:detail animated:YES];
+}
+
 
 - (NSMutableArray *)collectArray {
     if (!_collectArray) {

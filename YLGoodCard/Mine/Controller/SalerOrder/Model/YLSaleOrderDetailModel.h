@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface YLSaleOrderDetailModel : NSObject
 
-@property (nonatomic, strong) NSString *ID;
+@property (nonatomic, strong) NSString *carID;
 @property (nonatomic, strong) NSString *clickSum;
 @property (nonatomic, strong) NSString *displayImg;
 @property (nonatomic, strong) NSString *title;

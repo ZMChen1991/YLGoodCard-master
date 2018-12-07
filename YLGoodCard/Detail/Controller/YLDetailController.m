@@ -461,14 +461,15 @@
         }
     }
     [self.browsingHistory insertObject:model atIndex:0];
-    NSLog(@"保存");
+//    NSLog(@"保存");
     
     // 保存到本地
     BOOL success = [NSKeyedArchiver archiveRootObject:self.browsingHistory toFile:YLBrowsingHistoryPath];
     if (success) {
-        NSLog(@"保存成功");
+        NSLog(@"浏览记录保存成功：%@", YLBrowsingHistoryPath);
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"REFRESHTABLEVIEW" object:nil];
     } else {
-        NSLog(@"保存失败");
+        NSLog(@"浏览保存失败");
     }
 }
 

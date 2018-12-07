@@ -10,4 +10,8 @@
 
 @implementation YLCollectModel
 
++ (NSDictionary *)mj_replacedKeyFromPropertyName {
+    return @{@"carID":@"id"};
+}
+
 @end

@@ -91,6 +91,13 @@
         YLNavigationController *nav = tab.viewControllers[1];
         YLBuyController *buy = nav.viewControllers.firstObject;
         [weakSelf.param removeAllObjects];
+//        // 将需要传过去的值保存到本地，到时候跳转到买车的时候直接读取再请求数据
+//        BOOL success = [weakSelf.param writeToFile:YLBuyParamPath atomically:YES];
+//        if (success) {
+//            NSLog(@"保存成功");
+//        } else {
+//            NSLog(@"保存失败");
+//        }
         buy.param = weakSelf.param;
         [buy.titleBar setTitle:@"搜索您想要的车" forState:UIControlStateNormal];
         tab.selectedIndex = 1;
@@ -98,7 +105,7 @@
     hotCar.brandBlock = ^(NSString * _Nonnull brand) {// 条件搜索
         // 判断传过来的字符串，如果是金额跳转到买车搜索，如果是品牌，同样
         // 点击列表，跳转买车控制器
-        [self.param removeAllObjects];// 清空条件搜索
+        [weakSelf.param removeAllObjects];// 清空条件搜索
         YLTabBarController *tab = (YLTabBarController *)[UIApplication sharedApplication].keyWindow.rootViewController;
         YLNavigationController *nav = tab.viewControllers[1];
         YLBuyController *buy = nav.viewControllers.firstObject;
@@ -114,6 +121,14 @@
         } else {
             [weakSelf.param setValue:labelStr forKey:@"brand"];
         }
+        
+//        // 将需要传过去的值保存到本地，到时候跳转到买车的时候直接读取再请求数据
+//        BOOL success = [weakSelf.param writeToFile:YLBuyParamPath atomically:YES];
+//        if (success) {
+//            NSLog(@"保存成功:%@", YLBuyParamPath);
+//        } else {
+//            NSLog(@"保存失败%@", YLBuyParamPath);
+//        }
         buy.param = weakSelf.param;
         [buy.titleBar setTitle:labelStr forState:UIControlStateNormal];
         tab.selectedIndex = 1;

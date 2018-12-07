@@ -10,8 +10,8 @@
 #import "YLSaleViewModel.h"
 #import "YLCondition.h"
 
-typedef void(^saleTelBlock)(NSString *telString);
-typedef void(^AppraiseBlock)(NSString *telString);
+typedef void(^saleTelBlock)(void);
+typedef void(^AppraiseBlock)(void);
 
 @interface YLSaleView : UIView
 

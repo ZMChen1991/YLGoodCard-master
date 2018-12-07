@@ -67,15 +67,19 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
     YLSeriesModel *model = self.series[indexPath.row];
-    NSMutableDictionary *param = [NSMutableDictionary dictionary];
-    [param setValue:self.model.brand forKey:@"brand"];
-    [param setValue:model.series forKey:@"series"];
-    // 获取tabBarVC里的导航控制器存放的子控制器，传值到子控制器，再切换视图
-    YLTabBarController *tab = (YLTabBarController *)[UIApplication sharedApplication].keyWindow.rootViewController;
-    YLNavigationController *nav2 = tab.viewControllers[1];
-    YLBuyController *buy = nav2.viewControllers.firstObject;
-    buy.param = param;
-    tab.selectedIndex = 1;
+    if (self.buySeriesBlock) {
+        self.buySeriesBlock(model.series);
+    }
+    
+//    NSMutableDictionary *param = [NSMutableDictionary dictionary];
+//    [param setValue:self.model.brand forKey:@"brand"];
+//    [param setValue:model.series forKey:@"series"];
+//    // 获取tabBarVC里的导航控制器存放的子控制器，传值到子控制器，再切换视图
+//    YLTabBarController *tab = (YLTabBarController *)[UIApplication sharedApplication].keyWindow.rootViewController;
+//    YLNavigationController *nav2 = tab.viewControllers[1];
+//    YLBuyController *buy = nav2.viewControllers.firstObject;
+//    buy.param = param;
+//    tab.selectedIndex = 1;
     [self.navigationController popToRootViewControllerAnimated:YES];
 }
 

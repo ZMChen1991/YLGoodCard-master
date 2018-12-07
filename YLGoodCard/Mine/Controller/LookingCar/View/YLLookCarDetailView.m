@@ -1,14 +1,16 @@
 //
-//  YLBuyOrderCell.m
+//  YLLookCarDetailView.m
 //  YLGoodCard
 //
-//  Created by lm on 2018/12/2.
+//  Created by lm on 2018/12/7.
 //  Copyright © 2018 Chenzhiming. All rights reserved.
 //
 
-#import "YLBuyOrderCell.h"
+#import "YLLookCarDetailView.h"
 
-@interface YLBuyOrderCell ()
+#define YLTopSpace 12
+
+@interface YLLookCarDetailView ()
 
 @property (nonatomic, strong) UIImageView *icon; // 图片
 @property (nonatomic, strong) UILabel *title; // 名称
@@ -21,21 +23,11 @@
 
 @end
 
-@implementation YLBuyOrderCell
-
-+ (instancetype)cellWithTableView:(UITableView *)tableView {
+@implementation YLLookCarDetailView
+- (instancetype)initWithFrame:(CGRect)frame {
     
-    static NSString *ID = @"YLBuyOrderCell";
-    YLBuyOrderCell *cell = [tableView dequeueReusableCellWithIdentifier:ID];
-    if (!cell) {
-        cell = [[YLBuyOrderCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:ID];
-    }
-    return cell;
-}
-
-- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
-    
-    if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
+    self = [super initWithFrame:frame];
+    if (self) {
         [self setupUI];
     }
     return self;
@@ -76,12 +68,12 @@
     [self addSubview:price];
     self.price = price;
     
-    //    UILabel *lookCarTime = [[UILabel alloc] init];
-    //    lookCarTime.text = @"看车时间:11月11日 17:50";
-    //    lookCarTime.font = [UIFont systemFontOfSize:12];
-    //    lookCarTime.textColor = [UIColor grayColor];
-    //    [self addSubview:lookCarTime];
-    //    self.lookCarTime = lookCarTime;
+    UILabel *lookCarTime = [[UILabel alloc] init];
+    lookCarTime.text = @"看车时间:11月11日 17:50";
+    lookCarTime.font = [UIFont systemFontOfSize:12];
+    lookCarTime.textColor = [UIColor grayColor];
+    [self addSubview:lookCarTime];
+    self.lookCarTime = lookCarTime;
     
     UIView *line = [[UIView alloc] init];
     line.backgroundColor = YLColor(233.f, 233.f, 233.f);
@@ -89,24 +81,30 @@
     self.line = line;
 }
 
-- (void)setBuyOrderCellFrame:(YLBuyOrderCellFrame *)buyOrderCellFrame {
-    _buyOrderCellFrame = buyOrderCellFrame;
+- (void)layoutSubviews {
     
-    self.icon.frame = buyOrderCellFrame.iconF;
-    self.title.frame = buyOrderCellFrame.titleF;
-    self.price.frame = buyOrderCellFrame.priceF;
-    self.course.frame = buyOrderCellFrame.courseF;
-    self.originalPrice.frame = buyOrderCellFrame.originalPriceF;
-    self.line.frame = buyOrderCellFrame.lineF;
+    [super layoutSubviews];
     
-    //  赋值
-    //    [self.icon sd_setImageWithURL:[NSURL URLWithString:saleOrderCellFrame.model.detail] placeholderImage:nil];
-    self.title.text = @"xxxxx";
-    self.price.text = @"12.9万";
-    self.course.text = @"25万公里/年";
-    self.originalPrice.text = @"新车含税价25.6万";
+    CGFloat width = YLScreenWidth;
+    self.icon.frame = CGRectMake(YLLeftMargin, YLTopSpace, 120, 86);
+    CGFloat titleX = CGRectGetMaxX(self.icon.frame) + YLLeftMargin;
+    CGFloat titleW = width - 120 - 2 * YLLeftMargin - YLTopSpace;
+    self.title.frame = CGRectMake(titleX, YLTopSpace, titleW, 34);
+    self.lookCarTime.frame = CGRectMake(titleX, CGRectGetMaxY(self.title.frame)+5, titleW, 17);
+    self.price.frame = CGRectMake(titleX, CGRectGetMaxY(self.lookCarTime.frame) + 5, titleW/3, 25);
+    self.originalPrice.frame = CGRectMake(CGRectGetMaxX(self.price.frame), CGRectGetMaxY(self.lookCarTime.frame) + 9, width - CGRectGetMaxX(self.price.frame) - YLTopSpace, 17);
+    self.line.frame = CGRectMake(0, CGRectGetMaxY(self.icon.frame)-1 + YLLeftMargin, width, 1);
+    
 }
 
+- (void)setModel:(YLLookCarModel *)model {
+    _model = model;
+    [self.icon sd_setImageWithURL:[NSURL URLWithString:model.detail.displayImg] placeholderImage:nil];
+    self.title.text = model.detail.title;
+    self.lookCarTime.text = [NSString stringWithFormat:@"看车时间: %@", model.appointTime];
+    self.price.text = [self stringToNumber:model.detail.price];
+    self.originalPrice.text = [NSString stringWithFormat:@"新车价:%@", [self stringToNumber:model.detail.originalPrice]];
+}
 
 - (NSString *)stringToNumber:(NSString *)number {
     

@@ -12,6 +12,7 @@
 #import "YLLookCarModel.h"
 #import "YLSubCellModel.h"
 #import "YLSubCell.h"
+#import "YLLookCarDetailController.h"
 
 
 @interface YLSubController ()
@@ -67,8 +68,11 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSLog(@"");
-    YLSuggestionController *su = [[YLSuggestionController alloc] init];
-    [self.navigationController pushViewController:su animated:YES];
+    
+    YLSubCellModel *model = self.dataArray[indexPath.row];
+    YLLookCarDetailController *detail = [[YLLookCarDetailController alloc] init];
+    detail.model = model.lookCarModel;
+    [self.navigationController pushViewController:detail animated:YES];
 }
 
 - (void)setParam:(NSMutableDictionary *)param {

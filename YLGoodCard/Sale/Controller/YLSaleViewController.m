@@ -34,7 +34,9 @@
     
     YLAccount *account = [YLAccountTool account];
     YLSaleView *saleView = [[YLSaleView alloc] init];
-    saleView.telephone = account.telephone;
+    if (account) {
+        saleView.telephone = account.telephone;
+    }
     saleView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
     [self.view addSubview:saleView];
     self.saleView = saleView;
@@ -42,6 +44,18 @@
     saleView.saleBtn.delegate = self;
     saleView.consultBtn.delegate = self;
     saleView.appraiseBtn.delegate = self;
+    
+    [self addNotification];
+}
+
+- (void)addNotification {
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshView) name:@"REFRESHVIEW" object:nil];
+}
+
+- (void)refreshView {
+    YLAccount *account = [YLAccountTool account];
+    self.saleView.telephone = account.telephone;
 }
 
 - (void)setupNav {
@@ -88,18 +102,29 @@
 
     }
     if (index == 302) { // 免费咨询
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"联系电话"
-                                                        message:@"0662-12345678"
-                                                       delegate:nil
-                                              cancelButtonTitle:@"好的"
-                                              otherButtonTitles:@"拨打", nil];
-        [alert show];
+//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"联系电话"
+//                                                        message:@"4008301282"
+//                                                       delegate:nil
+//                                              cancelButtonTitle:@"好的"
+//                                              otherButtonTitles:@"拨打", nil];
+//        [alert show];
+        [self test];
+        
     }
     if (index == 303) { // 爱车估价
         [self showMessage:@"开发中，敬请期待"];
     }
     
 }
+- (void)test {
+    NSString *callPhone = [NSString stringWithFormat:@"telprompt://%@", @"4008301282"];
+    if (@available(iOS 10.0, *)) {
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:callPhone] options:@{} completionHandler:nil];
+    } else {
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:callPhone]];
+    }
+}
+
 
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     

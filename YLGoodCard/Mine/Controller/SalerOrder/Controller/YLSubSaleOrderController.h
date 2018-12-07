@@ -12,7 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface YLSubSaleOrderController : UITableViewController
 
-@property (nonatomic, strong) NSString *status;
+//@property (nonatomic, strong) NSString *status;
+@property (nonatomic, strong) NSMutableDictionary *param;
 
 @end
 

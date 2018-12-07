@@ -92,6 +92,12 @@
     YLBrandModel *model = self.brands[indexPath.section][indexPath.row];
     YLSeriesController *series = [[YLSeriesController alloc] init];
     series.model = model;
+    series.buySeriesBlock = ^(NSString * _Nonnull series) {
+        NSLog(@"series%@", series);
+        if (self.buyBrandBlock) {
+            self.buyBrandBlock(model.brand, series);
+        }
+    };
     [self.navigationController pushViewController:series animated:YES];
 }
 
