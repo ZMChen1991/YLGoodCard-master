@@ -7,10 +7,12 @@
 //检测报告
 
 #import <UIKit/UIKit.h>
+#import "YLDetailModel.h"
 
 @interface YLReportCell : UITableViewCell
 
-@property (nonatomic, assign) float height;
+//@property (nonatomic, strong) NSString *remarks;
+@property (nonatomic, strong) YLDetailModel *model;
 
 + (instancetype)cellWithTable:(UITableView *)tableView;
 

@@ -21,41 +21,33 @@
 #import "YLTabBarController.h"
 #import "YLSearchController.h"
 #import "YLDetailController.h"
+#import "YLBuyController.h"
+#import "YLMessageController.h"
+
+#import "YLTableViewModel.h"
+#import "YLSearchParamModel.h"
+#import "YLRequest.h"
+#import "YLHomeTool.h"
 
 #import "YLTitleBar.h"
 #import "YLTableViewCell.h"
-#import "YLMessageController.h"
-#import "YLHomeHeader.h"
-#import "YLTableViewModel.h"
-#import "YLBuyController.h"
-#import "YLHomeTool.h"
-#import "YLSearchParamModel.h"
-#import "YLRequest.h"
-
-#import "SDCycleScrollView.h"
 #import "YLNotable.h"
+#import "IXWheelV.h"
+#import "YLHotCarView.h"
 
-
-
-
-
-@interface YLMainController ()<UITableViewDelegate, UITableViewDataSource, YLButtonViewDelegate, YLTableGroupHeaderDelegate>
+@interface YLMainController ()<UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) UITableView *tableView;
-
 
 @property (nonatomic, strong) NSMutableArray *recommends; // 存放推荐类别
 @property (nonatomic, copy) NSMutableArray *images; // 存放转播图的数组
 @property (nonatomic, copy) NSMutableArray *notableTitles; // 存放走马灯广告
 
-@property (nonatomic, strong) NSMutableDictionary *param;
+@property (nonatomic, strong) NSMutableDictionary *param;// 请求参数
 
-// -----------------------------------------------------------
-@property (nonatomic, strong) SDCycleScrollView *scrollView;// 图片轮播
 @property (nonatomic, strong) YLNotable *notableView;// 成交记录轮播
-
-
-
+@property (nonatomic, strong) IXWheelV *banner;
+@property (nonatomic, strong) YLHotCarView *hotCar;
 
 @end
 
@@ -66,52 +58,8 @@
     self.view.backgroundColor = [UIColor whiteColor];
     self.automaticallyAdjustsScrollViewInsets = NO; // 不自动调节滚动区域
 
-    
-//    [self loadData];
-//    [self setNav];
-//    [self setupTableView];
-    
-//    [self test];
-}
-
-- (void)test {
-    
-    // 获取轮播图
-    NSString *bannerStr = @"http://ucarjava.bceapp.com/home?method=slide";
-    [YLRequest GET:bannerStr parameters:nil success:^(id  _Nonnull responseObject) {
-        if ([responseObject[@"code"] isEqualToNumber:[NSNumber numberWithInt:400]]) {
-            NSLog(@"bannerStr%@", responseObject[@"message"]);
-        } else {
-            NSArray *banners = [YLBannerModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"]];
-            for (YLBannerModel *model in banners) {
-                [self.images addObject:model];
-            }
-            NSLog(@"%@", self.images);
-            
-            CGRect scrollFrame = CGRectMake(0, 0, YLScreenWidth, 220);
-            self.scrollView = [SDCycleScrollView cycleScrollViewWithFrame:scrollFrame imageURLStringsGroup:self.images];
-        }
-    } failed:nil];
-    
-    // 获取成交记录
-    NSString *notableStr = @"http://ucarjava.bceapp.com/trade?method=random";
-    [YLRequest GET:notableStr parameters:nil success:^(id  _Nonnull responseObject) {
-        if ([responseObject[@"code"] isEqualToNumber:[NSNumber numberWithInt:400]]) {
-            NSLog(@"notableStr%@", responseObject[@"message"]);
-        } else {
-            NSLog(@"notableStr%@", responseObject[@"data"]);
-            NSArray *notables = [YLNotableModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"]];
-            for (YLNotableModel *model in notables) {
-                NSString *notable = model.text;
-                [self.notableTitles addObject:notable];
-            }
-            NSLog(@"%@", self.notableTitles);
-            
-            CGRect notableFrame = CGRectMake(0, 220, YLScreenWidth, 60);
-            self.notableView = [[YLNotable alloc] initWithWithFrame:notableFrame titles:self.notableTitles];
-        }
-    } failed:nil];
-    
+    [self loadData];
+    [self setNav];
     [self createTableView];
 }
 
@@ -124,17 +72,62 @@
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(headerRefresh)];
     
-    UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, YLScreenWidth, 280)];
-    [header addSubview:self.scrollView];
-    [header addSubview:self.notableView];
+    UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, YLScreenWidth, 220 + 60 + 44 + 99)];
     self.tableView.tableHeaderView = header;
-
+    // 添加轮播图
+    IXWheelV *banner = [[IXWheelV alloc] initWithFrame:CGRectMake(0, 0, YLScreenWidth, 220)];
+    [header addSubview:banner];
+    self.banner = banner;
+    // 添加成交记录轮播广告
+    YLNotable *notable = [[YLNotable alloc] initWithFrame:CGRectMake(0,CGRectGetMaxY(banner.frame), YLScreenWidth, 60)];
+    [header addSubview:notable];
+    self.notableView = notable;
+    // 添加热门二手车
+    __weak typeof(self) weakSelf = self;
+    YLHotCarView *hotCar = [[YLHotCarView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(notable.frame), YLScreenWidth, 99 + 44)];
+    hotCar.moreBlock = ^{ // 查看更多
+        // 跳转到买车控制器
+        YLTabBarController *tab = (YLTabBarController *)[UIApplication sharedApplication].keyWindow.rootViewController;
+        YLNavigationController *nav = tab.viewControllers[1];
+        YLBuyController *buy = nav.viewControllers.firstObject;
+        [weakSelf.param removeAllObjects];
+        buy.param = weakSelf.param;
+        [buy.titleBar setTitle:@"搜索您想要的车" forState:UIControlStateNormal];
+        tab.selectedIndex = 1;
+    };
+    hotCar.brandBlock = ^(NSString * _Nonnull brand) {// 条件搜索
+        // 判断传过来的字符串，如果是金额跳转到买车搜索，如果是品牌，同样
+        // 点击列表，跳转买车控制器
+        [self.param removeAllObjects];// 清空条件搜索
+        YLTabBarController *tab = (YLTabBarController *)[UIApplication sharedApplication].keyWindow.rootViewController;
+        YLNavigationController *nav = tab.viewControllers[1];
+        YLBuyController *buy = nav.viewControllers.firstObject;
+        NSString *labelStr = brand;
+        if ([labelStr isEqualToString:@"5万以下"]) {
+            [weakSelf.param setValue:@"0fgf50000" forKey:@"price"];
+        } else if ([labelStr isEqualToString:@"5-10万"]) {
+            [weakSelf.param setValue:@"50000fgf100000" forKey:@"price"];
+        } else if ([labelStr isEqualToString:@"10-15万"]) {
+            [weakSelf.param setValue:@"100000fgf150000" forKey:@"price"];
+        } else if ([labelStr isEqualToString:@"15万以上"]) {
+            [weakSelf.param setValue:@"150000fgf99999999" forKey:@"price"];
+        } else {
+            [weakSelf.param setValue:labelStr forKey:@"brand"];
+        }
+        buy.param = weakSelf.param;
+        [buy.titleBar setTitle:labelStr forState:UIControlStateNormal];
+        tab.selectedIndex = 1;
+        [weakSelf.param removeAllObjects];
+    };
+    [header addSubview:hotCar];
+    self.hotCar = hotCar;
 }
-
-
 
 - (void)loadData {
     
+    [self.images removeAllObjects];
+    [self.notableTitles removeAllObjects];
+    [self.recommends removeAllObjects];
     // 获取轮播图
     NSString *bannerStr = @"http://ucarjava.bceapp.com/home?method=slide";
     [YLRequest GET:bannerStr parameters:nil success:^(id  _Nonnull responseObject) {
@@ -144,9 +137,13 @@
             NSLog(@"bannerStr%@", responseObject[@"data"]);
             NSArray *banners = [YLBannerModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"]];
             for (YLBannerModel *model in banners) {
-                [self.images addObject:model];
+                if (!model.img) {
+                    break;
+                }
+                [self.images addObject:model.img];
             }
             NSLog(@"%@", self.images);
+            self.banner.items = self.images;
         }
     } failed:nil];
 
@@ -160,9 +157,13 @@
             NSArray *notables = [YLNotableModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"]];
             for (YLNotableModel *model in notables) {
                 NSString *notable = model.text;
+                if (!notable) {
+                    break;
+                }
                 [self.notableTitles addObject:notable];
             }
             NSLog(@"%@", self.notableTitles);
+            self.notableView.titles = self.notableTitles;
         }
     } failed:nil];
     
@@ -185,51 +186,6 @@
 - (void)loadMoreData {
     
     
-}
-
-
-- (void)setupTableView {
-    
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, YLScreenWidth, YLScreenHeight)];
-    [self.view addSubview:self.tableView];
-    self.tableView.delegate = self;
-    self.tableView.dataSource = self;
-//    self.tableView.bounces = NO; // 禁止弹跳
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(headerRefresh)];
-//    self.tableView.mj_footer = [MJRefreshAutoStateFooter footerWithRefreshingTarget:self refreshingAction:@selector(footerRefresh)];
-    
-
-    CGRect frame = CGRectMake(0, 100, YLScreenWidth, 424);
-    YLHomeHeader *homeHeader = [[YLHomeHeader alloc] initWithFrame:frame bannerTitles:self.images notabletitles:self.notableTitles];
-    homeHeader.groupHeader.delegate = self;
-    
-    __weak typeof(self) weakSelf = self;
-    // block
-    homeHeader.buttonView.tapClickBlock = ^(UILabel *label) {
-        NSLog(@"YLMainController:%@", label.text);
-        // 点击列表，跳转买车控制器
-        YLTabBarController *tab = (YLTabBarController *)[UIApplication sharedApplication].keyWindow.rootViewController;
-        YLNavigationController *nav = tab.viewControllers[1];
-        YLBuyController *buy = nav.viewControllers.firstObject;
-        NSString *labelStr = label.text;
-        if ([labelStr isEqualToString:@"5万以下"]) {
-            [weakSelf.param setValue:@"0fgf50000" forKey:@"price"];
-        } else if ([labelStr isEqualToString:@"5-10万"]) {
-            [weakSelf.param setValue:@"50000fgf100000" forKey:@"price"];
-        } else if ([labelStr isEqualToString:@"10-15万"]) {
-            [weakSelf.param setValue:@"100000fgf150000" forKey:@"price"];
-        } else if ([labelStr isEqualToString:@"15万以上"]) {
-            [weakSelf.param setValue:@"150000fgf99999999" forKey:@"price"];
-        } else {
-            [weakSelf.param setValue:labelStr forKey:@"brand"];
-        }
-        buy.param = weakSelf.param;
-        [buy.titleBar setTitle:labelStr forState:UIControlStateNormal];
-        tab.selectedIndex = 1;
-        [weakSelf.param removeAllObjects];
-    };
-    self.tableView.tableHeaderView = homeHeader;
 }
 
 - (void)headerRefresh {

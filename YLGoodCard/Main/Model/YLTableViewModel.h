@@ -34,7 +34,7 @@ typedef NS_ENUM(NSInteger, YLTableViewCellStatus) {
 @property (nonatomic, strong) NSString *status;
 
 @property (nonatomic, assign) YLTableViewCellStatus cellStatus;
-@property (nonatomic, assign) BOOL isLargeImage;
+//@property (nonatomic, assign) BOOL isLargeImage;
 
 @end
 

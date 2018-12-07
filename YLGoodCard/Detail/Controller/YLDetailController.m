@@ -33,8 +33,8 @@
 #import "YLDetailBargainView.h"
 
 // 进入详情页，保存当前汽车的ID
-// 浏览记录路径
-#define YLBrowsingHistoryPath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"browsingHistory.plist"]
+//// 浏览记录路径
+//#define YLBrowsingHistoryPath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"browsingHistory.plist"]
 
 @interface YLDetailController () <UITableViewDelegate, UITableViewDataSource>
 
@@ -116,7 +116,7 @@
         YLReportCell *cell = [YLReportCell cellWithTable:tableView];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         // 这里赋值给cell
-        
+        cell.model = self.detailModel;
         return cell;
     } else {
         YLCarInformationCell *cell = [YLCarInformationCell cellWithTable:tableView];
@@ -456,10 +456,12 @@
         if ([historyModel.carID isEqualToString:model.carID]) {
             NSInteger index = [self.browsingHistory indexOfObject:historyModel];
             [self.browsingHistory removeObjectAtIndex:index];
+            NSLog(@"已删除旧的");
             break;
         }
     }
     [self.browsingHistory insertObject:model atIndex:0];
+    NSLog(@"保存");
     
     // 保存到本地
     BOOL success = [NSKeyedArchiver archiveRootObject:self.browsingHistory toFile:YLBrowsingHistoryPath];
@@ -478,6 +480,18 @@
         _cover.hidden = YES;
     }
     return _cover;
+}
+
+- (NSMutableArray *)browsingHistory {
+    
+    if (!_browsingHistory) {
+        NSLog(@"%@", YLBrowsingHistoryPath);
+        _browsingHistory = [NSKeyedUnarchiver unarchiveObjectWithFile:YLBrowsingHistoryPath];
+        if (!_browsingHistory) {
+            _browsingHistory = [NSMutableArray array];
+        }
+    }
+    return _browsingHistory;
 }
 
 - (YLDetailBargainView *)detailBargain {

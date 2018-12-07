@@ -42,7 +42,7 @@
 #import "YLMineTool.h"
 
 // 浏览记录路径
-#define YLBrowsingHistoryPath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"browsingHistory.plist"]
+
 
 @interface YLMineController () <YLFunctionViewDelegate, YLLoginHeaderDelegate, UITableViewDelegate, UITableViewDataSource, UIAlertViewDelegate>
 

@@ -40,6 +40,7 @@
     UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, YLScreenWidth, 200)];
     YLCondition *logOut = [[YLCondition alloc] initWithFrame:CGRectMake(YLLeftMargin, 30, YLScreenWidth - 2 * YLLeftMargin, 40)];
     logOut.type = YLConditionTypeWhite;
+    logOut.titleLabel.font = [UIFont systemFontOfSize:14];
     [logOut setTitle:@"退出登录" forState:UIControlStateNormal];
     [footerView addSubview:logOut];
     [logOut addTarget:self action:@selector(logout) forControlEvents:UIControlEventTouchUpInside];

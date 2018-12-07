@@ -26,6 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) CGRect lineF;
 
 @property (nonatomic, assign) CGFloat cellHeight;
+@property (nonatomic, assign) BOOL isLargeImage;
 
 @end
 

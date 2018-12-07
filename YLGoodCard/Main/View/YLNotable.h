@@ -12,7 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface YLNotable : UIView
 
-- (instancetype)initWithWithFrame:(CGRect)frame titles:(NSArray *)titles;
+//- (instancetype)initWithWithFrame:(CGRect)frame titles:(NSArray *)titles;
+
+@property (nonatomic, strong) NSArray *titles;
 
 @end
 

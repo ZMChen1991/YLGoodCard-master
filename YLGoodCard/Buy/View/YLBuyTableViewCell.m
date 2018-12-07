@@ -52,7 +52,7 @@
 - (void)setupUI {
     
     UIImageView *icon = [[UIImageView alloc] init];
-    icon.backgroundColor = [UIColor redColor];
+    icon.backgroundColor = YLColor(233.f, 233.f, 233.f);
     icon.layer.cornerRadius = 5.f;
     icon.layer.masksToBounds = YES;
     [self addSubview:icon];
@@ -105,7 +105,7 @@
     self.bargain = bargain;
     
     UIView *line = [[UIView alloc] init];
-    line.backgroundColor = [UIColor grayColor];
+    line.backgroundColor = YLColor(233.f, 233.f, 233.f);
     [self addSubview:line];
     self.line = line;
 }

@@ -60,12 +60,14 @@
     self.bargain = [YLCondition buttonWithType:UIButtonTypeCustom];
     [self.bargain setTitle:@"砍价" forState:UIControlStateNormal];
     self.bargain.type = YLConditionTypeWhite;
+    self.bargain.titleLabel.font = [UIFont systemFontOfSize:14];
     self.bargain.frame = CGRectMake(CGRectGetMaxX(self.customer.frame) + YLTopMargin, YLTopMargin, 125, self.frame.size.height - 2 * YLTopMargin);
 //    [self.bargain addTarget:self action:@selector(clickBargain) forControlEvents:UIControlEventTouchUpInside];
     
     self.order = [YLCondition buttonWithType:UIButtonTypeCustom];
     [self.order setTitle:@"预约看车" forState:UIControlStateNormal];
     self.order.type = YLConditionTypeBlue;
+    self.order.titleLabel.font = [UIFont systemFontOfSize:14];
     self.order.frame = CGRectMake(CGRectGetMaxX(self.bargain.frame) + YLTopMargin, YLTopMargin, 125, self.frame.size.height - 2 * YLTopMargin);
 //    [self.order addTarget:self action:@selector(clickOrder) forControlEvents:UIControlEventTouchUpInside];
     

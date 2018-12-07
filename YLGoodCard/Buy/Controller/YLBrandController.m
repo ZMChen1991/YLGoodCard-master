@@ -83,6 +83,7 @@
     
     YLBrandModel *model = self.brands[indexPath.section][indexPath.row];
     cell.textLabel.text = model.brand;
+    cell.textLabel.font = [UIFont systemFontOfSize:14];
     return cell;
 }
 

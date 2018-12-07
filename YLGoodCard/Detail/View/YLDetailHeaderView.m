@@ -38,7 +38,7 @@
 - (void)setupUI {
     
     self.icon = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, 220)];
-    self.icon.backgroundColor = [UIColor redColor];
+    self.icon.backgroundColor = YLColor(233.f, 233.f, 233.f);
     
     UILabel *label3 = [[UILabel alloc] initWithFrame:CGRectMake(self.frame.size.width - 10 - 15, CGRectGetMaxY(self.icon.frame) - 5 - 10, 15, 10)];
     
@@ -47,7 +47,7 @@
     self.text.textColor = [UIColor blackColor];
 //    self.text.backgroundColor = [UIColor redColor];
     self.text.numberOfLines = 0;
-    self.text.text = @"雷克萨斯-雷克萨斯ES 2018款 300h 卓越版 混动前置前驱E-CVT无极变速";
+    self.text.text = @"null";
     
     self.tagView = [[UIView alloc] initWithFrame:CGRectMake(YLLeftMargin, CGRectGetMaxY(self.text.frame) + 7, self.frame.size.width - 2 * YLLeftMargin, 22)];
     //    self.tagView.backgroundColor = [UIColor redColor];
@@ -79,7 +79,7 @@
     self.price = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.secondPrice.frame), CGRectGetMaxY(self.tagView.frame) + 20, 110, 17)];
     self.price.font = [UIFont systemFontOfSize:12];
     // 添加中划线
-    NSString *str = @"新车含税价0.0万";
+    NSString *str = @"新车含税0.0万";
     NSDictionary *attri = @{NSStrikethroughStyleAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle]};
     NSMutableAttributedString *attriStr = [[NSMutableAttributedString alloc] initWithString:str attributes:attri];
     self.price.attributedText = attriStr;
@@ -93,6 +93,7 @@
     self.bargain = [[YLCondition alloc] initWithFrame:CGRectMake(self.frame.size.width - YLLeftMargin - 56, CGRectGetMaxY(self.tagView.frame) + 20, 56, 24)];
     self.bargain.type = YLConditionTypeWhite;
     [self.bargain setTitle:@"砍价" forState:UIControlStateNormal];
+    self.bargain.titleLabel.font = [UIFont systemFontOfSize:14];
     [self.bargain addTarget:self action:@selector(bargainClick) forControlEvents:UIControlEventTouchUpInside];
     
     UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.bargain.frame) + YLLeftMargin, self.frame.size.width, 1)];
@@ -140,7 +141,7 @@
     
     [self.icon sd_setImageWithURL:[NSURL URLWithString:model.displayImg] placeholderImage:nil];;
     self.text.text = model.title;
-    self.price.text = [NSString stringWithFormat:@"新车含税价%@", [self stringToNumber:model.originalPrice]];
+    self.price.text = [NSString stringWithFormat:@"新车含税%@", [self stringToNumber:model.originalPrice]];
     self.secondPrice.text = [self stringToNumber:model.price];
 }
 

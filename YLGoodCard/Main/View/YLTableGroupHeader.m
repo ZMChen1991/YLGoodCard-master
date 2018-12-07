@@ -62,12 +62,12 @@
 - (void)labelClick:(UITapGestureRecognizer *)tap {
     
     UILabel *label = (UILabel *)tap.view;
-//    if (![self isBlankString:label.text]) {
-//        self.labelBlock(label.text);
-//    }
-    if (self.delegate && [self.delegate respondsToSelector:@selector(pushBuyControl)]) {
-        [self.delegate pushBuyControl];
+    if (![self isBlankString:label.text]) {
+        self.labelBlock(label.text);
     }
+//    if (self.delegate && [self.delegate respondsToSelector:@selector(pushBuyControl)]) {
+//        [self.delegate pushBuyControl];
+//    }
 }
 
 // 判断字符串是否为空或者空格符

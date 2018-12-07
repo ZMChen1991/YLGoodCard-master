@@ -10,7 +10,6 @@
 
 @interface YLNotable ()
 
-@property (nonatomic, strong) NSArray *titles;
 @property (nonatomic, strong) UILabel *titleL;
 @property (nonatomic, assign) NSInteger count;
 
@@ -18,7 +17,7 @@
 
 @implementation YLNotable
 
-- (instancetype)initWithWithFrame:(CGRect)frame titles:(NSArray *)titles {
+- (instancetype)initWithFrame:(CGRect)frame{
     
     self = [super initWithFrame:frame];
     if (self) {
@@ -40,10 +39,6 @@
         
         // 使用定时器更新title
         [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(updataTitles) userInfo:nil repeats:YES];
-        
-        
-        self.titles = titles;
-        self.count = 0;
     }
     return self;
 }
@@ -59,7 +54,17 @@
         self.count = 0;
         self.titleL.text = self.titles[self.count];
     }
-    self.count = self.count + 1;
+    self.count++;
+}
+
+- (void)setTitles:(NSArray *)titles {
+    _titles = titles;
+    self.count = 0;
+    
+    if (!titles.count) {
+        return;
+    }
+    self.titleL.text = titles[self.count];
 }
 
 @end
