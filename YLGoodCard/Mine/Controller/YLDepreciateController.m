@@ -11,8 +11,13 @@
 #import "YLDepreciateModel.h"
 #import "YLDepreciateCell.h"
 #import "YLDetailController.h"
+#import "YLRequest.h"
+#import "YLAccountTool.h"
+#import "YLAccount.h"
 
 @interface YLDepreciateController ()
+
+@property (nonatomic, strong) NSMutableArray *Depreciates;
 
 @end
 
@@ -23,7 +28,24 @@
     self.view.backgroundColor = [UIColor whiteColor];
     self.title = @"降价提醒";
     
+    [self loadData];
+}
+
+- (void)loadData {
     
+    YLAccount *account = [YLAccountTool account];
+    NSString *urlString = @"http://ucarjava.bceapp.com/reduce?method=my";
+    NSMutableDictionary *param = [NSMutableDictionary dictionary];
+    [param setValue:account.telephone forKey:@"telephone"];
+    [YLRequest GET:urlString parameters:param success:^(id  _Nonnull responseObject) {
+        NSLog(@"%@", responseObject);
+        if ([responseObject[@"data"] isEqualToNumber:[NSNumber numberWithInt:200]]) {
+            NSLog(@"降价提醒请求成功");
+        } else {
+            NSLog(@"降价提醒请求失败");
+        }
+        
+    } failed:nil];
 }
 
 #pragma mark - Table view data source

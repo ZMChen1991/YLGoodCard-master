@@ -15,7 +15,7 @@
 @property (nonatomic, strong) NSArray *titles;
 @property (nonatomic, strong) NSArray *subTitles;
 
-@property (nonatomic, strong) UITextView *textView;
+@property (nonatomic, strong) UILabel *textView;
 
 @end
 
@@ -65,38 +65,15 @@
 //    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(YLLeftMargin, YLLeftMargin, 308, 180)];
 //    view.backgroundColor = [UIColor redColor];
     
-#warning 这里是一个textView控件，以后修改到在改
-    UITextView *textView = [[UITextView alloc] initWithFrame:CGRectMake(YLLeftMargin, YLLeftMargin, 308, 180)];
+#warning 这里是一个UIlabel控件，以后修改到在改
+    UILabel *textView = [[UILabel alloc] initWithFrame:CGRectMake(YLLeftMargin, YLLeftMargin, 308, 180)];
     textView.backgroundColor = YLColor(244.f, 244.f, 244.f);
     textView.font = [UIFont systemFontOfSize:14];
+    textView.numberOfLines = 0;
     textView.textColor = YLColor(155.f, 155.f, 155.f);
 //    textView.text = @"UILabel *detail = \n[[UILabel alloc] initWithFrame:CGRec\ntMake(width, i * height, 308 - width, height)];\nlabel.textColor = YLColorn\n(155.f, 155.f, 155.f);";
     [bg addSubview:textView];
     self.textView = textView;
-    
-//    NSArray *array = @[@"内饰:", @"外观:", @"底盘:", @"车身骨架:", @"电子设备:", @"操作机构:", @"发动机舱:", @"其他:"];
-//    NSArray *array1 = @[@"干净整洁", @"全车原漆" ,@"正常", @"正常" ,@"正常", @"正常" ,@"正常", @"排放量以当地车管所为准，具体车况以现场看车为准"];
-//    for (int i = 0; i < array.count; i++) {
-//        NSString *str = array[i];
-//        CGSize size = [str getSizeWithFont:[UIFont systemFontOfSize:12]];
-//        float width = size.width;
-//        float height = 180 / 8;
-//        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, i * height, width, height)];
-//        label.text = array[i];
-//        label.textColor = YLColor(155.f, 155.f, 155.f);
-//        label.font = [UIFont systemFontOfSize:12];
-//
-//        UILabel *detail = [[UILabel alloc] initWithFrame:CGRectMake(width, i * height, 308 - width, height)];
-//        detail.text = array1[i];
-//        detail.textColor = YLColor(155.f, 155.f, 155.f);
-//        detail.font = [UIFont systemFontOfSize:12];
-//        detail.numberOfLines = 0;
-//
-//        [view addSubview:label];
-//        [view addSubview:detail];
-//    }
-//    [bg addSubview:view];
-//    NSLog(@"%@", view);
     [self addSubview:bg];
     
     UILabel *text1 = [[UILabel alloc] initWithFrame:CGRectMake(YLLeftMargin, CGRectGetMaxY(bg.frame) + 5, 345, 17)];

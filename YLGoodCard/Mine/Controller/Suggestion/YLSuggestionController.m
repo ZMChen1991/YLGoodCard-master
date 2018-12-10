@@ -8,6 +8,8 @@
 
 #import "YLSuggestionController.h"
 #import "YLCondition.h"
+#import "YLAccountTool.h"
+#import "YLAccount.h"
 
 @interface YLSuggestionController ()
 
@@ -18,6 +20,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
+    
+    YLAccount *account = [YLAccountTool account];
     
     NSInteger width = YLScreenWidth - 2 * YLLeftMargin;
     UITextView *suggestion = [[UITextView alloc] initWithFrame:CGRectMake(YLLeftMargin, YLLeftMargin + 64, width, 130)];
@@ -30,13 +34,17 @@
     [self.view addSubview:suggestion];
     
     UITextField *telephone = [[UITextField alloc] initWithFrame:CGRectMake(YLLeftMargin, CGRectGetMaxY(suggestion.frame) + YLTopMargin, width, 50)];
-    telephone.placeholder = @"  联系方式（选填）";
     telephone.layer.cornerRadius = 5;
     telephone.layer.borderWidth = 0.6;
     telephone.layer.borderColor = [UIColor grayColor].CGColor;
     telephone.layer.masksToBounds = YES;
     telephone.font = [UIFont systemFontOfSize:14];
     [self.view addSubview:telephone];
+    if (account) {
+        telephone.text = account.telephone;
+    } else {
+        telephone.placeholder = @"  联系方式（选填）";
+    }
     
     YLCondition *commitBtn = [[YLCondition alloc] initWithFrame:CGRectMake(YLLeftMargin, CGRectGetMaxY(telephone.frame) + YLTopMargin, width, 40)];
     commitBtn.type = YLConditionTypeBlue;
@@ -47,6 +55,12 @@
 
 - (void)commit {
     
-    NSLog(@"意见提交");
+    NSLog(@"提交意见反馈");
+    [self postSuggestion];
 }
+
+- (void)postSuggestion {
+    // 提交意见反馈
+}
+
 @end

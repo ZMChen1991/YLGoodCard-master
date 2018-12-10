@@ -97,14 +97,14 @@
     if (![self isBlankString:self.searchTitle]) {
         [self.titleBar setTitle:self.searchTitle forState:UIControlStateNormal];
     }
-    
-    
 }
 
 // 加载数据
 - (void)loadData {
     // 获取搜索列表数据
 //    [self.recommends removeAllObjects];
+    self.noneView.hidden = YES;
+    
     NSString *urlString = @"http://ucarjava.bceapp.com/detail?method=search";
     [YLRequest GET:urlString parameters:self.selectParam success:^(id  _Nonnull responseObject) {
         if ([responseObject[@"code"] isEqualToNumber:[NSNumber numberWithInt:400]]) {

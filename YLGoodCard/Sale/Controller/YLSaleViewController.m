@@ -17,6 +17,7 @@
 #import "YLAccount.h"
 #import "YLAccountTool.h"
 #import "YLLoginController.h"
+#import "YLRequest.h"
 
 @interface YLSaleViewController () <YLConditionDelegate>
 
@@ -31,6 +32,7 @@
     self.view.backgroundColor = [UIColor whiteColor];
     
     [self setupNav];
+    [self loadData];
     
     YLAccount *account = [YLAccountTool account];
     YLSaleView *saleView = [[YLSaleView alloc] init];
@@ -46,6 +48,20 @@
     saleView.appraiseBtn.delegate = self;
     
     [self addNotification];
+}
+
+- (void)loadData {
+    
+    __weak typeof(self) weakSelf = self;
+    NSString *urlString = @"http://ucarjava.bceapp.com/home?method=apply";
+    NSMutableDictionary *param = [NSMutableDictionary dictionary];
+    [YLRequest GET:urlString parameters:param success:^(id  _Nonnull responseObject) {
+        NSLog(@"%@", responseObject);
+        if ([responseObject[@"code"] isEqualToNumber:[NSNumber numberWithInteger:200]]) {
+            NSLog(@"请求成功:%@", responseObject[@"data"]);
+            weakSelf.saleView.salerNum = [NSString stringWithFormat:@"%@", [responseObject[@"data"] valueForKey:@"apply"]];
+        }
+    } failed:nil];
 }
 
 - (void)addNotification {

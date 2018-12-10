@@ -11,7 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 
-typedef void(^ChangePriceBlock)(NSString *price, NSString *floor, BOOL isAccept);
+typedef void(^ChangePriceBlock)(NSInteger price, NSInteger floor, BOOL isAccept);
 typedef void(^CancelBlock)(void);
 
 @interface YLChangePriceView : UIView

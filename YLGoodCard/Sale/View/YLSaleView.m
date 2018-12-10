@@ -38,7 +38,7 @@
     
     UILabel *numberL = [[UILabel alloc] init];
     numberL.textColor = YLColor(8.f, 169.f, 255.f);
-    numberL.text = @"123456";
+//    numberL.text = @"123456";
     numberL.textAlignment = NSTextAlignmentCenter;
     numberL.font = [UIFont systemFontOfSize:30];
     [self addSubview:numberL];
@@ -197,6 +197,11 @@
     _telephone = telephone;
     self.telephoneT.text = telephone;
 //    [self.telephoneT setTitle:telephone forState:UIControlStateNormal];
+}
+
+- (void)setSalerNum:(NSString *)salerNum {
+    _salerNum = salerNum;
+    self.numberL.text = salerNum;
 }
 
 @end

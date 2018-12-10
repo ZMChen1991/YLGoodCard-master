@@ -29,11 +29,13 @@
     
     UILabel *tureNumberL = [[UILabel alloc] init];
     tureNumberL.textAlignment = NSTextAlignmentCenter;
+    tureNumberL.font = [UIFont systemFontOfSize:14];
     [self addSubview:tureNumberL];
     self.tureNumberL = tureNumberL;
     
     UILabel *browseNumberL = [[UILabel alloc] init];
     browseNumberL.textAlignment = NSTextAlignmentCenter;
+    browseNumberL.font = [UIFont systemFontOfSize:14];
     [self addSubview:browseNumberL];
     self.browseNumberL = browseNumberL;
 }
@@ -48,7 +50,7 @@
 
 - (void)setTureNumber:(NSString *)tureNumber {
     _tureNumber = tureNumber;
-    NSString *string = [NSString stringWithFormat:@"实际看车(次):%@", tureNumber];
+    NSString *string = [NSString stringWithFormat:@"预约看车(次):%@", tureNumber];
     NSAttributedString *str = [string changeString:tureNumber color:[UIColor redColor]];
     self.tureNumberL.attributedText = str;
 }

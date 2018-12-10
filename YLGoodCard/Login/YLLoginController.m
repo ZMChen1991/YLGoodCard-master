@@ -100,19 +100,31 @@
         NSLog(@"请输入电话号码");
         [self showMessage:@"请输入电话号码"];
     } else {
-        [self timeDown];
-        // 获取短信验证码
-        NSMutableDictionary *param = [NSMutableDictionary dictionary];
-        param[@"telephone"] = self.tel.text;
-        [YLMessageCodeTool messageCodeWithParam:param success:^(NSDictionary * _Nonnull result) {
-            NSLog(@"验证码发送成功");
-            [self showMessage:@"验证码发送成功"];
-        } failure:^(NSError * _Nonnull error) {
-            NSLog(@"验证码发送失败");
-            [self showMessage:@"验证码发送失败"];
-        }];
+        if ([self isPhoneNumber:self.tel.text]) {
+            [self timeDown];
+            // 获取短信验证码
+            NSMutableDictionary *param = [NSMutableDictionary dictionary];
+            param[@"telephone"] = self.tel.text;
+            [YLMessageCodeTool messageCodeWithParam:param success:^(NSDictionary * _Nonnull result) {
+                NSLog(@"验证码发送成功");
+                [self showMessage:@"验证码发送成功"];
+            } failure:^(NSError * _Nonnull error) {
+                NSLog(@"验证码发送失败");
+                [self showMessage:@"验证码发送失败"];
+            }];
+        } else {
+            [self showMessage:@"请输入正确的电话号码"];
+        }
     }
 }
+
+- (BOOL) isPhoneNumber:(NSString *)number
+{
+    NSString *phoneRegex1=@"1[34578]([0-9]){9}";
+    NSPredicate *phoneTest1 = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",phoneRegex1];
+    return  [phoneTest1 evaluateWithObject:number];
+}
+
 // 验证码倒计时
 - (void)timeDown {
     

@@ -77,11 +77,15 @@
         self.mineIcon.telephone = self.account.telephone;
         self.mineIcon.hidden = NO;
         self.loginHeader.hidden =YES;
+        
         [self loadDate];
     } else {
         self.isLogin = NO;
         self.mineIcon.hidden = YES;
         self.loginHeader.hidden =NO;
+        NSString *count = [NSString stringWithFormat:@"%ld", self.browsingHistoryCount];
+        NSMutableArray *mineArray = [NSMutableArray arrayWithObjects:@"0", @"0", count, @"0", nil];
+        self.functionView.numbers = mineArray;
     }
     
     [self addNotification];
@@ -328,21 +332,11 @@
 
 - (void)callTelephone {
     
-//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"4008301282" delegate:nil cancelButtonTitle:@"取消" otherButtonTitles:@"呼叫", nil];
-//    alert.delegate = self;
-//    [alert show];
-    [self test];
+    NSLog(@"点击了电话客服");
+    [self callBack];
 }
-//
-//- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-//    NSLog(@"buttonIndex:%ld", buttonIndex);
-//    if (buttonIndex == 1) {
-//        [self test];
-//        NSLog(@"拨打电话");
-//    }
-//}
 
-- (void)test {
+- (void)callBack {
     NSString *callPhone = [NSString stringWithFormat:@"telprompt://%@", @"4008301282"];
     if (@available(iOS 10.0, *)) {
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:callPhone] options:@{} completionHandler:nil];

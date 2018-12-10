@@ -76,18 +76,25 @@
     float titleX = CGRectGetMaxX(self.icon.frame) + YLLeftMargin;
     float titleW = YLScreenWidth - 120 - 2 * YLLeftMargin - YLTopSpace;
     self.title.frame = CGRectMake(titleX, YLTopSpace, titleW, 34);
-    
     self.course.frame = CGRectMake(titleX, CGRectGetMaxY(self.title.frame) + 5, titleW, 17);
-    
     self.price.frame = CGRectMake(titleX, CGRectGetMaxY(self.course.frame) + 5, titleW/3, 25);
-    
     self.originalPrice.frame = CGRectMake(CGRectGetMaxX(self.price.frame), CGRectGetMaxY(self.course.frame) + 9, YLScreenWidth - CGRectGetMaxX(self.price.frame) - YLTopSpace, 17);
+}
+
+- (void)setModel:(YLSaleOrderModel *)model {
+    _model = model;
     
-    self.title.text = @"xxxxx";
-    self.price.text = @"12.9万";
-    self.course.text = @"25万公里/年";
-    self.originalPrice.text = @"新车含税价25.6万";
+    [self.icon sd_setImageWithURL:[NSURL URLWithString:model.detail.displayImg] placeholderImage:nil];
+    self.title.text = model.detail.title;
+    self.price.text = [self stringToNumber:model.detail.price];
+    self.originalPrice.text = [NSString stringWithFormat:@"新车含税%@", [self stringToNumber:model.detail.originalPrice]];
+    self.course.text = [NSString stringWithFormat:@"%@万公里/年", model.detail.course];
+}
+
+- (NSString *)stringToNumber:(NSString *)number {
     
+    float count = [number floatValue] / 10000;
+    return [NSString stringWithFormat:@"%.2f万",count];
 }
 
 @end

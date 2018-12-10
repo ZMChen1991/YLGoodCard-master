@@ -27,10 +27,12 @@
     [param setValue:account.telephone forKey:@"telephone"];
     NSMutableArray *ctrs = [NSMutableArray array];
     for (NSInteger i = 0; i < self.titles.count; i++) {
+//        NSLog(@"self.params[i]:%@", self.params[i]);
         YLSubSaleOrderController *ctr = [[YLSubSaleOrderController alloc] init];
         [param setValue:self.params[i] forKey:@"status"];
-        ctr.param = param;
         
+        ctr.param = param;
+//        NSLog(@"param:%@ -- ctr.param:%@--%d", param, ctr.param, i);
         [self addChildViewController:ctr];
         [ctrs addObject:ctr];
     }

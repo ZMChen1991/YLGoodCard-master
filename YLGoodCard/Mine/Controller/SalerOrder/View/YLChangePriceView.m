@@ -34,36 +34,39 @@
 
 - (void)setupUI {
     
-    CGFloat labelW = 120;
+    CGFloat labelW = 150;
     CGFloat labelH = 30;
     
     UILabel *changePriceL = [[UILabel alloc] initWithFrame:CGRectMake(20, 20, labelW, labelH)];
-    changePriceL.text = @"修改卖车价格";
+    changePriceL.text = @"修改卖车价格(万):";
     [self addSubview:changePriceL];
     
     UILabel *changeFloorL = [[UILabel alloc] initWithFrame:CGRectMake(20, CGRectGetMaxY(changePriceL.frame) + 20, labelW, labelH)];
-    changeFloorL.text = @"修改卖车底价";
+    changeFloorL.text = @"修改卖车底价(万):";
     [self addSubview:changeFloorL];
     
     CGFloat textW = YLScreenWidth - CGRectGetMaxX(changePriceL.frame) - 30 - 20;
     CGFloat textH = 30;
     UITextField *changePrice = [[UITextField alloc] initWithFrame:CGRectMake(CGRectGetMaxX(changePriceL.frame) + 20, 20, textW, textH)];
-    changePrice.placeholder = @"请输入卖车价格:";
+    changePrice.placeholder = @"请输入卖车价格";
     changePrice.layer.borderWidth = 0.5;
     changePrice.layer.borderColor = YLColor(233.f, 233.f, 233.f).CGColor;
     [self addSubview:changePrice];
     self.changePrice = changePrice;
     
     UITextField *changeFloor = [[UITextField alloc] initWithFrame:CGRectMake(CGRectGetMaxX(changePriceL.frame) + 20, CGRectGetMaxY(changePrice.frame) + 20, textW, textH)];
-    changeFloor.placeholder = @"请输入卖车底价:";
+    changeFloor.placeholder = @"请输入卖车底价";
     changeFloor.layer.borderWidth = 0.5;
     changeFloor.layer.borderColor = YLColor(233.f, 233.f, 233.f).CGColor;
     [self addSubview:changeFloor];
     self.changeFloor = changeFloor;
     
+    // 默认接受议价
     UIButton *accept = [[UIButton alloc] initWithFrame:CGRectMake(50, CGRectGetMaxY(changeFloor.frame) + 23, 16, 16)];
     [accept addTarget:self action:@selector(accept) forControlEvents:UIControlEventTouchUpInside];
-    accept.backgroundColor = [UIColor redColor];
+    accept.backgroundColor = YLColor(8.f, 169.f, 255.f);
+    accept.layer.borderWidth = 1.f;
+    accept.layer.borderColor = YLColor(233.f, 233.f, 233.f).CGColor;
     [self addSubview:accept];
     self.acceptBtn = accept;
     
@@ -73,7 +76,9 @@
     
     UIButton *refuse = [[UIButton alloc] initWithFrame:CGRectMake(CGRectGetMaxX(acceptLabel.frame), CGRectGetMaxY(changeFloor.frame) + 23, 16, 16)];
     [refuse addTarget:self action:@selector(refuse) forControlEvents:UIControlEventTouchUpInside];
-    refuse.backgroundColor = [UIColor greenColor];
+    refuse.backgroundColor = [UIColor whiteColor];
+    refuse.layer.borderWidth = 1.f;
+    refuse.layer.borderColor = YLColor(233.f, 233.f, 233.f).CGColor;
     [self addSubview:refuse];
     self.refuseBtn = refuse;
     
@@ -104,7 +109,9 @@
     [self.changePrice resignFirstResponder];
     [self.changeFloor resignFirstResponder];
     if (self.changePriceBlock) {
-        self.changePriceBlock(self.changePrice.text, self.changeFloor.text, self.isAccept);
+        NSInteger changePrice = [self.changePrice.text integerValue] * 10000;
+        NSInteger changeFloor = [self.changeFloor.text integerValue] * 10000;
+        self.changePriceBlock(changePrice, changeFloor, self.isAccept);
     }
 }
 
@@ -121,10 +128,14 @@
     NSLog(@"接受议价");
     self.isAccept = YES;
     // 这里改变按钮的背景图片
+    self.acceptBtn.backgroundColor = YLColor(8.f, 169.f, 255.f);
+    self.refuseBtn.backgroundColor = [UIColor whiteColor];
 }
 - (void)refuse {
     NSLog(@"不接受议价");
     self.isAccept = NO;
     // 这里改变按钮的背景图片
+    self.acceptBtn.backgroundColor = [UIColor whiteColor];
+    self.refuseBtn.backgroundColor = YLColor(8.f, 169.f, 255.f);
 }
 @end

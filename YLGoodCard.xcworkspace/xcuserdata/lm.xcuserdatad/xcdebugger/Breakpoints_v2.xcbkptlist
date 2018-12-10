@@ -19,13 +19,29 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "YLGoodCard/Mine/Controller/SalerOrder/Controller/YLSubSaleOrderController.m"
-            timestampString = "565867935.8584599"
+            filePath = "YLGoodCard/Mine/Controller/SalerOrder/Controller/YLSaleDetailController.m"
+            timestampString = "565951611.680887"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "43"
-            endingLineNumber = "43"
-            landmarkName = "-loadData"
+            startingLineNumber = "177"
+            endingLineNumber = "177"
+            landmarkName = "-setModel:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "YLGoodCard/Mine/Controller/SalerOrder/Controller/YLSaleDetailController.m"
+            timestampString = "565951611.680984"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "163"
+            endingLineNumber = "163"
+            landmarkName = "-setModel:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

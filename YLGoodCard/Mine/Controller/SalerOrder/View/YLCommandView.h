@@ -7,10 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "YLSaleOrderModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface YLCommandView : UIView
+
+@property (nonatomic, strong) YLSaleOrderModel *model;
 
 @end
 
