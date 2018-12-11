@@ -7,10 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "YLBargainHistoryModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface YLBargainHistoryDetailHeader : UIView
+
+@property (nonatomic, strong) YLBargainHistoryModel *model;
 
 @end
 

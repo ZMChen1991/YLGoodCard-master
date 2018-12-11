@@ -100,11 +100,11 @@
     self.line.frame = buyOrderCellFrame.lineF;
     
     //  赋值
-    //    [self.icon sd_setImageWithURL:[NSURL URLWithString:saleOrderCellFrame.model.detail] placeholderImage:nil];
-    self.title.text = @"xxxxx";
-    self.price.text = @"12.9万";
-    self.course.text = @"25万公里/年";
-    self.originalPrice.text = @"新车含税价25.6万";
+        [self.icon sd_setImageWithURL:[NSURL URLWithString:buyOrderCellFrame.model.detail.displayImg] placeholderImage:nil];
+    self.title.text = buyOrderCellFrame.model.detail.title;
+    self.price.text = [self stringToNumber:buyOrderCellFrame.model.detail.price];
+    self.course.text = [NSString stringWithFormat:@"%@万公里/年", buyOrderCellFrame.model.detail.course];
+    self.originalPrice.text = [NSString stringWithFormat:@"新车含税%@",[self stringToNumber:buyOrderCellFrame.model.detail.originalPrice]];
 }
 
 

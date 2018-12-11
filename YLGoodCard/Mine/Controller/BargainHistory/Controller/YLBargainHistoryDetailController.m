@@ -40,11 +40,9 @@
 - (void)creatTableView {
     
     YLBargainHistoryDetailHeader *header = [[YLBargainHistoryDetailHeader alloc] initWithFrame:CGRectMake(0, 64, YLScreenWidth, 110)];
+    header.model = self.model;
     [self.view addSubview:header];
     self.header = header;
-    
-//    YLBargainPriceView *view = [[YLBargainPriceView alloc] initWithFrame:CGRectMake(0, 174, YLScreenWidth, 213)];
-//    [self.view addSubview:view];
     
     UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(header.frame), YLScreenWidth, YLScreenHeight - 110)];
     tableView.delegate = self;
@@ -71,8 +69,11 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     YLBargainHistoryDetailCell *cell = [YLBargainHistoryDetailCell cellWithTableView:tableView];
-    cell.dickerBlock = ^{
+    cell.dickerBlock = ^{ // 还价
         self.cover.hidden = NO;
+    };
+    cell.accepBlock = ^{ // 接受
+        
     };
     return cell;
 }

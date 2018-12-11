@@ -45,7 +45,7 @@
 - (void)setupUI {
     
     UIImageView *icon = [[UIImageView alloc] init];
-    icon.backgroundColor = [UIColor redColor];
+    icon.backgroundColor = YLColor(233.f, 233.f, 233.f);
     icon.layer.cornerRadius = 5.f;
     icon.layer.masksToBounds = YES;
     [self addSubview:icon];
@@ -103,11 +103,11 @@
     self.bargainNumber.frame = cellFrame.bargainNumberF;
     self.line.frame = cellFrame.lineF;
     
-    self.title.text = @"xxxxx";
-    self.price.text = @"12.9万";
-    self.course.text = @"25万公里/年";
-    self.originalPrice.text = @"新车含税价25.6万";
-    [self.bargainNumber setTitle:@"6" forState:UIControlStateNormal];
+    self.title.text = cellFrame.model.detail.title;
+    self.price.text = [self stringToNumber:cellFrame.model.detail.price];
+    self.course.text = [NSString stringWithFormat:@"%@万公里/年", cellFrame.model.detail.course];
+    self.originalPrice.text = [NSString stringWithFormat:@"新车含税%@", [self stringToNumber:cellFrame.model.detail.originalPrice]];
+    [self.bargainNumber setTitle:cellFrame.model.count forState:UIControlStateNormal];
 }
 
 

@@ -32,12 +32,7 @@
 
 - (void)loadData {
     
-//    YLAccount *account = [YLAccountTool account];
-//    NSMutableDictionary *param = [NSMutableDictionary dictionary];
-//    [param setValue:self.status forKey:@"status"];
-//    [param setValue:account.telephone forKey:@"telephone"];
     NSString *urlString = @"http://ucarjava.bceapp.com/sell?method=my";
-//    NSLog(@"self.param :%@", self.param);
     [YLRequest GET:urlString parameters:self.param success:^(id  _Nonnull responseObject) {
         NSLog(@"%@", responseObject);
         NSArray *modelArray = [YLSaleOrderModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"]];
@@ -97,7 +92,6 @@
     _param = param;
     
     [self loadData];
-
 }
 
 @end

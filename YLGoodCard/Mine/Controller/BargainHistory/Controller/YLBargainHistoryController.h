@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface YLBargainHistoryController : UIViewController
 
 @property (nonatomic, strong) NSArray *titles;
+@property (nonatomic, strong) NSArray *params;
 @property (nonatomic, strong) YLSkipView *skip;
 @end
 

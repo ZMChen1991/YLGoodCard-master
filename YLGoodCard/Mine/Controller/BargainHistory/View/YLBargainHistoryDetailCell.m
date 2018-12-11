@@ -33,13 +33,15 @@
     YLCondition *dicker = [YLCondition buttonWithType:UIButtonTypeCustom];
     dicker.type = YLConditionTypeWhite;
     dicker.frame = CGRectMake(YLScreenWidth - 60 * 2 - 15 - 10, 10, 60, 30);
+    dicker.titleLabel.font = [UIFont systemFontOfSize:14];
     [dicker setTitle:@"还价" forState:UIControlStateNormal];
     [dicker addTarget:self action:@selector(dicker) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:dicker];
     
     YLCondition *accept = [YLCondition buttonWithType:UIButtonTypeCustom];
-    accept.type = YLConditionTypeWhite;
+    accept.type = YLConditionTypeBlue;
     accept.frame = CGRectMake(YLScreenWidth - 60 - 15, 10, 60, 30);
+    accept.titleLabel.font = [UIFont systemFontOfSize:14];
     [accept setTitle:@"接受" forState:UIControlStateNormal];
     [accept addTarget:self action:@selector(accept) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:accept];

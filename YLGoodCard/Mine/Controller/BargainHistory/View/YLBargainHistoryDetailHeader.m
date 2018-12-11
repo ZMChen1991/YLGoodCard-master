@@ -40,7 +40,7 @@
 - (void)setupUI {
     
     UIImageView *icon = [[UIImageView alloc] initWithFrame:CGRectMake(YLLeftMargin, YLTopSpace, 120, 86)];
-    icon.backgroundColor = [UIColor redColor];
+    icon.backgroundColor = YLColor(233.f, 233.f, 233.f);
     icon.layer.cornerRadius = 5.f;
     icon.layer.masksToBounds = YES;
     [self addSubview:icon];
@@ -50,7 +50,7 @@
     CGFloat titleW = YLScreenWidth - 120 - 2 * YLLeftMargin - YLTopSpace;
     UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(titleX, YLTopSpace, titleW, 34)];
     title.textColor = [UIColor blackColor];
-    title.text = @"嘻嘻嘻嘻嘻嘻嘻";
+//    title.text = @"嘻嘻嘻嘻嘻嘻嘻";
     title.font = [UIFont systemFontOfSize:14];
     title.numberOfLines = 0;
     [self addSubview:title];
@@ -60,21 +60,21 @@
     course.textColor = [UIColor blackColor];
     course.font = [UIFont systemFontOfSize:12];
     course.textAlignment = NSTextAlignmentLeft;
-    course.text = @"23万公里/年";
+//    course.text = @"23万公里/年";
     [self addSubview:course];
     self.course = course;
     
     UILabel *price = [[UILabel alloc] initWithFrame:CGRectMake(titleX, CGRectGetMaxY(course.frame) + 5, titleW/3, 25)];
     price.textColor = [UIColor redColor];
     price.font = [UIFont systemFontOfSize:18];
-    price.text = @"20万";
+//    price.text = @"20万";
     [self addSubview:price];
     self.price = price;
     
     UILabel *originalPrice = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(price.frame), CGRectGetMaxY(course.frame) + 9, YLScreenWidth - CGRectGetMaxX(price.frame) - YLTopSpace, 17)];
     originalPrice.font = [UIFont systemFontOfSize:12];
     originalPrice.textAlignment = NSTextAlignmentLeft;
-    originalPrice.text = @"新车价:46万";
+//    originalPrice.text = @"新车价:46万";
     [self addSubview:originalPrice];
     self.originalPrice = originalPrice;
     
@@ -86,7 +86,7 @@
     YLCondition *bargainNumber = [YLCondition buttonWithType:UIButtonTypeCustom];
     bargainNumber.type = YLConditionTypeWhite;
     bargainNumber.frame = CGRectMake(YLScreenWidth - 36 - 15, 40, 36, 36);
-    [bargainNumber setTitle:@"10" forState:UIControlStateNormal];
+//    [bargainNumber setTitle:@"10" forState:UIControlStateNormal];
     bargainNumber.layer.cornerRadius = 18.f;
     bargainNumber.layer.masksToBounds = YES;
     [self addSubview:bargainNumber];
@@ -97,5 +97,17 @@
     
     float count = [number floatValue] / 10000;
     return [NSString stringWithFormat:@"%.2f万",count];
+}
+
+- (void)setModel:(YLBargainHistoryModel *)model {
+    
+    _model = model;
+    
+    [self.icon sd_setImageWithURL:[NSURL URLWithString:model.detail.displayImg] placeholderImage:nil];
+    self.title.text = model.detail.title;
+    self.course.text = model.detail.course;
+    self.price.text = model.detail.price;
+    self.originalPrice.text = model.detail.originalPrice;
+    [self.bargainNumber setTitle:model.count forState:UIControlStateNormal];
 }
 @end

@@ -39,7 +39,7 @@
     [param setValue:account.telephone forKey:@"telephone"];
     [YLRequest GET:urlString parameters:param success:^(id  _Nonnull responseObject) {
         NSLog(@"%@", responseObject);
-        if ([responseObject[@"data"] isEqualToNumber:[NSNumber numberWithInt:200]]) {
+        if ([responseObject[@"code"] isEqualToNumber:[NSNumber numberWithInt:200]]) {
             NSLog(@"降价提醒请求成功");
         } else {
             NSLog(@"降价提醒请求失败");

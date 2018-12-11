@@ -44,7 +44,7 @@
 - (void)setupUI {
     
     UIImageView *icon = [[UIImageView alloc] init];
-    icon.backgroundColor = [UIColor redColor];
+    icon.backgroundColor = YLColor(233.f, 233.f, 233.f);
     icon.layer.cornerRadius = 5.f;
     icon.layer.masksToBounds = YES;
     [self addSubview:icon];

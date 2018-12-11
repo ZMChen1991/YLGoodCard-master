@@ -302,8 +302,8 @@
         }
         if (index == 1) {
             NSLog(@"%@=----买车订单", title);
-            NSArray *titles = @[@"全部", @"待复检过户",@"交易完成"];
-            NSArray *params = @[@"", @"3", @"4"];
+            NSArray *titles = @[@"全部", @"待复检过户",@"交易完成", @"交易取消"];
+            NSArray *params = @[@"", @"3", @"5", @"20"];
             YLBuyOrderController *buyOrder = [[YLBuyOrderController alloc] init];
             buyOrder.title = array[index];
             buyOrder.titles = titles;
@@ -314,9 +314,11 @@
         if (index == 2) {
             NSLog(@"%@=--=-砍价记录", title);
             NSArray *titles = @[@"买家", @"卖家"];
+            NSArray *params = @[@"buyer", @"seller"];
             YLBargainHistoryController *bargainHistory = [[YLBargainHistoryController alloc] init];
             bargainHistory.title = array[index];
             bargainHistory.titles = titles;
+            bargainHistory.params = params;
             [self.navigationController pushViewController:bargainHistory animated:YES];
         }
         if (index == 3) {

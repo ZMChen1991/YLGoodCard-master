@@ -28,10 +28,9 @@
     NSMutableArray *ctrs = [NSMutableArray array];
     for (NSInteger i = 0; i < self.titles.count; i++) {
         YLSubBargainHistoryController *ctr = [[YLSubBargainHistoryController alloc] init];
+        [param setValue:self.params[i] forKey:@"method"];
         ctr.param = param;
-        ctr.view.backgroundColor = YLRandomColor;
-        // 传请求
-        NSLog(@"%@", ctr.param);
+//        ctr.view.backgroundColor = YLRandomColor;
         [self addChildViewController:ctr];
         [ctrs addObject:ctr];
     }
@@ -45,6 +44,10 @@
         _skip = [[YLSkipView alloc] initWithFrame:CGRectMake(0, 64, self.view.frame.size.width, self.view.frame.size.height-64)];
     }
     return _skip;
+}
+
+- (void)setParams:(NSArray *)params {
+    _params = params;
 }
 
 @end

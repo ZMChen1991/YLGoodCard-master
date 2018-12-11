@@ -82,6 +82,9 @@
 		8AB874492199149500FB0A93 /* YLLoginHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AB874482199149500FB0A93 /* YLLoginHeader.m */; };
 		8AB8744C219918E100FB0A93 /* YLFunctionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AB8744B219918E100FB0A93 /* YLFunctionView.m */; };
 		8AB874522199462C00FB0A93 /* YLSuggestionController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AB874512199462C00FB0A93 /* YLSuggestionController.m */; };
+		8AC0828321BE3EEA00B97D02 /* YLBuyOrderDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AC0828221BE3EEA00B97D02 /* YLBuyOrderDetailModel.m */; };
+		8AC0828621BE48CA00B97D02 /* YLBuyOrderCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AC0828521BE48CA00B97D02 /* YLBuyOrderCommand.m */; };
+		8AC0828921BE631E00B97D02 /* YLBargainHistoryDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AC0828821BE631E00B97D02 /* YLBargainHistoryDetailModel.m */; };
 		8AC19BB121BA59DE00A9E52A /* YLLookCarDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AC19BB021BA59DE00A9E52A /* YLLookCarDetailController.m */; };
 		8AC19BB421BA5A3200A9E52A /* YLLookCarDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AC19BB321BA5A3200A9E52A /* YLLookCarDetailView.m */; };
 		8AC19BB721BA5CB000A9E52A /* YLAppointView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AC19BB621BA5CB000A9E52A /* YLAppointView.m */; };
@@ -323,6 +326,12 @@
 		8AB8744B219918E100FB0A93 /* YLFunctionView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YLFunctionView.m; sourceTree = "<group>"; };
 		8AB874502199462C00FB0A93 /* YLSuggestionController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YLSuggestionController.h; sourceTree = "<group>"; };
 		8AB874512199462C00FB0A93 /* YLSuggestionController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YLSuggestionController.m; sourceTree = "<group>"; };
+		8AC0828121BE3EEA00B97D02 /* YLBuyOrderDetailModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YLBuyOrderDetailModel.h; sourceTree = "<group>"; };
+		8AC0828221BE3EEA00B97D02 /* YLBuyOrderDetailModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YLBuyOrderDetailModel.m; sourceTree = "<group>"; };
+		8AC0828421BE48CA00B97D02 /* YLBuyOrderCommand.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YLBuyOrderCommand.h; sourceTree = "<group>"; };
+		8AC0828521BE48CA00B97D02 /* YLBuyOrderCommand.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YLBuyOrderCommand.m; sourceTree = "<group>"; };
+		8AC0828721BE631E00B97D02 /* YLBargainHistoryDetailModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YLBargainHistoryDetailModel.h; sourceTree = "<group>"; };
+		8AC0828821BE631E00B97D02 /* YLBargainHistoryDetailModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YLBargainHistoryDetailModel.m; sourceTree = "<group>"; };
 		8AC19BAF21BA59DE00A9E52A /* YLLookCarDetailController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YLLookCarDetailController.h; sourceTree = "<group>"; };
 		8AC19BB021BA59DE00A9E52A /* YLLookCarDetailController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YLLookCarDetailController.m; sourceTree = "<group>"; };
 		8AC19BB221BA5A3200A9E52A /* YLLookCarDetailView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YLLookCarDetailView.h; sourceTree = "<group>"; };
@@ -1140,6 +1149,8 @@
 				8AC348B621B403B800BC9D11 /* YLContactView.m */,
 				8AC348B821B405D500BC9D11 /* YLCompleteView.h */,
 				8AC348B921B405D500BC9D11 /* YLCompleteView.m */,
+				8AC0828421BE48CA00B97D02 /* YLBuyOrderCommand.h */,
+				8AC0828521BE48CA00B97D02 /* YLBuyOrderCommand.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1147,10 +1158,10 @@
 		8AC348A721B3FEDA00BC9D11 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				8ADEE50721B0E4E000BAD2CD /* YLSubBuyOrderController.h */,
-				8ADEE50A21B0E4E000BAD2CD /* YLSubBuyOrderController.m */,
 				8ADEE50921B0E4E000BAD2CD /* YLBuyOrderController.h */,
 				8ADEE50821B0E4E000BAD2CD /* YLBuyOrderController.m */,
+				8ADEE50721B0E4E000BAD2CD /* YLSubBuyOrderController.h */,
+				8ADEE50A21B0E4E000BAD2CD /* YLSubBuyOrderController.m */,
 				8AC348B221B4029F00BC9D11 /* YLBuyOrderDetailController.h */,
 				8AC348B321B4029F00BC9D11 /* YLBuyOrderDetailController.m */,
 			);
@@ -1164,6 +1175,8 @@
 				8AC348AD21B4007200BC9D11 /* YLBuyOrderCellFrame.m */,
 				8AC348AF21B4009300BC9D11 /* YLBuyOrderModel.h */,
 				8AC348B021B4009300BC9D11 /* YLBuyOrderModel.m */,
+				8AC0828121BE3EEA00B97D02 /* YLBuyOrderDetailModel.h */,
+				8AC0828221BE3EEA00B97D02 /* YLBuyOrderDetailModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1217,6 +1230,8 @@
 			children = (
 				8AC348CD21B42D5500BC9D11 /* YLBargainHistoryModel.h */,
 				8AC348CE21B42D5500BC9D11 /* YLBargainHistoryModel.m */,
+				8AC0828721BE631E00B97D02 /* YLBargainHistoryDetailModel.h */,
+				8AC0828821BE631E00B97D02 /* YLBargainHistoryDetailModel.m */,
 				8AC348D021B42D6D00BC9D11 /* YLBargainHistoryCellFrame.h */,
 				8AC348D121B42D6D00BC9D11 /* YLBargainHistoryCellFrame.m */,
 			);
@@ -1528,6 +1543,7 @@
 				8AC348A221B3D9BE00BC9D11 /* YLSaleStatusView.m in Sources */,
 				8ADE763721A6797500C78F00 /* YLSeriesController.m in Sources */,
 				8A25C5E921B239AB00538437 /* YLSaleOrderDetailModel.m in Sources */,
+				8AC0828321BE3EEA00B97D02 /* YLBuyOrderDetailModel.m in Sources */,
 				8AC3489821B3D4AB00BC9D11 /* YLSaleDetailController.m in Sources */,
 				8A90399521A2595C0099BC98 /* YLReservationView.m in Sources */,
 				8AEFA6A9219D736C00C21452 /* YLTableViewModel.m in Sources */,
@@ -1635,6 +1651,7 @@
 				8AC3554321955F8A00D16503 /* YLTimePickView.m in Sources */,
 				8AF43E572192DF3F003E2D5B /* YLCustomPrice.m in Sources */,
 				8A35F8F5218D541400BDBC9E /* YLOrderView.m in Sources */,
+				8AC0828921BE631E00B97D02 /* YLBargainHistoryDetailModel.m in Sources */,
 				8AFC7B4B21A4FEAA00570E83 /* YLAccountTool.m in Sources */,
 				8AC348BA21B405D500BC9D11 /* YLCompleteView.m in Sources */,
 				8AC75B9B2199544900D159C9 /* YLLoginController.m in Sources */,
@@ -1658,6 +1675,7 @@
 				8A339CCA219C0C6D00A75DE0 /* YLDetailModel.m in Sources */,
 				8AF0DB172196C93C00A3A11F /* YLCollectHeader.m in Sources */,
 				8A21112A219163880014132C /* YLDetailController.m in Sources */,
+				8AC0828621BE48CA00B97D02 /* YLBuyOrderCommand.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
