@@ -13,6 +13,7 @@
 #import "YLSubCellModel.h"
 #import "YLSubCell.h"
 #import "YLLookCarDetailController.h"
+#import "YLRequest.h"
 
 
 @interface YLSubController ()
@@ -30,16 +31,35 @@
 
 - (void)loadData {
     
-    // 根据提供的参数提交请求获取数据
-    [YLMineTool lookforWithParam:self.param success:^(NSArray * _Nonnull result) {
-        NSLog(@"YLSubController:%@", result);
-        for (YLLookCarModel *model in result) {
-            YLSubCellModel *cellModel = [[YLSubCellModel alloc] init];
-            cellModel.lookCarModel = model;
-            [self.dataArray addObject:cellModel];
+//    // 根据提供的参数提交请求获取数据
+//    [YLMineTool lookforWithParam:self.param success:^(NSArray * _Nonnull result) {
+//        NSLog(@"YLSubController:%@", result);
+//        for (YLLookCarModel *model in result) {
+//            YLSubCellModel *cellModel = [[YLSubCellModel alloc] init];
+//            cellModel.lookCarModel = model;
+//            [self.dataArray addObject:cellModel];
+//            [self.tableView reloadData];
+//        }
+//    } failure:nil];
+    
+    NSString *urlString  = @"http://ucarjava.bceapp.com/buy?method=book";
+    [YLRequest GET:urlString parameters:self.param success:^(id  _Nonnull responseObject) {
+        NSLog(@"%@", responseObject);
+        if ([responseObject[@"code"] isEqualToNumber:[NSNumber numberWithInteger:200]]) {
+            NSLog(@"请求成功:%@", responseObject[@"data"]);
+            NSArray *array = [YLLookCarModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"]];
+            for (YLLookCarModel *model in array) {
+                YLSubCellModel *cellFrame = [[YLSubCellModel alloc] init];
+                cellFrame.lookCarModel = model;
+                [self.dataArray addObject:cellFrame];
+            }
             [self.tableView reloadData];
+        } else {
+            NSLog(@"请求失败");
         }
-    } failure:nil];
+        
+    } failed:nil];
+    
 }
 
 #pragma mark - Table view data source

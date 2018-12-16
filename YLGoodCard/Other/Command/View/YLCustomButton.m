@@ -8,6 +8,12 @@
 
 #import "YLCustomButton.h"
 
+@interface YLCustomButton ()
+
+@property (nonatomic, strong) UILabel *numberL;
+
+@end
+
 @implementation YLCustomButton
 
 - (instancetype)initWithFrame:(CGRect)frame {
@@ -18,6 +24,18 @@
         self.titleLabel.textAlignment = NSTextAlignmentCenter;
         self.imageView.contentMode = UIViewContentModeScaleAspectFit;
         self.titleLabel.font = [UIFont systemFontOfSize:11];
+        
+        CGFloat numW = 20;
+        UILabel *numberL = [[UILabel alloc] initWithFrame:CGRectMake(3 * numW - 8, 10, numW, numW)];
+        numberL.font = [UIFont systemFontOfSize:12];
+        numberL.textAlignment = NSTextAlignmentCenter;
+        [numberL setTextColor:[UIColor whiteColor]];
+        numberL.backgroundColor = [UIColor redColor];
+        numberL.layer.cornerRadius = numW / 2;
+        numberL.layer.masksToBounds = YES;
+        numberL.hidden = YES;
+        [self addSubview:numberL];
+        self.numberL = numberL;
     }
     return self;
 }
@@ -40,6 +58,18 @@
     CGFloat imgH = contentRect.size.height * 0.4;
     CGRect rect = CGRectMake(imgX, imgY, imgW, imgH);
     return rect;
+}
+
+- (void)setNumbers:(NSString *)numbers {
+    _numbers = numbers;
+    NSLog(@"numbers:%@", numbers);
+    if ([numbers isEqualToString:@"0"]) {
+        self.numberL.hidden = YES;
+    } else {
+        self.numberL.text = numbers;
+        self.numberL.hidden = NO;
+    }
+    
 }
 
 @end

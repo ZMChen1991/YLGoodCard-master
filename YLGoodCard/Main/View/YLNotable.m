@@ -24,6 +24,7 @@
         float width = frame.size.width;
         float height = frame.size.height;
         UIImageView *icon = [[UIImageView alloc] initWithFrame:CGRectMake(YLLeftMargin, 8, 36, height - 2 * 8)];
+        icon.contentMode = UIViewContentModeScaleAspectFill;
         icon.image = [UIImage imageNamed:@"最新成交"];
         [self addSubview:icon];
         

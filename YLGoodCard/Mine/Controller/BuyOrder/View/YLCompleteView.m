@@ -46,6 +46,9 @@
 
 - (void)contact {
     NSLog(@"点击联系客服");
+    if (self.completeBlock) {
+        self.completeBlock();
+    }
 }
 
 - (void)layoutSubviews {

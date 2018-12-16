@@ -11,6 +11,12 @@
 #import "YLAccountTool.h"
 #import "YLAccount.h"
 
+#import "YLSubAllBuyOrderController.h"
+#import "YLSubRecheckBuyOrderController.h"
+#import "YLSubDoneBuyOrderController.h"
+#import "YLSubCancelBuyOrderController.h"
+
+
 @interface YLBuyOrderController ()
 
 @end
@@ -22,19 +28,27 @@
     self.view.backgroundColor = [UIColor whiteColor];
     
     self.skip.titles = self.titles;
-    YLAccount *account = [YLAccountTool account];
-    NSMutableDictionary *param = [NSMutableDictionary dictionary];
-    [param setValue:account.telephone forKey:@"telephone"];
-    NSMutableArray *ctrs = [NSMutableArray array];
-    for (NSInteger i = 0; i < self.titles.count; i++) {
-        YLSubBuyOrderController *ctr = [[YLSubBuyOrderController alloc] init];
-        [param setValue:self.params[i] forKey:@"status"];
-        NSLog(@"buyOrder-param:%@", param);
-        ctr.param = param;
-        [self addChildViewController:ctr];
-        [ctrs addObject:ctr];
-    }
-    self.skip.controllers = ctrs;
+    YLSubAllBuyOrderController *all = [[YLSubAllBuyOrderController alloc] init];
+    YLSubRecheckBuyOrderController *reCheck = [[YLSubRecheckBuyOrderController alloc] init];
+    YLSubDoneBuyOrderController *done = [[YLSubDoneBuyOrderController alloc] init];
+    YLSubCancelBuyOrderController *cancel = [[YLSubCancelBuyOrderController alloc] init];
+    self.skip.controllers = [NSMutableArray arrayWithObjects:all, reCheck, done, cancel, nil];
+    
+    [self addChildViewController:all];
+    [self addChildViewController:reCheck];
+    [self addChildViewController:done];
+    [self addChildViewController:cancel];
+    
+//    NSMutableArray *ctrs = [NSMutableArray array];
+//    for (NSInteger i = 0; i < self.titles.count; i++) {
+//        YLSubBuyOrderController *ctr = [[YLSubBuyOrderController alloc] init];
+//        [param setValue:self.params[i] forKey:@"status"];
+//        NSLog(@"buyOrder-param:%@", param);
+//        ctr.param = param;
+//        [self addChildViewController:ctr];
+//        [ctrs addObject:ctr];
+//    }
+//    self.skip.controllers = ctrs;
     [self.view addSubview:_skip];
 }
 

@@ -13,9 +13,8 @@ typedef void(^DetailHeaderBargainBlock)(void);
 
 @interface YLDetailHeaderView : UIView
 
-
+@property (nonatomic, strong) NSMutableArray *vehicle;
 @property (nonatomic, strong) YLDetailHeaderModel *model;
-
 @property (nonatomic, copy) DetailHeaderBargainBlock detailHeaderBargainBlock;
 
 @end

@@ -24,6 +24,7 @@
 @interface YLFunctionView : UIView
 
 @property (nonatomic, strong) NSMutableArray *numbers;// 装有4个元素：即将看车，收藏数，浏览记录，订阅数
+@property (nonatomic, strong) NSString *depreciateNumber;// 降价数量
 
 @property (nonatomic, weak) id<YLFunctionViewDelegate> delegate;
 

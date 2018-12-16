@@ -41,7 +41,7 @@
     
     UILabel *buyerPriceL = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(title.frame) + 10, YLScreenWidth /2, 28)];
     buyerPriceL.textAlignment = NSTextAlignmentCenter;
-    buyerPriceL.text = @"10.0万";
+//    buyerPriceL.text = @"10.0万";
     buyerPriceL.font = [UIFont systemFontOfSize:20];
     [self addSubview:buyerPriceL];
     self.buyerPriceL = buyerPriceL;
@@ -56,7 +56,7 @@
     
     UILabel *dickerPriceL = [[UILabel alloc] initWithFrame:CGRectMake(YLScreenWidth / 2, CGRectGetMaxY(title.frame) + 10, YLScreenWidth /2, 28)];
     dickerPriceL.textAlignment = NSTextAlignmentCenter;
-    dickerPriceL.text = @"12万";
+//    dickerPriceL.text = @"12万";
     dickerPriceL.font = [UIFont systemFontOfSize:20];
     [self addSubview:dickerPriceL];
     self.dickerPriceL = dickerPriceL;
@@ -69,33 +69,90 @@
     [self addSubview:dicker];
     
     UISlider *slider = [[UISlider alloc] initWithFrame:CGRectMake(YLLeftMargin, CGRectGetMaxY(buyer.frame) + 20, YLScreenWidth - 2 * YLLeftMargin, 16)];
-    slider.minimumValue = 0;
-    slider.maximumValue = 1;
+//    slider.minimumValue = 0;
+//    slider.maximumValue = 1;
     slider.continuous = YES;
     [slider addTarget:self action:@selector(changePrice:) forControlEvents:UIControlEventValueChanged];
     [self addSubview:slider];
     self.slider = slider;
     
+    CGFloat btnW = (YLScreenWidth - 2 * YLLeftMargin - 10) / 2;
+    YLCondition *cancelBtn = [YLCondition buttonWithType:UIButtonTypeCustom];
+    cancelBtn.type = YLConditionTypeWhite;
+    cancelBtn.titleLabel.font = [UIFont systemFontOfSize:14];
+    cancelBtn.frame = CGRectMake(YLLeftMargin, CGRectGetMaxY(slider.frame) + YLLeftMargin, btnW, 40);
+    [cancelBtn setTitle:@"取消" forState:UIControlStateNormal];
+    [cancelBtn addTarget:self action:@selector(cancelClick) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:cancelBtn];
+    
     YLCondition *dickerBtn = [YLCondition buttonWithType:UIButtonTypeCustom];
     dickerBtn.type = YLConditionTypeBlue;
-    dickerBtn.frame = CGRectMake(YLLeftMargin, CGRectGetMaxY(slider.frame) + YLLeftMargin, YLScreenWidth - 2 * YLLeftMargin, 40);
+    dickerBtn.titleLabel.font = [UIFont systemFontOfSize:14];
+    dickerBtn.frame = CGRectMake(CGRectGetMaxX(cancelBtn.frame) + 10, CGRectGetMaxY(slider.frame) + YLLeftMargin, btnW, 40);
     [dickerBtn setTitle:@"还价" forState:UIControlStateNormal];
     [dickerBtn addTarget:self action:@selector(dickerClick) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:dickerBtn];
-    
 }
 
 - (void)changePrice:(UISlider *)sender {
-    NSLog(@"拖动滑条:%f", sender.value);
-    self.dickerPriceL.text = [NSString stringWithFormat:@"%.2f", sender.value];
+    
+    if (self.isBuyer) { // 买家
+        self.buyerPriceL.text = [self stringToNumber:[NSString stringWithFormat:@"%f", sender.value]];
+    } else { // 卖家
+        self.dickerPriceL.text = [self stringToNumber:[NSString stringWithFormat:@"%f", sender.value]];
+    }
 }
 
 - (void)dickerClick {
     
-    NSLog(@"YLBargainPriceView:点击还价");
-    if (self.bargainPriceBlock) {
-        self.bargainPriceBlock(self.dickerPriceL.text);
+    NSLog(@"YLBargainPriceView:点击还价：%@", self.dickerPriceL.text);
+    NSString *price;
+    if (self.isBuyer) { // 买家
+        price = [NSString stringWithFormat:@"%.f", [self.buyerPriceL.text floatValue] * 10000];
+    } else {// 卖家
+        price = [NSString stringWithFormat:@"%.f", [self.dickerPriceL.text floatValue] * 10000];
     }
+    
+    
+    if (self.bargainPriceBlock) {
+        self.bargainPriceBlock(price);
+    }
+}
+
+- (void)cancelClick {
+    NSLog(@"取消还价");
+    if (self.bargainPriceCancelBlock) {
+        self.bargainPriceCancelBlock();
+    }
+}
+
+- (void)setBuyerPrice:(NSString *)buyerPrice {
+    _buyerPrice = buyerPrice;
+}
+
+- (void)setSellerPrice:(NSString *)sellerPrice {
+    _sellerPrice = sellerPrice;
+}
+
+- (void)setIsBuyer:(BOOL)isBuyer {
+    _isBuyer = isBuyer;
+    if (isBuyer) { // 买家
+        self.slider.minimumValue = 0;
+        self.slider.maximumValue = [self.sellerPrice integerValue];
+        self.buyerPriceL.text = @"0.00万";
+        self.dickerPriceL.text = [self stringToNumber:self.sellerPrice];
+    } else { // 卖家
+        self.slider.minimumValue = [self.buyerPrice integerValue];
+        self.slider.maximumValue = [self.sellerPrice integerValue];
+        self.buyerPriceL.text = [self stringToNumber:self.buyerPrice];
+        self.dickerPriceL.text = [self stringToNumber:self.sellerPrice];
+    }
+}
+
+- (NSString *)stringToNumber:(NSString *)number {
+    
+    float count = [number floatValue] / 10000;
+    return [NSString stringWithFormat:@"%.2f万",count];
 }
 
 - (void)layoutSubviews {

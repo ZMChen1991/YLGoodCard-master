@@ -12,6 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface YLCustomButton : UIButton
 
+@property (nonatomic, strong) NSString *numbers;
+
 @end
 
 NS_ASSUME_NONNULL_END

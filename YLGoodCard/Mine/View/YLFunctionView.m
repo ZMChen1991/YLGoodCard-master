@@ -55,12 +55,16 @@
         [btn setTitle:btnArray[i] forState:UIControlStateNormal];
         [btn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [btn setImage:[UIImage imageNamed:images[i]] forState:UIControlStateNormal];
+        [btn setImage:[UIImage imageNamed:images[i]] forState:UIControlStateHighlighted];
+//        btn.highlighted = NO;
         [btn.titleLabel setFont:[UIFont systemFontOfSize:12]];
         btn.tag = 100 + i;
         [btn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:btn];
         [self.function1 addObject:btn];
     }
+//    YLCustomButton *btn = self.function1[3];
+//    btn.numbers = self.depreciateNumber;
     UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, 176, self.frame.size.width, 1)];
     line.backgroundColor = YLColor(233.f, 233.f, 233.f);
     [self addSubview:line];
@@ -118,6 +122,12 @@
         YLNumberView *numberView = self.function2[i];
         numberView.number = numbers[i];
     }
+}
+
+- (void)setDepreciateNumber:(NSString *)depreciateNumber {
+    _depreciateNumber = depreciateNumber;
+    YLCustomButton *btn = self.function1[3];
+    btn.numbers = self.depreciateNumber;
 }
 
 @end

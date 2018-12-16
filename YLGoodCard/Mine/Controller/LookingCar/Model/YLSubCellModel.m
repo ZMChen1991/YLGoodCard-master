@@ -22,7 +22,7 @@
     self.titleF = CGRectMake(titleX, YLTopSpace, titleW, 34);
 //    self.courseF = CGRectMake(titleX, CGRectGetMaxY(self.titleF) + 5, titleW, 17);
     self.lookCarTimeF = CGRectMake(titleX, CGRectGetMaxY(self.titleF)+5, titleW, 17);
-    self.priceF = CGRectMake(titleX, CGRectGetMaxY(self.lookCarTimeF) + 5, titleW/3, 25);
+    self.priceF = CGRectMake(titleX, CGRectGetMaxY(self.lookCarTimeF) + 5, titleW / 2, 25);
     self.originalPriceF = CGRectMake(CGRectGetMaxX(self.priceF), CGRectGetMaxY(self.lookCarTimeF) + 9, width - CGRectGetMaxX(self.priceF) - YLTopSpace, 17);
 //    self.lookCarTimeF = CGRectMake(titleX, CGRectGetMaxY(self.priceF), titleW, 17);
     self.lineF = CGRectMake(0, CGRectGetMaxY(self.iconF)-1 + YLLeftMargin, width, 1);

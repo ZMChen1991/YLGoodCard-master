@@ -11,7 +11,15 @@
 #import "YLAccountTool.h"
 #import "YLAccount.h"
 
+#import "YLSaleDoneController.h"
+#import "YLAllSaleOrderController.h"
+#import "YLSellingController.h"
+#import "YLSoldOutController.h"
+#import "YLStayOnController.h"
+
 @interface YLSaleOrderController ()
+
+@property (nonatomic, strong) YLSubSaleOrderController *subSaleOrder;
 
 @end
 
@@ -22,19 +30,20 @@
     self.view.backgroundColor = [UIColor whiteColor];
     
     self.skip.titles = self.titles;
-    YLAccount *account = [YLAccountTool account];
-    NSMutableDictionary *param = [NSMutableDictionary dictionary];
-    [param setValue:account.telephone forKey:@"telephone"];
-    NSMutableArray *ctrs = [NSMutableArray array];
-    for (NSInteger i = 0; i < self.titles.count; i++) {
-        YLSubSaleOrderController *ctr = [[YLSubSaleOrderController alloc] init];
-        [param setValue:self.params[i] forKey:@"status"];
-        ctr.param = param;
-        [self addChildViewController:ctr];
-        [ctrs addObject:ctr];
-    }
-    self.skip.controllers = ctrs;
-    [self.view addSubview:_skip];
+    YLAllSaleOrderController *allSaleOrder = [[YLAllSaleOrderController alloc] init];
+    YLStayOnController *stayOn = [[YLStayOnController alloc] init];
+    YLSellingController *selling = [[YLSellingController alloc] init];
+    YLSaleDoneController *saleDone = [[YLSaleDoneController alloc] init];
+    YLSoldOutController *soldOut = [[YLSoldOutController alloc] init];
+    
+    [self addChildViewController:allSaleOrder];
+    [self addChildViewController:stayOn];
+    [self addChildViewController:selling];
+    [self addChildViewController:saleDone];
+    [self addChildViewController:soldOut];
+    
+    self.skip.controllers = [NSMutableArray arrayWithObjects:allSaleOrder, stayOn, selling, saleDone, soldOut, nil];
+    [self.view addSubview:self.skip];
 }
 
 - (YLSkipView *)skip {
@@ -45,8 +54,8 @@
     return _skip;
 }
 
-- (void)setParams:(NSArray *)params {
-    _params = params;
-}
+//- (void)setParams:(NSArray *)params {
+//    _params = params;
+//}
 
 @end

@@ -7,6 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "YLBargainDetailModel.h"
+#import "YLBargainDetailCellFrame.h"
+#import "YLCondition.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -17,6 +20,13 @@ typedef void(^DickerBlock)(void);
 
 @property (nonatomic, copy) AccepBlock accepBlock;
 @property (nonatomic, copy) DickerBlock dickerBlock;
+@property (nonatomic, strong) YLBargainDetailModel *model;
+@property (nonatomic, strong) YLBargainDetailCellFrame *cellFrame;
+
+
+@property (nonatomic, strong) YLCondition *dickerBtn;
+@property (nonatomic, strong) YLCondition *acceptBtn;
+
 
 + (instancetype)cellWithTableView:(UITableView *)tableView;
 

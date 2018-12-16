@@ -40,8 +40,11 @@
 #import "YLAccount.h"
 #import "YLAccountTool.h"
 #import "YLMineTool.h"
+#import "YLRequest.h"
+#import "YLComplaintController.h"
 
-// 浏览记录路径
+// 保存上次进入我的界面的时间
+#define YLLASTTIME [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"lastTime.plist"]
 
 
 @interface YLMineController () <YLFunctionViewDelegate, YLLoginHeaderDelegate, UITableViewDelegate, UITableViewDataSource, UIAlertViewDelegate>
@@ -56,8 +59,8 @@
 @property (nonatomic, strong) NSMutableArray *browsingHistory;
 @property (nonatomic, assign) NSInteger browsingHistoryCount;
 
-
 @property (nonatomic, strong) NSArray *array;
+@property (nonatomic, strong) NSDate *lastTime;
 
 @end
 
@@ -66,7 +69,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    self.array = @[@"电话客服", @"意见反馈"];
+    self.array = @[@"投诉检测中心", @"电话客服", @"意见反馈"];
     
     [self setupNav];
     [self setupUI];
@@ -97,29 +100,42 @@
     // 获取本地浏览记录个数
     self.browsingHistory = [NSKeyedUnarchiver unarchiveObjectWithFile:YLBrowsingHistoryPath];
     self.browsingHistoryCount = self.browsingHistory.count;
-//    NSLog(@"count:%ld", self.browsingHistoryCount);
-    
+    [self getLastTime];
+    NSLog(@"self.lastTime:%@", self.lastTime);
     if (self.account) {
         // 获取我的收藏个数
         NSMutableDictionary *param1 = [NSMutableDictionary dictionary];
         [param1 setValue:self.account.telephone forKey:@"telephone"];
-        [param1 setValue:[NSDate date] forKey:@"nowTime"];
-        [param1 setValue:@"" forKey:@"lastTime"];
+        [param1 setValue:[self getcurrendDate] forKey:@"nowTime"];
+        [param1 setValue:[self stringFromDate:self.lastTime] forKey:@"lastTime"];
+//        NSString *urlString = @"http://ucarjava.bceapp.com/home?method=num";
+//        [YLRequest GET:urlString parameters:param1 success:^(id  _Nonnull responseObject) {
+//            NSLog(@"%@", responseObject);
+//        } failed:nil];
+        
         [YLMineTool favoriteWithParam:param1 success:^(NSDictionary * _Nonnull result) {
-            //        NSLog(@"%@", result);
+            NSLog(@"%@", result);
             // 即将看车数：
             NSString *book = [result valueForKey:@"book"];
             // 收藏数：
             NSString *collect = [result valueForKey:@"collection"];
             // 降价提醒数：
-            NSString *reduce = [result valueForKey:@"reduce"];
-            NSLog(@"book:%@--collect:%@--reduce:%@", book, collect, reduce);
+            NSString *reduce = [NSString stringWithFormat:@"%@", [result valueForKey:@"reduce"]];
+            NSLog(@"即将看车:%@--我的收藏:%@--降价提醒:%@", book, collect, reduce);
             NSMutableArray *mineArray = [NSMutableArray array];
-            [mineArray addObject:book];
-            [mineArray addObject:collect];
+            if (!book) {
+            } else {
+                [mineArray addObject:book];
+            }
+            if (!collect) {
+            } else {
+                [mineArray addObject:collect];
+            }
             [mineArray addObject:[NSString stringWithFormat:@"%ld", self.browsingHistoryCount]];
             [mineArray addObject:@"0"];
             self.functionView.numbers = mineArray;
+            NSLog(@"reduce:%@", reduce);
+            self.functionView.depreciateNumber = reduce;
         } failure:nil];
     } else {
         NSString *count = [NSString stringWithFormat:@"%ld", self.browsingHistoryCount];
@@ -221,7 +237,16 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
+//    if (indexPath.row == 0) {
+//        [self callTelephone];
+//    } else {
+//        [self suggestions];
+//    }
+    
     if (indexPath.row == 0) {
+        YLComplaintController *complaint = [[YLComplaintController alloc] init];
+        [self.navigationController pushViewController:complaint animated:YES];
+    } else if (indexPath.row == 1) {
         [self callTelephone];
     } else {
         [self suggestions];
@@ -235,11 +260,11 @@
     NSLog(@"点击了%@跳转%@控制器", array[index], array[index]);
     
     if (index == 0) {
-        NSArray *titles = @[@"在售"];
+        NSArray *titles = @[@"在售",@"下架"];
 //        NSMutableDictionary *param = [NSMutableDictionary dictionary];
 //        [param setValue:self.account.telephone forKey:@"telephone"];
 //        [param setValue:@"1" forKey:@"status"]; // 1：待约定 2：合同签署 3：复检过户 4：交易完成
-        NSArray *params = @[@"1"];
+        NSArray *params = @[@"3", @"0"];
         YLFunctionController *fun = [[YLFunctionController alloc] init];
         fun.title = array[index];
         fun.titles = titles;
@@ -285,6 +310,7 @@
     YLAccount *account = [YLAccountTool account];
     if(account) {
         NSLog(@"已登录");
+        
         NSLog(@"%@",sender.titleLabel.text);
         NSInteger index = sender.tag - 100;
         NSString *title = sender.titleLabel.text;
@@ -292,11 +318,11 @@
         if (index == 0) {
             NSLog(@"%@----卖车订单", title);
             NSArray *titles = @[@"全部", @"待上架",@"售卖中", @"已售出",@"已下架"];
-            NSArray *params = @[@"", @"1", @"3", @"4", @"0"];
+//            NSArray *params = @[@"", @"1", @"3", @"4", @"0"];
             YLSaleOrderController *saleOrder = [[YLSaleOrderController alloc] init];
             saleOrder.title = array[index];
             saleOrder.titles = titles;
-            saleOrder.params = params;
+//            saleOrder.params = params;
             [self.navigationController pushViewController:saleOrder animated:YES];
             return;
         }
@@ -314,15 +340,16 @@
         if (index == 2) {
             NSLog(@"%@=--=-砍价记录", title);
             NSArray *titles = @[@"买家", @"卖家"];
-            NSArray *params = @[@"buyer", @"seller"];
+//            NSArray *params = @[@"buyer", @"seller"];
             YLBargainHistoryController *bargainHistory = [[YLBargainHistoryController alloc] init];
             bargainHistory.title = array[index];
             bargainHistory.titles = titles;
-            bargainHistory.params = params;
+//            bargainHistory.params = params;
             [self.navigationController pushViewController:bargainHistory animated:YES];
         }
         if (index == 3) {
             NSLog(@"降价提醒");
+            [self saveLastTime];
             YLDepreciateController *depreciate = [[YLDepreciateController alloc] init];
             [self.navigationController pushViewController:depreciate animated:YES];
         }
@@ -352,6 +379,21 @@
     NSLog(@"弹出意见反馈页面");
     YLSuggestionController *suggestionVc = [[YLSuggestionController alloc] init];
     [self.navigationController pushViewController:suggestionVc animated:YES];
+}
+
+- (NSString *)getcurrendDate {
+
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"YYYY-MM-dd HH:mm:ss"];
+    NSString *date = [formatter stringFromDate:[NSDate date]];
+    return date;
+}
+
+- (NSString *)stringFromDate:(NSDate *)date {
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"YYYY-MM-dd HH:mm:ss"];
+    NSString *dateString = [formatter stringFromDate:date];
+    return dateString;
 }
 
 // 提示弹窗
@@ -403,6 +445,29 @@
         _browsingHistoryCount = self.browsingHistory.count;
     }
     return _browsingHistoryCount;
+}
+
+- (void)saveLastTime {
+    self.lastTime = [NSDate date];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:self.lastTime forKey:@"lastTime"];
+    [defaults synchronize];
+}
+
+- (void)getLastTime {
+    NSUserDefaults *defaluts = [NSUserDefaults standardUserDefaults];
+    self.lastTime = [defaluts objectForKey:@"lastTime"];
+}
+
+- (NSDate *)lastTime {
+    if (!_lastTime) {
+        NSUserDefaults *defaluts = [NSUserDefaults standardUserDefaults];
+        _lastTime = [defaluts objectForKey:@"lastTime"];
+        if (!_lastTime) {
+            _lastTime = [NSDate date];
+        }
+    }
+    return _lastTime;
 }
 
 - (void)setIsLogin:(BOOL)isLogin {

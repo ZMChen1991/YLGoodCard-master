@@ -41,15 +41,17 @@
     [self addSubview:textField];
     self.textField = textField;
     
+    
+    CGFloat btnW = (YLScreenWidth - 2 * YLLeftMargin - 10) / 2;
     YLCondition *cancelBtn = [YLCondition buttonWithType:UIButtonTypeCustom];
-    cancelBtn.frame = CGRectMake(0, CGRectGetMaxY(textField.frame)+YLLeftMargin, self.frame.size.width / 2, 40);
+    cancelBtn.frame = CGRectMake(YLLeftMargin, CGRectGetMaxY(textField.frame)+YLLeftMargin, btnW, 40);
     cancelBtn.type = YLConditionTypeWhite;
     [cancelBtn setTitle:@"取消" forState:UIControlStateNormal];
     [cancelBtn addTarget:self action:@selector(cancelClick) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:cancelBtn];
     
     YLCondition *sureBtn = [YLCondition buttonWithType:UIButtonTypeCustom];
-    sureBtn.frame = CGRectMake(self.frame.size.width / 2, CGRectGetMaxY(textField.frame)+YLLeftMargin, self.frame.size.width / 2, 40);
+    sureBtn.frame = CGRectMake(CGRectGetMaxX(cancelBtn.frame) + 10, CGRectGetMaxY(textField.frame)+YLLeftMargin, btnW, 40);
     sureBtn.type = YLConditionTypeBlue;
     [sureBtn setTitle:@"确定" forState:UIControlStateNormal];
     [sureBtn addTarget:self action:@selector(sureClick) forControlEvents:UIControlEventTouchUpInside];

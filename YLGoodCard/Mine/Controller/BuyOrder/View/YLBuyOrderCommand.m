@@ -85,7 +85,7 @@
     [self.icon sd_setImageWithURL:[NSURL URLWithString:model.detail.displayImg] placeholderImage:nil];
     self.title.text = model.detail.title;
     self.price.text = [self stringToNumber:model.detail.price];
-    self.originalPrice.text = [NSString stringWithFormat:@"新车含税%@", [self stringToNumber:model.detail.originalPrice]];
+    self.originalPrice.text = [NSString stringWithFormat:@"新车价%@", [self stringToNumber:model.detail.originalPrice]];
     self.course.text = [NSString stringWithFormat:@"%@万公里/年", model.detail.course];
 }
 

@@ -11,9 +11,13 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef void(^SaleDetailBlock)(void);
+
 @interface YLSaleDetailController : UIViewController
 
 @property (nonatomic, strong) YLSaleOrderModel *model;
+
+@property (nonatomic, copy) SaleDetailBlock saleDetailBlock;
 
 @end
 

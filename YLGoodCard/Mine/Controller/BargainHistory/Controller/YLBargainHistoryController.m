@@ -11,6 +11,9 @@
 #import "YLAccountTool.h"
 #import "YLAccount.h"
 
+#import "YLSubBuyerBargianHistoryController.h"
+#import "YLSubSellerBargainHistoryController.h"
+
 @interface YLBargainHistoryController ()
 
 @end
@@ -22,20 +25,14 @@
     self.view.backgroundColor = [UIColor whiteColor];
     
     self.skip.titles = self.titles;
-    YLAccount *account = [YLAccountTool account];
-    NSMutableDictionary *param = [NSMutableDictionary dictionary];
-    [param setValue:account.telephone forKey:@"telephone"];
-    NSMutableArray *ctrs = [NSMutableArray array];
-    for (NSInteger i = 0; i < self.titles.count; i++) {
-        YLSubBargainHistoryController *ctr = [[YLSubBargainHistoryController alloc] init];
-        [param setValue:self.params[i] forKey:@"method"];
-        ctr.param = param;
-//        ctr.view.backgroundColor = YLRandomColor;
-        [self addChildViewController:ctr];
-        [ctrs addObject:ctr];
-    }
-    self.skip.controllers = ctrs;
-    [self.view addSubview:_skip];
+    YLSubBuyerBargianHistoryController *buyer = [[YLSubBuyerBargianHistoryController alloc] init];
+    YLSubSellerBargainHistoryController *seller = [[YLSubSellerBargainHistoryController alloc] init];
+    
+    [self addChildViewController:buyer];
+    [self addChildViewController:seller];
+    
+    self.skip.controllers = [NSMutableArray arrayWithObjects:buyer, seller, nil];
+    [self.view addSubview:self.skip];
 }
 
 - (YLSkipView *)skip {

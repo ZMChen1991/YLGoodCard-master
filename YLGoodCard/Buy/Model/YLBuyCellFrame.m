@@ -70,7 +70,7 @@
         float titleW = width - 120 - 2 * YLLeftSpace - YLTopSpace;
         self.titleF = CGRectMake(titleX, YLTopSpace, titleW, 34);
         self.courseF = CGRectMake(titleX, CGRectGetMaxY(self.titleF) + 5, titleW, 17);
-        self.priceF = CGRectMake(titleX, CGRectGetMaxY(self.courseF) + 5, titleW/3, 25);
+        self.priceF = CGRectMake(titleX, CGRectGetMaxY(self.courseF) + 5, titleW / 2, 25);
         self.lineF = CGRectMake(0, CGRectGetMaxY(self.iconF)+YLTopSpace-1, width, 1);
         switch (self.model.cellStatus) {
             case YLTableViewCellStatusSold:

@@ -79,13 +79,13 @@
     
     
     CGFloat btnW = (YLScreenWidth - 2 * YLLeftMargin - 10) / 2;
-    YLCondition *cancel = [[YLCondition alloc] initWithFrame:CGRectMake(YLLeftMargin, CGRectGetMaxY(slider.frame) + YLLeftMargin, btnW, 40)];
+    YLCondition *cancel = [[YLCondition alloc] initWithFrame:CGRectMake(YLLeftMargin, CGRectGetMaxY(slider.frame) + 2 * YLLeftMargin, btnW, 40)];
     cancel.type = YLConditionTypeWhite;
     [cancel setTitle:@"取消" forState:UIControlStateNormal];
     [cancel addTarget:self action:@selector(cancelClick) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:cancel];
     
-    YLCondition *bargain = [[YLCondition alloc] initWithFrame:CGRectMake(CGRectGetMaxX(cancel.frame) + 10, CGRectGetMaxY(slider.frame) + YLLeftMargin, btnW, 40)];
+    YLCondition *bargain = [[YLCondition alloc] initWithFrame:CGRectMake(CGRectGetMaxX(cancel.frame) + 10, CGRectGetMaxY(slider.frame) + 2 * YLLeftMargin, btnW, 40)];
     bargain.type = YLConditionTypeBlue;
     [bargain setTitle:@"砍价" forState:UIControlStateNormal];
     [bargain addTarget:self action:@selector(bargain) forControlEvents:UIControlEventTouchUpInside];

@@ -19,7 +19,8 @@
 @property (nonatomic, strong) UILabel *course; // 年/万公里
 @property (nonatomic, strong) UILabel *price; // 销售价格
 @property (nonatomic, strong) UILabel *originalPrice; // 新车价
-@property (nonatomic, strong) YLCondition *bargainNumber;// 砍价数量
+//@property (nonatomic, strong) YLCondition *bargainNumber;// 砍价数量
+@property (nonatomic, strong) UIView *line;
 
 //@property (nonatomic, strong) UIView *line;
 
@@ -39,58 +40,51 @@
 
 - (void)setupUI {
     
-    UIImageView *icon = [[UIImageView alloc] initWithFrame:CGRectMake(YLLeftMargin, YLTopSpace, 120, 86)];
+    UIImageView *icon = [[UIImageView alloc] init];
     icon.backgroundColor = YLColor(233.f, 233.f, 233.f);
     icon.layer.cornerRadius = 5.f;
     icon.layer.masksToBounds = YES;
     [self addSubview:icon];
     self.icon = icon;
     
-    CGFloat titleX = CGRectGetMaxX(icon.frame) + YLLeftMargin;
-    CGFloat titleW = YLScreenWidth - 120 - 2 * YLLeftMargin - YLTopSpace;
-    UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(titleX, YLTopSpace, titleW, 34)];
+    UILabel *title = [[UILabel alloc] init];
     title.textColor = [UIColor blackColor];
-//    title.text = @"嘻嘻嘻嘻嘻嘻嘻";
     title.font = [UIFont systemFontOfSize:14];
     title.numberOfLines = 0;
     [self addSubview:title];
     self.title = title;
     
-    UILabel *course = [[UILabel alloc] initWithFrame:CGRectMake(titleX, CGRectGetMaxY(self.title.frame) + 5, titleW, 17)];
+    UILabel *course = [[UILabel alloc] init];
     course.textColor = [UIColor blackColor];
     course.font = [UIFont systemFontOfSize:12];
     course.textAlignment = NSTextAlignmentLeft;
-//    course.text = @"23万公里/年";
     [self addSubview:course];
     self.course = course;
     
-    UILabel *price = [[UILabel alloc] initWithFrame:CGRectMake(titleX, CGRectGetMaxY(course.frame) + 5, titleW/3, 25)];
+    UILabel *price = [[UILabel alloc] init];
     price.textColor = [UIColor redColor];
     price.font = [UIFont systemFontOfSize:18];
-//    price.text = @"20万";
     [self addSubview:price];
     self.price = price;
     
-    UILabel *originalPrice = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(price.frame), CGRectGetMaxY(course.frame) + 9, YLScreenWidth - CGRectGetMaxX(price.frame) - YLTopSpace, 17)];
+    UILabel *originalPrice = [[UILabel alloc] init];
     originalPrice.font = [UIFont systemFontOfSize:12];
     originalPrice.textAlignment = NSTextAlignmentLeft;
-//    originalPrice.text = @"新车价:46万";
     [self addSubview:originalPrice];
     self.originalPrice = originalPrice;
     
-    UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(icon.frame) + YLTopSpace, YLScreenWidth, 1)];
-    line.backgroundColor = [UIColor grayColor];
+    UIView *line = [[UIView alloc] init];
+    line.backgroundColor = YLColor(233.f, 233.f, 233.f);
     [self addSubview:line];
-//    self.line = line;
+    self.line = line;
     
-    YLCondition *bargainNumber = [YLCondition buttonWithType:UIButtonTypeCustom];
-    bargainNumber.type = YLConditionTypeWhite;
-    bargainNumber.frame = CGRectMake(YLScreenWidth - 36 - 15, 40, 36, 36);
-//    [bargainNumber setTitle:@"10" forState:UIControlStateNormal];
-    bargainNumber.layer.cornerRadius = 18.f;
-    bargainNumber.layer.masksToBounds = YES;
-    [self addSubview:bargainNumber];
-    self.bargainNumber = bargainNumber;
+//    YLCondition *bargainNumber = [YLCondition buttonWithType:UIButtonTypeCustom];
+//    bargainNumber.type = YLConditionTypeWhite;
+//    bargainNumber.frame = CGRectMake(YLScreenWidth - 36 - 15, 40, 36, 36);
+//    bargainNumber.layer.cornerRadius = 18.f;
+//    bargainNumber.layer.masksToBounds = YES;
+//    [self addSubview:bargainNumber];
+//    self.bargainNumber = bargainNumber;
 }
 
 - (NSString *)stringToNumber:(NSString *)number {
@@ -103,11 +97,27 @@
     
     _model = model;
     
+    self.icon.frame = CGRectMake(YLLeftMargin, YLTopSpace, 120, 86);
+    
+    CGSize priceSize = [[self stringToNumber:model.detail.price] getSizeWithFont:[UIFont systemFontOfSize:18]];
+    CGFloat priceW = priceSize.width + 10;
+    CGFloat titleX = CGRectGetMaxX(self.icon.frame) + YLLeftMargin;
+    CGFloat titleW = YLScreenWidth - 120 - 2 * YLLeftMargin - YLTopSpace;
+    self.title.frame = CGRectMake(titleX, YLTopSpace, titleW, 34);
+    self.course.frame = CGRectMake(titleX, CGRectGetMaxY(self.title.frame) + 5, titleW, 17);
+    self.price.frame = CGRectMake(titleX, CGRectGetMaxY(self.course.frame) + 5, priceW, 25);
+    self.originalPrice.frame = CGRectMake(CGRectGetMaxX(self.price.frame), CGRectGetMaxY(self.course.frame) + 9, YLScreenWidth - CGRectGetMaxX(self.price.frame) - YLTopSpace, 17);
+    self.line.frame = CGRectMake(0, CGRectGetMaxY(self.icon.frame) + YLLeftMargin, YLScreenWidth, 1);
+
     [self.icon sd_setImageWithURL:[NSURL URLWithString:model.detail.displayImg] placeholderImage:nil];
     self.title.text = model.detail.title;
-    self.course.text = model.detail.course;
-    self.price.text = model.detail.price;
-    self.originalPrice.text = model.detail.originalPrice;
-    [self.bargainNumber setTitle:model.count forState:UIControlStateNormal];
+    self.course.text = [NSString stringWithFormat:@"%@万公里/年", model.detail.course];
+    self.price.text = [self stringToNumber:model.detail.price];
+    self.originalPrice.text = [NSString stringWithFormat:@"新车价:%@", [self stringToNumber:model.detail.originalPrice]];
+//    if ([model.count isEqualToString:@"0"]) {
+//        self.bargainNumber.hidden = YES;
+//    } else {
+//        [self.bargainNumber setTitle:model.count forState:UIControlStateNormal];
+//    }
 }
 @end

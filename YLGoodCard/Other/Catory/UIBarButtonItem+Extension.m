@@ -24,9 +24,9 @@
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
     [btn addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
     // 设置图片
-    [btn setTitle:@"返回" forState:UIControlStateNormal];
+    [btn setTitle:@"              " forState:UIControlStateNormal];
     [btn setImage:[UIImage imageNamed:@"返回"] forState:UIControlStateNormal];
-    [btn setImage:[UIImage imageNamed:@"返回"] forState:UIControlStateSelected];
+    [btn setImage:[UIImage imageNamed:@"返回"] forState:UIControlStateHighlighted];
     // 设置尺寸
     CGSize size = CGSizeMake(50, 30);
     btn.size = size;

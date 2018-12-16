@@ -59,14 +59,14 @@
     [consult addTarget:self action:@selector(conssultClick) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:consult];
     
-    UIView *bg = [[UIView alloc] initWithFrame:CGRectMake(YLLeftMargin,CGRectGetMaxY(icon.frame) + YLTopMargin, 345, 206)];
+    UIView *bg = [[UIView alloc] initWithFrame:CGRectMake(YLLeftMargin,CGRectGetMaxY(icon.frame) + YLTopMargin, 345, 180)];
     bg.backgroundColor = YLColor(244.f, 244.f, 244.f);
     
 //    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(YLLeftMargin, YLLeftMargin, 308, 180)];
 //    view.backgroundColor = [UIColor redColor];
     
 #warning 这里是一个UIlabel控件，以后修改到在改
-    UILabel *textView = [[UILabel alloc] initWithFrame:CGRectMake(YLLeftMargin, YLLeftMargin, 308, 180)];
+    UILabel *textView = [[UILabel alloc] initWithFrame:CGRectMake(YLLeftMargin, 0, 308, 180)];
     textView.backgroundColor = YLColor(244.f, 244.f, 244.f);
     textView.font = [UIFont systemFontOfSize:14];
     textView.numberOfLines = 0;
@@ -76,12 +76,12 @@
     self.textView = textView;
     [self addSubview:bg];
     
-    UILabel *text1 = [[UILabel alloc] initWithFrame:CGRectMake(YLLeftMargin, CGRectGetMaxY(bg.frame) + 5, 345, 17)];
-    text1.text = @"以上为2018.06.12车况，交易以复检结果为准";
-    text1.font = [UIFont systemFontOfSize:12];
-    [self addSubview:text1];
+//    UILabel *text1 = [[UILabel alloc] initWithFrame:CGRectMake(YLLeftMargin, CGRectGetMaxY(bg.frame) + 5, 345, 17)];
+//    text1.text = @"以上为2018.06.12车况，交易以复检结果为准";
+//    text1.font = [UIFont systemFontOfSize:12];
+//    [self addSubview:text1];
     
-    UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(YLLeftMargin, CGRectGetMaxY(text1.frame) + YLLeftMargin, self.frame.size.width - 2 * YLLeftMargin, 159)];
+    UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(YLLeftMargin, CGRectGetMaxY(bg.frame) + YLLeftMargin, self.frame.size.width - 2 * YLLeftMargin, 159)];
     pic.backgroundColor = [UIColor redColor];
     pic.image = [UIImage imageNamed:@"检测"];
     [self addSubview:pic];

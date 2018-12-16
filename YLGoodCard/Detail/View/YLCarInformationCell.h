@@ -10,8 +10,8 @@
 
 @interface YLCarInformationCell : UITableViewCell
 
-
-@property (nonatomic, assign) float height;// cell高
+@property (nonatomic, strong) NSString *image;
+@property (nonatomic, strong) NSString *title;
 
 + (instancetype)cellWithTable:(UITableView *)tableView;
 @end

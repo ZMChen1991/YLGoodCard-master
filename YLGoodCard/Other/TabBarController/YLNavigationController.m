@@ -42,12 +42,13 @@
 //        // 设置右边的更多按钮
 //        viewController.navigationItem.rightBarButtonItem = [UIBarButtonItem itemWithTarget:self action:@selector(more) image:@"navigationbar_more" highImage:@"navigationbar_more_highlighted"];
     }
-
+    
     [super pushViewController:viewController animated:animated];
 }
 
 - (void)back {
     
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"REFRESHTABLEVIEW" object:nil];
     // 因为self本来就是一个导航控制器，self.navigationController这里是nil的
     [self popViewControllerAnimated:YES];
 }

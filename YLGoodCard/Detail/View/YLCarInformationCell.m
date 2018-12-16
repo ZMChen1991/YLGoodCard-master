@@ -42,12 +42,13 @@
     icon.backgroundColor = YLColor(233.f, 233.f, 233.f);
     icon.layer.cornerRadius = 5.f;
     icon.layer.masksToBounds = YES;
+    icon.contentMode = UIViewContentModeScaleAspectFill;
     [self addSubview:icon];
     self.icon = icon;
     
     UILabel *detail = [[UILabel alloc] init];
     detail.textColor = [UIColor grayColor];
-    detail.text = @"正前 前脸完好";
+//    detail.text = @"正前 前脸完好";
     [self addSubview:detail];
     self.detail = detail;
 }
@@ -61,8 +62,14 @@
     self.detail.frame = CGRectMake(YLLeftMargin, CGRectGetMaxY(self.icon.frame) + 5, width, 20);
 }
 
-- (float)height {
-    return 230;
+- (void)setImage:(NSString *)image {
+    _image = image;
+    [self.icon sd_setImageWithURL:[NSURL URLWithString:image] placeholderImage:nil];
+}
+
+- (void)setTitle:(NSString *)title {
+    _title = title;
+    self.detail.text = title;
 }
 
 @end

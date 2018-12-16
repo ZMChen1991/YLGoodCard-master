@@ -10,7 +10,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef void(^ContactBlock)(void);
 @interface YLContactView : UIView
+
+@property (nonatomic, strong) NSString *message;
+@property (nonatomic, copy) ContactBlock contactBlock;
 
 @end
 

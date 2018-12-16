@@ -123,7 +123,7 @@
     _controllers = controllers;
     [self setupScroll:controllers];
     for (NSInteger i = 0; i < controllers.count; i++) {
-        UIViewController *controller = controllers[i];
+        UITableViewController *controller = controllers[i];
         controller.view.frame = CGRectMake(self.frame.size.width * i , 0, self.frame.size.width, self.frame.size.height - TITLEHEIGHT);
         [self.controllersScroll addSubview:controller.view];
     }

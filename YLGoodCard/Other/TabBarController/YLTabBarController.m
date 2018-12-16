@@ -29,8 +29,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-//    [self loadData];
-    
     YLMainController *mainVc = [[YLMainController alloc] init];
 //    mainVc.images = self.banners;
 //    mainVc.notableTitles = self.notables;
@@ -45,39 +43,6 @@
     YLMineController *mineVc = [[YLMineController alloc] init];
     [self addChildViewController:mineVc title:@"我的" image:@"我的" selectImage:nil];
 }
-
-//- (void)loadData {
-//    
-//    // 获取轮播图
-//    NSString *bannerStr = @"http://ucarjava.bceapp.com/home?method=slide";
-//    [YLRequest GET:bannerStr parameters:nil success:^(id  _Nonnull responseObject) {
-//        if ([responseObject[@"code"] isEqualToNumber:[NSNumber numberWithInt:400]]) {
-//            NSLog(@"bannerStr%@", responseObject[@"message"]);
-//        } else {
-//            NSLog(@"bannerStr%@", responseObject[@"data"]);
-//            NSArray *banners = [YLBannerModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"]];
-//            for (YLBannerModel *model in banners) {
-//                [self.banners addObject:model.img];
-//            }
-//            NSLog(@"%@", self.banners);
-//        }
-//    } failed:nil];
-//    
-//    // 获取成交记录
-//    NSString *notableStr = @"http://ucarjava.bceapp.com/trade?method=random";
-//    [YLRequest GET:notableStr parameters:nil success:^(id  _Nonnull responseObject) {
-//        if ([responseObject[@"code"] isEqualToNumber:[NSNumber numberWithInt:400]]) {
-//            NSLog(@"notableStr%@", responseObject[@"message"]);
-//        } else {
-//            NSLog(@"notableStr%@", responseObject[@"data"]);
-//            NSArray *notables = [YLNotableModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"]];
-//            for (YLNotableModel *model in notables) {
-//                [self.notables addObject:model.text];
-//            }
-//            NSLog(@"%@", self.notables);
-//        }
-//    } failed:nil];
-//}
 
 - (void)addChildViewController:(UIViewController *)childController title:(NSString *)title image:(NSString *)image selectImage:(NSString *)selectImage {
     
@@ -99,19 +64,4 @@
     
 }
 
-//- (NSMutableArray *)banners {
-//
-//    if (!_banners) {
-//        _banners = [NSMutableArray array];
-//    }
-//    return  _banners;
-//}
-//
-//- (NSMutableArray *)notables {
-//
-//    if (!_notables) {
-//        _notables = [NSMutableArray array];
-//    }
-//    return  _notables;
-//}
 @end

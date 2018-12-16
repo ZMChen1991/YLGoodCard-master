@@ -1,0 +1,130 @@
+//
+//  YLBannerCollectionView.m
+//  YLCollection
+//
+//  Created by lm on 2018/12/15.
+//  Copyright © 2018 Chenzhiming. All rights reserved.
+//
+
+#import "YLBannerCollectionView.h"
+#import "YLVehicleModel.h"
+
+@interface YLBannerCollectionView () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
+
+@property (nonatomic, strong) UICollectionView *collection;
+@property (nonatomic, strong) UILabel *label;
+
+@end
+
+@implementation YLBannerCollectionView
+
+- (instancetype)initWithFrame:(CGRect)frame {
+    
+    self = [super initWithFrame:frame];
+    if (self) {
+        self.backgroundColor = [UIColor redColor];
+        [self setupUI];
+    }
+    return self;
+}
+
+- (void)setupUI {
+    
+    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
+    layout.minimumLineSpacing = 0;
+    layout.minimumInteritemSpacing = 0;
+    layout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0);
+    layout.itemSize = CGSizeMake(self.frame.size.width, self.frame.size.height);
+    layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+    
+    self.collection = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height) collectionViewLayout:layout];
+    self.collection.backgroundColor = [UIColor whiteColor];
+    self.collection.pagingEnabled = YES;
+    self.collection.delegate = self;
+    self.collection.dataSource = self;
+    self.collection.showsHorizontalScrollIndicator = NO;
+    self.collection.bounces = NO;
+    [self.collection registerClass:[YlBannerCollectionCell class] forCellWithReuseIdentifier:@"YlBannerCollectionCell"];
+    [self addSubview:self.collection];
+    
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(self.frame.size.width - 60, self.frame.size.height - 30, 50, 20)];
+    label.backgroundColor = [UIColor whiteColor];
+    label.textAlignment = NSTextAlignmentCenter;
+    label.text = @"1/30";
+    label.textColor = [UIColor lightGrayColor];
+    label.font = [UIFont systemFontOfSize:12];
+    label.layer.cornerRadius = 10.f;
+    label.layer.masksToBounds = YES;
+    [self addSubview:label];
+    self.label = label;
+}
+
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
+    return 1;
+}
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    return self.images.count;
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    YlBannerCollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"YlBannerCollectionCell" forIndexPath:indexPath];
+    YLVehicleModel *model = self.images[indexPath.row];
+    cell.image = model.img;
+    return cell;
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    NSInteger index = scrollView.contentOffset.x / self.frame.size.width + 1;
+    self.label.text = [NSString stringWithFormat:@"%ld/%ld", index, self.images.count];
+}
+
+- (void)setImages:(NSArray *)images {
+    _images = images;
+    self.label.text = [NSString stringWithFormat:@"1/%ld", self.images.count];
+    [self.collection reloadData];
+}
+
+
+- (void)layoutSubviews {
+    
+    [super layoutSubviews];
+    
+}
+
+
+@end
+
+
+@interface YlBannerCollectionCell ()
+
+@property (nonatomic, strong) UIImageView *imageView;
+
+@end
+
+@implementation YlBannerCollectionCell
+
+- (instancetype)initWithFrame:(CGRect)frame {
+    
+    if (self = [super initWithFrame:frame]) {
+        UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.bounds];
+//        imageView.layer.borderWidth = 0.5f;
+//        imageView.layer.borderColor = [UIColor redColor].CGColor;
+//        imageView.backgroundColor = [UIColor grayColor];
+        imageView.contentMode = UIViewContentModeScaleAspectFill;
+//        imageView.contentMode = UIViewContentModeScaleAspectFit;
+        [self addSubview:imageView];
+        self.imageView = imageView;
+    }
+    return self;
+}
+
+- (void)setImage:(NSString *)image {
+    _image = image;
+    
+    // 这里使用SDImage
+//    self.imageView.image = [UIImage imageNamed:image];
+    [self.imageView sd_setImageWithURL:[NSURL URLWithString:image] placeholderImage:nil];
+}
+
+@end

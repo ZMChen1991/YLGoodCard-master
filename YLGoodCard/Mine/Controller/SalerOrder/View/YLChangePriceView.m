@@ -67,6 +67,8 @@
     accept.backgroundColor = YLColor(8.f, 169.f, 255.f);
     accept.layer.borderWidth = 1.f;
     accept.layer.borderColor = YLColor(233.f, 233.f, 233.f).CGColor;
+    accept.layer.cornerRadius = 8.f;
+    accept.layer.masksToBounds = YES;
     [self addSubview:accept];
     self.acceptBtn = accept;
     
@@ -79,6 +81,8 @@
     refuse.backgroundColor = [UIColor whiteColor];
     refuse.layer.borderWidth = 1.f;
     refuse.layer.borderColor = YLColor(233.f, 233.f, 233.f).CGColor;
+    refuse.layer.cornerRadius = 8.f;
+    refuse.layer.masksToBounds = YES;
     [self addSubview:refuse];
     self.refuseBtn = refuse;
     

@@ -245,7 +245,7 @@ UICollectionViewDataSource
         _pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(0, self.bounds.size.height - 15,
                                                                        self.bounds.size.width,
                                                                        10)];
-        _pageControl.pageIndicatorTintColor = [UIColor yellowColor];
+        _pageControl.pageIndicatorTintColor = [UIColor whiteColor];
         _pageControl.currentPageIndicatorTintColor = [UIColor lightGrayColor];
     }
     return _pageControl;

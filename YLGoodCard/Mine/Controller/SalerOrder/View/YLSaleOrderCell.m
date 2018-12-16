@@ -103,7 +103,7 @@
     self.title.text = saleOrderCellFrame.model.detail.title;
     self.price.text = [NSString stringWithFormat:@"%@", [self stringToNumber:saleOrderCellFrame.model.detail.price]];;
     self.course.text = [NSString stringWithFormat:@"%@万公里/年", saleOrderCellFrame.model.detail.course];;
-    self.originalPrice.text = [NSString stringWithFormat:@"新车含税:%@", [self stringToNumber:saleOrderCellFrame.model.detail.originalPrice]];
+    self.originalPrice.text = [NSString stringWithFormat:@"新车价:%@", [self stringToNumber:saleOrderCellFrame.model.detail.originalPrice]];
 }
 
 

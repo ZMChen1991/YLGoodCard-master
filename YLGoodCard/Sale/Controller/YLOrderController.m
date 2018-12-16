@@ -283,7 +283,7 @@
 
 - (YLAllTimePicker *)checkTimeView {
     if (!_checkTimeView) {
-        _checkTimeView = [[YLAllTimePicker alloc] initWithFrame:CGRectMake(0, 200, YLScreenWidth, 213)];
+        _checkTimeView = [[YLAllTimePicker alloc] initWithFrame:CGRectMake(0, 200, YLScreenWidth, 215)];
         _checkTimeView.hidden = YES;
         __weak typeof(self) weakSelf = self;
         _checkTimeView.cancelBlock = ^{
@@ -307,7 +307,7 @@
 
 - (YLYearMonthPicker *)licenseTimeView {
     if (!_licenseTimeView) {
-        _licenseTimeView = [[YLYearMonthPicker alloc] initWithFrame:CGRectMake(0, 200, YLScreenWidth, 150)];
+        _licenseTimeView = [[YLYearMonthPicker alloc] initWithFrame:CGRectMake(0, 200, YLScreenWidth, 155)];
         _licenseTimeView.hidden = YES;
         __weak typeof(self) weakSelf = self;
         _licenseTimeView.cancelBlock = ^{

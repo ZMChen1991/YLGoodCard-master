@@ -9,11 +9,11 @@
 #import "YLContactView.h"
 #import "YLCondition.h"
 
-//@interface YLContactView ()
-//
-//
-//
-//@end
+@interface YLContactView ()
+
+@property (nonatomic, strong) UILabel *label;
+
+@end
 
 @implementation YLContactView
 
@@ -29,10 +29,11 @@
 - (void)setupUI {
     
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 30, YLScreenWidth, 20)];
-    label.text = @"合同已签署，正在等待复检过户...";
+//    label.text = @"合同已签署，正在等待复检过户...";
     label.textAlignment = NSTextAlignmentCenter;
     label.font = [UIFont systemFontOfSize:14];
     [self addSubview:label];
+    self.label = label;
     
     YLCondition *contact = [YLCondition buttonWithType:UIButtonTypeCustom];
     contact.frame = CGRectMake(YLLeftMargin, CGRectGetMaxY(label.frame) + 20, YLScreenWidth - 2 *YLLeftMargin, 40);
@@ -44,6 +45,9 @@
 
 - (void)contact {
     NSLog(@"点击联系检测中心");
+    if (self.contactBlock) {
+        self.contactBlock();
+    }
 }
 
 - (void)layoutSubviews {
@@ -52,5 +56,10 @@
     
 }
 
+
+- (void)setMessage:(NSString *)message {
+    _message = message;
+    self.label.text = message;
+}
 
 @end

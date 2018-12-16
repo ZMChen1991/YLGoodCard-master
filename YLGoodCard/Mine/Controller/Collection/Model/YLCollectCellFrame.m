@@ -21,7 +21,7 @@
     float titleW = width - 120 - 2 * YLLeftMargin - YLTopSpace;
     self.titleF = CGRectMake(titleX, YLTopSpace, titleW, 34);
     self.courseF = CGRectMake(titleX, CGRectGetMaxY(self.titleF) + 5, titleW, 17);
-    self.priceF = CGRectMake(titleX, CGRectGetMaxY(self.courseF) + 5, titleW/3, 25);
+    self.priceF = CGRectMake(titleX, CGRectGetMaxY(self.courseF) + 5, titleW / 2, 25);
     self.originalPriceF = CGRectMake(CGRectGetMaxX(self.priceF), CGRectGetMaxY(self.courseF) + 9, width - CGRectGetMaxX(self.priceF) - YLTopSpace, 17);
     self.lineF = CGRectMake(0, CGRectGetMaxY(self.iconF)-1 + YLLeftMargin, width, 1);
     self.cellHeight = CGRectGetMaxY(self.lineF);

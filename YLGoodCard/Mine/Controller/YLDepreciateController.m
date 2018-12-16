@@ -14,10 +14,12 @@
 #import "YLRequest.h"
 #import "YLAccountTool.h"
 #import "YLAccount.h"
+#import "YLDepreciateModel.h"
+#import "YLDepreciateCellFrame.h"
 
 @interface YLDepreciateController ()
 
-@property (nonatomic, strong) NSMutableArray *Depreciates;
+@property (nonatomic, strong) NSMutableArray *depreciates;
 
 @end
 
@@ -26,9 +28,14 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
+    self.tableView.tableFooterView = [[UIView alloc] init];
     self.title = @"降价提醒";
     
     [self loadData];
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"REFRESHTABLEVIEW" object:nil];
 }
 
 - (void)loadData {
@@ -41,6 +48,13 @@
         NSLog(@"%@", responseObject);
         if ([responseObject[@"code"] isEqualToNumber:[NSNumber numberWithInt:200]]) {
             NSLog(@"降价提醒请求成功");
+            NSArray *array = [YLDepreciateModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"]];
+            for (YLDepreciateModel *model in array) {
+                YLDepreciateCellFrame *cellFrame = [[YLDepreciateCellFrame alloc] init];
+                cellFrame.model = model;
+                [self.depreciates addObject:cellFrame];
+            }
+            [self.tableView reloadData];
         } else {
             NSLog(@"降价提醒请求失败");
         }
@@ -55,25 +69,21 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 5;
+    return self.depreciates.count;
 }
 
 #pragma mark 循环利用cell
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     YLDepreciateCell *cell = [YLDepreciateCell cellWithTableView:tableView];
-    YLDepreciateCellFrame *cellFrame = [[YLDepreciateCellFrame alloc] init];
-    YLDepreciateModel *model = [[YLDepreciateModel alloc] init];
-    cellFrame.model = model;
+    YLDepreciateCellFrame *cellFrame = self.depreciates[indexPath.row];
     cell.cellFrame = cellFrame;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    YLDepreciateCellFrame *cellFrame = [[YLDepreciateCellFrame alloc] init];
-    YLDepreciateModel *model = [[YLDepreciateModel alloc] init];
-    cellFrame.model = model;
+    YLDepreciateCellFrame *cellFrame = self.depreciates[indexPath.row];
     return cellFrame.cellHeight;
 }
 
@@ -83,6 +93,13 @@
 //    YLDetailController *detail = [[YLDetailController alloc] init];
 //    detail.model = nil;
 //    [self.navigationController pushViewController:detail animated:YES];
+}
+
+- (NSMutableArray *)depreciates {
+    if (!_depreciates) {
+        _depreciates = [NSMutableArray array];
+    }
+    return _depreciates;
 }
 
 @end

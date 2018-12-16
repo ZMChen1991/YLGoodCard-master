@@ -15,9 +15,11 @@
 #import "YLRequest.h"
 #import "YLSaleDetailController.h"
 
+
 @interface YLSubSaleOrderController ()
 
 @property (nonatomic, strong) NSMutableArray *saleOrders;
+//@property (nonatomic, strong) YLSaleDetailController *detail;
 
 @end
 
@@ -28,14 +30,15 @@
     self.tableView.tableFooterView = [[UIView alloc] init];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
-    }
-
+}
 - (void)loadData {
     
     NSString *urlString = @"http://ucarjava.bceapp.com/sell?method=my";
+    NSLog(@"self.param:%@", self.param);
     [YLRequest GET:urlString parameters:self.param success:^(id  _Nonnull responseObject) {
-        NSLog(@"%@", responseObject);
+//        NSLog(@"responseObject:%@", responseObject);
         NSArray *modelArray = [YLSaleOrderModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"]];
+//        NSLog(@"%ld", modelArray.count);
         for (YLSaleOrderModel *model in modelArray) {
             YLSaleOrderCellFrame *cellFrame = [[YLSaleOrderCellFrame alloc] init];
             cellFrame.model = model;
@@ -78,6 +81,10 @@
     YLSaleOrderModel *model = cellFrame.model;
     YLSaleDetailController *saleDetail = [[YLSaleDetailController alloc] init];
     saleDetail.model = model;
+    __weak typeof(self) weakSelf = self;
+    saleDetail.saleDetailBlock = ^{
+        [weakSelf loadData];
+    };
     [self.navigationController pushViewController:saleDetail animated:YES];
 }
 
@@ -90,7 +97,7 @@
 
 - (void)setParam:(NSMutableDictionary *)param {
     _param = param;
-    
+    NSLog(@"param:%@", param);
     [self loadData];
 }
 

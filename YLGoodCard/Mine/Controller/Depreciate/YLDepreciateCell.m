@@ -16,6 +16,7 @@
 @property (nonatomic, strong) UILabel *price; // 销售价格
 @property (nonatomic, strong) UILabel *originalPrice; // 新车价
 @property (nonatomic, strong) UILabel *depreciate; // 降价
+@property (nonatomic, strong) UIImageView *down;// 下降
 
 @property (nonatomic, strong) UIView *line;
 
@@ -70,6 +71,12 @@
     [self addSubview:price];
     self.price = price;
     
+    UIImageView *down = [[UIImageView alloc] init];
+    down.layer.cornerRadius = 8.f;
+    down.layer.masksToBounds = YES;
+    [self addSubview:down];
+    self.down = down;
+    
     UILabel *depreciate = [[UILabel alloc] init];
 //    depreciate.text = @"比原价下降了2.8万";
     depreciate.font = [UIFont systemFontOfSize:12];
@@ -78,7 +85,7 @@
     self.depreciate = depreciate;
     
     UIView *line = [[UIView alloc] init];
-    line.backgroundColor = [UIColor grayColor];
+    line.backgroundColor = YLColor(233.f, 233.f, 233.f);
     [self addSubview:line];
     self.line = line;
 }
@@ -91,11 +98,14 @@
     self.course.frame = cellFrame.courseF;
     self.line.frame = cellFrame.lineF;
     self.depreciate.frame = cellFrame.depreciateF;
+    self.down.frame = cellFrame.downF;
     
-    self.title.text = @"xxxxx";
-    self.price.text = @"12.9万";
-    self.course.text = @"25万公里/年";
-    self.depreciate.text = @"比原价下降了3.6万";
+    [self.icon sd_setImageWithURL:[NSURL URLWithString:cellFrame.model.detail.displayImg] placeholderImage:nil];
+    self.title.text = cellFrame.model.detail.title;
+    self.price.text = [self stringToNumber:cellFrame.model.detail.price];
+    self.course.text = [NSString stringWithFormat:@"%@万公里/年", cellFrame.model.detail.course];
+    self.depreciate.text = [NSString stringWithFormat:@"比原价下降了%@", [self stringToNumber:cellFrame.model.priceSpread]];
+    self.down.image = [UIImage imageNamed:@"下降"];
 }
 
 - (NSString *)stringToNumber:(NSString *)number {

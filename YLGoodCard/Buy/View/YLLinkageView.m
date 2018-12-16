@@ -26,6 +26,7 @@
 @property (nonatomic, strong) YLCustomPrice *customPrice;// 价格页面
 @property (nonatomic, strong) UITableView *leftTableView;// 排序列表
 @property (nonatomic, strong) YLSelectView *selectView;// 筛选页面
+@property (nonatomic, strong) UIButton *selectBtn;
 
 @end
 
@@ -49,6 +50,7 @@ static NSString * const leftIdentifier = @"LeftCellIdentifier";
     float btnW = YLScreenWidth / btns.count; // 屏幕宽/按钮数
     for (int i = 0; i < btns.count; i++) {
         UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+        btn.titleLabel.font = [UIFont systemFontOfSize:12];
         btn.frame = CGRectMake(btnW * i, 0, btnW, btnH);
         btn.tag = 100 + i;
         btn.titleLabel.font = [UIFont systemFontOfSize:15];
@@ -70,6 +72,9 @@ static NSString * const leftIdentifier = @"LeftCellIdentifier";
 
 // 选中状态时，如果点击的是排序按钮，则显示列表，否则隐藏
 - (void)selectBtn:(UIButton *)sender {
+    
+    self.selectBtn = sender;
+    [self.selectBtn setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
     
     if (self.delegate && [self.delegate respondsToSelector:@selector(pushCoverView:)]) {
         [self.delegate pushCoverView:sender];

@@ -36,13 +36,13 @@
 - (void)setupUI {
     // 进度条
     UIView *unProgressBar = [[UIView alloc] init];
-    unProgressBar.backgroundColor = [UIColor lightGrayColor];
+    unProgressBar.backgroundColor = YLColor(233.f, 233.f, 233.f);
     [self addSubview:unProgressBar];
     self.unProgressBar = unProgressBar;
     
     // 进行过的进度条
     UIView *progressBar = [[UIView alloc] init];
-    progressBar.backgroundColor = [UIColor redColor];
+    progressBar.backgroundColor = YLColor(8.f, 169.f, 255.f);
     [self addSubview:progressBar];
     self.progressBar = progressBar;
     
@@ -51,14 +51,14 @@
         UILabel *titleLabel = [[UILabel alloc] init];
         titleLabel.text = title;
         titleLabel.textAlignment = NSTextAlignmentCenter;
-        titleLabel.textColor = [UIColor lightGrayColor];
+        titleLabel.textColor = YLColor(233.f, 233.f, 233.f);
         titleLabel.font = [UIFont systemFontOfSize:14];
         [self addSubview:titleLabel];
         [self.titleLabels addObject:titleLabel];
         
         // 圆点
         UIView *cricle = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 13, 13)];
-        cricle.backgroundColor = [UIColor lightGrayColor];
+        cricle.backgroundColor = YLColor(233.f, 233.f, 233.f);
         cricle.layer.cornerRadius = 13.f / 2;
         cricle.layer.masksToBounds = YES;
         [self addSubview:cricle];
@@ -92,16 +92,16 @@
     for (NSInteger i = 0; i < self.titles.count; i++) {
         UIView *cricle = self.cricleMarks[i];
         if (i <= stepIndex) {
-            cricle.backgroundColor = [UIColor redColor];
+            cricle.backgroundColor = YLColor(8.f, 169.f, 255.f);
         } else {
-            cricle.backgroundColor = [UIColor lightGrayColor];
+            cricle.backgroundColor = YLColor(233.f, 233.f, 233.f);
         }
         
         UILabel *titleLabel = self.titleLabels[i];
         if (i <= stepIndex) {
-            titleLabel.textColor = [UIColor redColor];
+            titleLabel.textColor = YLColor(8.f, 169.f, 255.f);
         } else {
-            titleLabel.textColor = [UIColor lightGrayColor];
+            titleLabel.textColor = YLColor(190.f, 190.f, 190.f);
         }
     }
     

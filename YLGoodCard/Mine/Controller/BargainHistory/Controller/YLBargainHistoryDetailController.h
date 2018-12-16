@@ -11,9 +11,14 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef void(^BargainDetailBlock)(void);
+
 @interface YLBargainHistoryDetailController : UIViewController
 
 @property (nonatomic, strong) YLBargainHistoryModel *model;
+@property (nonatomic, copy) BargainDetailBlock bargainDetailBlock;
+
+@property (nonatomic, assign) BOOL isBuyer;
 
 @end
 

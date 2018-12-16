@@ -25,6 +25,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         UIImageView *icon = [[UIImageView alloc] init];
+        icon.contentMode = UIViewContentModeScaleAspectFit;
         icon.image = [UIImage imageNamed:image];
         [self addSubview:icon];
         self.icon = icon;

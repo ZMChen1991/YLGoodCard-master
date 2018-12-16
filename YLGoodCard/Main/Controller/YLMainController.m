@@ -72,10 +72,10 @@
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(headerRefresh)];
     
-    UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, YLScreenWidth, 220 + 60 + 44 + 99)];
+    UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, YLScreenWidth, 130 + 60 + 44 + 99)];
     self.tableView.tableHeaderView = header;
     // 添加轮播图
-    IXWheelV *banner = [[IXWheelV alloc] initWithFrame:CGRectMake(0, 0, YLScreenWidth, 220)];
+    IXWheelV *banner = [[IXWheelV alloc] initWithFrame:CGRectMake(0, 0, YLScreenWidth, 130)];
     [header addSubview:banner];
     self.banner = banner;
     // 添加成交记录轮播广告
@@ -140,15 +140,16 @@
 
 - (void)loadData {
     
-    [self.images removeAllObjects];
-    [self.notableTitles removeAllObjects];
-    [self.recommends removeAllObjects];
+    
+    
+    
     // 获取轮播图
     NSString *bannerStr = @"http://ucarjava.bceapp.com/home?method=slide";
     [YLRequest GET:bannerStr parameters:nil success:^(id  _Nonnull responseObject) {
         if ([responseObject[@"code"] isEqualToNumber:[NSNumber numberWithInt:400]]) {
             NSLog(@"bannerStr%@", responseObject[@"message"]);
         } else {
+            [self.images removeAllObjects];
             NSLog(@"bannerStr%@", responseObject[@"data"]);
             NSArray *banners = [YLBannerModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"]];
             for (YLBannerModel *model in banners) {
@@ -168,6 +169,7 @@
         if ([responseObject[@"code"] isEqualToNumber:[NSNumber numberWithInt:400]]) {
             NSLog(@"notableStr%@", responseObject[@"message"]);
         } else {
+            [self.notableTitles removeAllObjects];
             NSLog(@"notableStr%@", responseObject[@"data"]);
             NSArray *notables = [YLNotableModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"]];
             for (YLNotableModel *model in notables) {
@@ -188,6 +190,7 @@
         if ([responseObject[@"code"] isEqualToNumber:[NSNumber numberWithInt:400]]) {
             NSLog(@"recommendStr%@", responseObject[@"message"]);
         } else {
+            [self.recommends removeAllObjects];
             NSLog(@"recommendStr%@", responseObject[@"data"]);
             NSArray *recomments = [YLTableViewModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"]];
             for (YLTableViewModel *model in recomments) {
@@ -206,7 +209,6 @@
 - (void)headerRefresh {
     
     NSLog(@"下拉刷新");
-    [self.recommends removeAllObjects];
     [self loadData];
     [self.tableView.mj_header endRefreshing];
 }
@@ -299,8 +301,10 @@
     [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
     // 设置导航栏底部线条为空
     [self.navigationController.navigationBar setShadowImage:[UIImage new]];
-    // 修改导航标题
-    [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:18], NSForegroundColorAttributeName:[UIColor whiteColor]}];
+//    // 修改导航标题
+//    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIFont systemFontOfSize:18], NSForegroundColorAttributeName:[UIColor whiteColor]}];
+//    // 修改导航栏按钮字体颜色
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     // 创建一个假状态栏
     UIView *statusBarView = [[UIView alloc] initWithFrame:CGRectMake(0, -20, YLScreenWidth, 20)];
     statusBarView.backgroundColor = YLColor(8.f, 169.f, 255.f);

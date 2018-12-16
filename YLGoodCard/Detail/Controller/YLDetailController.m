@@ -22,12 +22,15 @@
 #import "YLDetailHeaderModel.h"
 #import "YLDetailInfoModel.h"
 #import "YLDetailHeaderModel.h"
+#import "YLVehicleModel.h"
+#import "YLBlemishModel.h"
 
 #import "YLConfigController.h"
 #import "YLLoginController.h"
 
 #import "YLAccount.h"
 #import "YLAccountTool.h"
+#import "YLRequest.h"
 
 #import "YLDetailOrderTimeView.h"
 #import "YLDetailBargainView.h"
@@ -50,6 +53,10 @@
 @property (nonatomic, strong) YLDetailModel *detailModel;
 @property (nonatomic, strong) NSMutableArray *browsingHistory;
 
+@property (nonatomic, strong) NSMutableArray *vehicle;// 细节图片数组
+@property (nonatomic, strong) NSMutableArray *blemish;// 瑕疵
+@property (nonatomic, strong) NSArray *carInformations;// 车辆图文
+
 @end
 
 @implementation YLDetailController
@@ -57,6 +64,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
+    self.carInformations = @[@"正侧",@"正前",@"前排",@"后排",@"中控",@"发动机舱",@"瑕疵"];
     [self loadData];
     [self setupNav];
     [self addTableView];
@@ -70,19 +78,43 @@
     param[@"id"] = self.model.carID;
     param[@"telephone"] = account.telephone;
     __weak typeof(self) weakSelf = self;
-    // 获取详情车辆数据
-    [YLDetailTool detailWithParam:param success:^(YLDetailModel *result) {
-        self.detailModel = result;
-        YLDetailHeaderModel *headerModel = [YLDetailHeaderModel mj_objectWithKeyValues:weakSelf.detailModel];
-        // 给头脚赋值
-        weakSelf.header.model = headerModel;
-        weakSelf.footer.model = self.detailModel;
-        weakSelf.detailBargain.salePrice = self.detailModel.price;
+    NSString *urlString = @"http://ucarjava.bceapp.com/detail?method=id";
+    [YLRequest GET:urlString parameters:param success:^(id  _Nonnull responseObject) {
+        NSLog(@"%@", responseObject);
+        NSLog(@"%@", responseObject[@"data"]);
+        self.detailModel = [YLDetailModel mj_objectWithKeyValues:responseObject[@"data"][@"detail"]];
+        NSArray *vehicles = [YLVehicleModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"][@"image"][@"vehicle"]];
+        for (YLVehicleModel *model in vehicles) {
+            [self.vehicle addObject:model];
+        }
+        NSArray *blemishs = [YLBlemishModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"][@"image"][@"blemish"]];
+        for (YLBlemishModel *model in blemishs) {
+            [self.blemish addObject:model];
+        }
+        YLDetailHeaderModel *headerModel = [YLDetailHeaderModel mj_objectWithKeyValues:self.detailModel];
+        self.header.vehicle = self.vehicle;
+        self.header.model = headerModel;
+        self.footer.model = self.detailModel;
+        self.detailBargain.salePrice = self.detailModel.price;
         
-        [weakSelf.tableView reloadData];
-    } failure:^(NSError *error) {
-
-    }];
+        [self.tableView reloadData];
+    } failed:nil];
+    
+    
+    
+//    // 获取详情车辆数据
+//    [YLDetailTool detailWithParam:param success:^(YLDetailModel *result) {
+//        self.detailModel = result;
+//        YLDetailHeaderModel *headerModel = [YLDetailHeaderModel mj_objectWithKeyValues:weakSelf.detailModel];
+//        // 给头脚赋值
+//        weakSelf.header.model = headerModel;
+//        weakSelf.footer.model = self.detailModel;
+//        weakSelf.detailBargain.salePrice = self.detailModel.price;
+//
+//        [weakSelf.tableView reloadData];
+//    } failure:^(NSError *error) {
+//
+//    }];
 }
 
 #pragma mark UITableViewDelegate
@@ -92,7 +124,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (section == 3) {
-        return 3;
+        return self.carInformations.count;
     }
     return 1;
 }
@@ -122,7 +154,9 @@
         YLCarInformationCell *cell = [YLCarInformationCell cellWithTable:tableView];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         // 这里赋值给cell
-        
+        YLVehicleModel *model = self.vehicle[indexPath.row];
+        cell.image = model.img;
+        cell.title = self.carInformations[indexPath.row];
         return cell;
     }
 }
@@ -237,17 +271,20 @@
 - (void)setupNav {
     
     self.navigationItem.title = @"详情";
+    // 修改导航标题
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:18], NSForegroundColorAttributeName:[UIColor whiteColor]}];
 }
 
 #pragma mark 砍价
 - (void)bargainClick {
-    
+
     YLAccount *account = [YLAccountTool account];
     // 判断用户是否登录
     if (account) {
         NSLog(@"点击了砍价,弹出砍价视图");
         self.cover.hidden = NO;
         self.detailBargain.hidden = NO;
+        self.detailOrderTime.hidden = YES;
     } else {
         // 没有登录，跳转登录界面
         YLLoginController *login = [[YLLoginController alloc] init];
@@ -264,6 +301,7 @@
         NSLog(@"点击了预约看车，弹出预约看车视图");
         self.cover.hidden = NO;
         self.detailOrderTime.hidden = NO;
+        self.detailBargain.hidden = YES;
     } else {
         // 没有登录，跳转登录界面
         YLLoginController *login = [[YLLoginController alloc] init];
@@ -372,9 +410,11 @@
             [YLDetailTool bargainWithParam:param success:^(NSDictionary * _Nonnull result) {
                 if ([result[@"code"] isEqualToNumber:[NSNumber numberWithInt:200]]) {
                     NSLog(@"砍价成功:%@", result[@"message"]);
+                    [weakSelf showMessage:@"砍价成功"];
                     [[NSNotificationCenter defaultCenter] postNotificationName:@"REFRESHTABLEVIEW" object:nil];
                 } else {
                     NSLog(@"a砍价失败");
+                    [weakSelf showMessage:@"砍价失败"];
                 }
             } failure:nil];
             
@@ -394,24 +434,26 @@
         _detailOrderTime.cancelBlock = ^{
             NSLog(@"取消预约看车,退出预约视图");
             weakSelf.cover.hidden = YES;
-            weakSelf.detailBargain.hidden = YES;
+            weakSelf.detailOrderTime.hidden = YES;
         };
         
         _detailOrderTime.orderTimeBlock = ^(NSString * _Nonnull orderTime) {
             NSLog(@"选择好预约时间：%@", orderTime);
-            weakSelf.cover.hidden = YES;
-            weakSelf.detailBargain.hidden = YES;
+//            weakSelf.cover.hidden = YES;
+//            weakSelf.detailBargain.hidden = YES;
             
             // 向后台发送预约看车请求
             YLAccount *account = [YLAccountTool account];
             if (account) {
                 NSMutableDictionary *param = [NSMutableDictionary dictionary];
-                [param setValue:account.telephone forKey:@"telephone"];
+                [param setValue:account.telephone forKey:@"buyer"];
                 [param setValue:orderTime forKey:@"appointTime"];
                 [param setValue:weakSelf.detailModel.centerId forKey:@"centerId"];
                 [param setValue:weakSelf.model.carID forKey:@"detailId"];
+                [param setValue:weakSelf.detailModel.telephone forKey:@"seller"];
                 [YLDetailTool lookCarWithParam:param success:^(NSDictionary *result) {
                     NSLog(@"预约看车成功:%@", result);
+                    [weakSelf showMessage:@"预约看车成功"];
                     if ([result[@"code"] isEqualToNumber:[NSNumber numberWithInt:200]]) {
                         NSLog(@"预约看车成功");
                         [weakSelf.footer.order setTitle:@"已预约" forState:UIControlStateNormal];
@@ -419,6 +461,7 @@
                         [[NSNotificationCenter defaultCenter] postNotificationName:@"REFRESHTABLEVIEW" object:nil];
                     } else {
                         NSLog(@"预约失败:%@", result[@"message"]);
+                        [weakSelf showMessage:@"预约失败,请再试一次"];
                     }
 
                 } failure:nil];
@@ -433,5 +476,20 @@
     }
     return _detailOrderTime;
 }
+
+- (NSMutableArray *)vehicle {
+    if (!_vehicle) {
+        _vehicle = [NSMutableArray array];
+    }
+    return _vehicle;
+}
+
+- (NSMutableArray *)blemish {
+    if (!_blemish) {
+        _blemish = [NSMutableArray array];
+    }
+    return _blemish;
+}
+
 
 @end

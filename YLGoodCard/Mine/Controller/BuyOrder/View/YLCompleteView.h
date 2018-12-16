@@ -10,7 +10,10 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef void(^CompleteBlock)(void);
 @interface YLCompleteView : UIView
+
+@property (nonatomic, copy) CompleteBlock completeBlock;
 
 @end
 

@@ -61,7 +61,7 @@
     }
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(YLLeftMargin, height, self.frame.size.width - 2 * YLLeftMargin, height)];
     label.text = self.array[0];
-    label.textColor = [UIColor redColor];
+    label.textColor = YLColor(33.f, 33.f, 33.f);
     label.font = [UIFont systemFontOfSize:14];
     label.textAlignment = NSTextAlignmentCenter;
     label.backgroundColor = YLColor(233.f, 233.f, 233.f);

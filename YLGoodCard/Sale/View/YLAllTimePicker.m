@@ -122,15 +122,16 @@
     label5.textAlignment = NSTextAlignmentCenter;
     [self addSubview:label5];
     
+    CGFloat btnW = (YLScreenWidth - 2 * YLLeftMargin - 10) / 2;
     YLCondition *cancelBtn = [YLCondition buttonWithType:UIButtonTypeCustom];
-    cancelBtn.frame = CGRectMake(0, height + YLLeftMargin, YLScreenWidth / 2, 40);
+    cancelBtn.frame = CGRectMake(YLLeftMargin, height + YLLeftMargin, btnW, 40);
     cancelBtn.type = YLConditionTypeWhite;
     [cancelBtn setTitle:@"取消" forState:UIControlStateNormal];
     [cancelBtn addTarget:self action:@selector(cancelClick) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:cancelBtn];
     
     YLCondition *sureBtn = [YLCondition buttonWithType:UIButtonTypeCustom];
-    sureBtn.frame = CGRectMake(YLScreenWidth / 2, height + YLLeftMargin, YLScreenWidth / 2, 40);
+    sureBtn.frame = CGRectMake(CGRectGetMaxX(cancelBtn.frame) + 10, height + YLLeftMargin, btnW, 40);
     sureBtn.type = YLConditionTypeBlue;
     [sureBtn setTitle:@"确定" forState:UIControlStateNormal];
     [sureBtn addTarget:self action:@selector(sureClick) forControlEvents:UIControlEventTouchUpInside];
