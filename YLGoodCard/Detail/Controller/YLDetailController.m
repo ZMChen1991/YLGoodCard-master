@@ -57,6 +57,9 @@
 @property (nonatomic, strong) NSMutableArray *blemish;// 瑕疵
 @property (nonatomic, strong) NSArray *carInformations;// 车辆图文
 
+@property (nonatomic, strong) NSMutableArray *cars;// 细节图片数组
+@property (nonatomic, strong) NSMutableArray *xiaci;// 瑕疵
+
 @end
 
 @implementation YLDetailController
@@ -85,11 +88,13 @@
         self.detailModel = [YLDetailModel mj_objectWithKeyValues:responseObject[@"data"][@"detail"]];
         NSArray *vehicles = [YLVehicleModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"][@"image"][@"vehicle"]];
         for (YLVehicleModel *model in vehicles) {
-            [self.vehicle addObject:model];
+            [self.vehicle addObject:model.img];
+            [self.cars addObject:model.img];
         }
         NSArray *blemishs = [YLBlemishModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"][@"image"][@"blemish"]];
         for (YLBlemishModel *model in blemishs) {
             [self.blemish addObject:model];
+            [self.xiaci addObject:[NSString stringWithFormat:@"%@", model.img]];
         }
         YLDetailHeaderModel *headerModel = [YLDetailHeaderModel mj_objectWithKeyValues:self.detailModel];
         self.header.vehicle = self.vehicle;
@@ -123,9 +128,9 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (section == 3) {
-        return self.carInformations.count;
-    }
+//    if (section == 3) {
+//        return self.carInformations.count;
+//    }
     return 1;
 }
 
@@ -154,9 +159,12 @@
         YLCarInformationCell *cell = [YLCarInformationCell cellWithTable:tableView];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         // 这里赋值给cell
-        YLVehicleModel *model = self.vehicle[indexPath.row];
-        cell.image = model.img;
-        cell.title = self.carInformations[indexPath.row];
+//        YLVehicleModel *model = self.vehicle[indexPath.row];
+//        cell.image = model.img;
+//        cell.title = self.carInformations[indexPath.row];
+        
+        cell.images = self.cars;
+        cell.blemishs = self.xiaci;
         return cell;
     }
 }
@@ -206,7 +214,7 @@
     if (indexPath.section == 2) {
         return 473 + 1;
     } else {
-        return 230;
+        return 1610;
     }
 }
 
@@ -491,5 +499,18 @@
     return _blemish;
 }
 
+- (NSMutableArray *)cars {
+    if (!_cars) {
+        _cars = [NSMutableArray array];
+    }
+    return _cars;
+}
+
+- (NSMutableArray *)xiaci {
+    if (!_xiaci) {
+        _xiaci = [NSMutableArray array];
+    }
+    return _xiaci;
+}
 
 @end

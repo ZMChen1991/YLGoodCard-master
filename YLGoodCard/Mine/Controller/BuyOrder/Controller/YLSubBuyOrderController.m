@@ -69,6 +69,7 @@
     YLBuyOrderCell *cell = [YLBuyOrderCell cellWithTableView:tableView];
     YLBuyOrderCellFrame *cellFrame = self.buyOrders[indexPath.row];
     cell.buyOrderCellFrame = cellFrame;
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
 

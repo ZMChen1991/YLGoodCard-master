@@ -8,12 +8,14 @@
 
 #import <UIKit/UIKit.h>
 #import "YLSaleOrderModel.h"
+#import "YLTableViewModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
-
+typedef void(^SaleOrderCommandBlock)(YLTableViewModel *model);
 @interface YLCommandView : UIView
 
 @property (nonatomic, strong) YLSaleOrderModel *model;
+@property (nonatomic, copy) SaleOrderCommandBlock saleOrderCommandBlock;
 
 @end
 

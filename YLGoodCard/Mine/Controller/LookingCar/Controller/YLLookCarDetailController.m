@@ -12,6 +12,7 @@
 #import "YLLookCarModel.h"
 #import "YLDetectCenterModel.h"
 #import "YLRequest.h"
+#import "YLDetailController.h"
 
 @interface YLLookCarDetailController ()
 
@@ -35,6 +36,12 @@
     
     YLLookCarDetailView *command = [[YLLookCarDetailView alloc] initWithFrame:CGRectMake(0, 64, YLScreenWidth, 110)];
     command.model = self.model;
+    __weak typeof(self) weakSelf = self;
+    command.lookCarDetailBlock = ^(YLTableViewModel * _Nonnull model) {
+        YLDetailController *detail = [[YLDetailController alloc] init];
+        detail.model = model;
+        [weakSelf.navigationController pushViewController:detail animated:YES];
+    };
     [self.view addSubview:command];
     
     YLAppointView *appoint = [[YLAppointView alloc] initWithFrame:CGRectMake(YLLeftMargin, CGRectGetMaxY(command.frame) + 30, YLScreenWidth - 2 * YLLeftMargin, 200)];

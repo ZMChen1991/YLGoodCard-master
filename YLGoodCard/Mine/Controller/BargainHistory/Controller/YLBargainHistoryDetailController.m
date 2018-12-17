@@ -15,6 +15,7 @@
 #import "YLAccountTool.h"
 #import "YLBargainDetailModel.h"
 #import "YLBargainDetailCellFrame.h"
+#import "YLDetailController.h"
 
 
 @interface YLBargainHistoryDetailController () <UITableViewDelegate, UITableViewDataSource>
@@ -76,6 +77,12 @@
     
     YLBargainHistoryDetailHeader *header = [[YLBargainHistoryDetailHeader alloc] initWithFrame:CGRectMake(0, 0, YLScreenWidth, 110)];
     header.model = self.model;
+    __weak typeof(self) weakSelf = self;
+    header.bargainHistoryBlock = ^(YLTableViewModel * _Nonnull model) {
+        YLDetailController *detai = [[YLDetailController alloc] init];
+        detai.model = model;
+        [weakSelf.navigationController pushViewController:detai animated:YES];
+    };
     self.header = header;
     
     UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 64, YLScreenWidth, YLScreenHeight - 110 + 44)];
@@ -153,6 +160,7 @@
         [param setValue:cellFrame1.model.buyer forKey:@"buyer"];
         [param setValue:weakSelf.model.detail.centerId forKey:@"centerId"];
         [param setValue:cellFrame1.model.bargainId forKey:@"id"];
+        [param setValue:cellFrame1.model.price forKey:@"price"];
         [YLRequest GET:urlString parameters:param success:^(id  _Nonnull responseObject) {
             NSLog(@"%@", responseObject);
             if ([responseObject[@"code"] isEqualToNumber:[NSNumber numberWithInteger:200]]) {

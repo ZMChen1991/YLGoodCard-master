@@ -8,12 +8,15 @@
 
 #import <UIKit/UIKit.h>
 #import "YLLookCarModel.h"
+#import "YLTableViewModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef void(^LookCarDetailBlock)(YLTableViewModel *model);
 @interface YLLookCarDetailView : UIView
 
 @property (nonatomic, strong) YLLookCarModel *model;
+@property (nonatomic, copy) LookCarDetailBlock lookCarDetailBlock;
 
 @end
 

@@ -10,6 +10,10 @@
 
 @interface YLCarInformationCell : UITableViewCell
 
+@property (nonatomic, strong) NSArray *images;
+@property (nonatomic, strong) NSArray *blemishs;
+
+
 @property (nonatomic, strong) NSString *image;
 @property (nonatomic, strong) NSString *title;
 

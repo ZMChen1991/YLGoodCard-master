@@ -22,7 +22,7 @@
     
     self = [super initWithFrame:frame];
     if (self) {
-        self.backgroundColor = [UIColor redColor];
+//        self.backgroundColor = [UIColor redColor];
         [self setupUI];
     }
     return self;
@@ -38,6 +38,8 @@
     layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
     
     self.collection = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height) collectionViewLayout:layout];
+//    self.collection = [[UICollectionView alloc] init];
+//    self.collection.collectionViewLayout = layout;
     self.collection.backgroundColor = [UIColor whiteColor];
     self.collection.pagingEnabled = YES;
     self.collection.delegate = self;
@@ -48,9 +50,10 @@
     [self addSubview:self.collection];
     
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(self.frame.size.width - 60, self.frame.size.height - 30, 50, 20)];
-    label.backgroundColor = [UIColor whiteColor];
+//    UILabel *label = [[UILabel alloc] init];
+    label.backgroundColor = YLColor(233.f, 233.f, 233.f);
     label.textAlignment = NSTextAlignmentCenter;
-    label.text = @"1/30";
+//    label.text = @"1/30";
     label.textColor = [UIColor lightGrayColor];
     label.font = [UIFont systemFontOfSize:12];
     label.layer.cornerRadius = 10.f;
@@ -64,13 +67,15 @@
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    NSLog(@"%ld", self.images.count);
     return self.images.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     YlBannerCollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"YlBannerCollectionCell" forIndexPath:indexPath];
-    YLVehicleModel *model = self.images[indexPath.row];
-    cell.image = model.img;
+//    YLVehicleModel *model = self.images[indexPath.row];
+    cell.image = self.images[indexPath.row];
+    cell.backgroundColor = YLRandomColor;
     return cell;
 }
 
@@ -89,7 +94,8 @@
 - (void)layoutSubviews {
     
     [super layoutSubviews];
-    
+//    self.collection.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
+//    self.label.frame = CGRectMake(self.frame.size.width - 60, self.frame.size.height - 30, 50, 20);
 }
 
 

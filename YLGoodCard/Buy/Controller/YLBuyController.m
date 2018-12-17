@@ -261,8 +261,9 @@
             self.selectView.hidden = YES;
         }else {
             NSLog(@"筛选");
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"此功能以后再开放" delegate:nil cancelButtonTitle:@"好的" otherButtonTitles:nil, nil];
-            [alert show];
+//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"此功能以后再开放" delegate:nil cancelButtonTitle:@"好的" otherButtonTitles:nil, nil];
+//            [alert show];
+            [self showMessage:@"此功能以后再开放"];
             self.isSelect = NO;
 //            self.coverView.hidden = NO;
 //            self.sortView.hidden = YES;
@@ -371,6 +372,29 @@
         return YES;
     }
     return NO;
+}
+
+// 提示弹窗
+- (void)showMessage:(NSString *)message {
+    UIWindow *window = [UIApplication sharedApplication].keyWindow;// 获取最上层窗口
+    
+    UILabel *messageLabel = [[UILabel alloc] init];
+    CGSize messageSize = CGSizeMake([message getSizeWithFont:[UIFont systemFontOfSize:12]].width + 30, 30);
+    messageLabel.frame = CGRectMake((YLScreenWidth - messageSize.width) / 2, YLScreenHeight/2, messageSize.width, messageSize.height);
+    messageLabel.text = message;
+    messageLabel.font = [UIFont systemFontOfSize:12];
+    messageLabel.textColor = [UIColor blackColor];
+    messageLabel.textAlignment = NSTextAlignmentCenter;
+    messageLabel.backgroundColor = YLColor(233.f, 233.f, 233.f);
+    messageLabel.layer.cornerRadius = 5.0f;
+    messageLabel.layer.masksToBounds = YES;
+    [window addSubview:messageLabel];
+    
+    [UIView animateWithDuration:1 animations:^{
+        messageLabel.alpha = 0;
+    } completion:^(BOOL finished) {
+        [messageLabel removeFromSuperview];
+    }];
 }
 
 #pragma mark 懒加载

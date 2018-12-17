@@ -109,6 +109,7 @@
     self.soldOut = soldOut;
 }
 
+#warning cell的显示问题还需要修改
 - (void)setCellFrame:(YLBargainHistoryCellFrame *)cellFrame {
     _cellFrame = cellFrame;
     

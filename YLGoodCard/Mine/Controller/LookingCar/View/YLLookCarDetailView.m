@@ -19,6 +19,7 @@
 @property (nonatomic, strong) UILabel *originalPrice; // 新车价
 @property (nonatomic, strong) UILabel *lookCarTime; // 看车时间
 
+@property (nonatomic, strong) YLTableViewModel *tableViewModel;
 @property (nonatomic, strong) UIView *line;// 底线
 
 @end
@@ -29,9 +30,20 @@
     self = [super initWithFrame:frame];
     if (self) {
         [self setupUI];
+        
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapClick:)];
+        [self addGestureRecognizer:tap];
+        self.userInteractionEnabled = YES;
     }
     return self;
 }
+
+- (void)tapClick:(UITapGestureRecognizer *)sender {
+    if (self.lookCarDetailBlock) {
+        self.lookCarDetailBlock(self.tableViewModel);
+    }
+}
+
 
 - (void)setupUI {
     
@@ -99,6 +111,9 @@
 
 - (void)setModel:(YLLookCarModel *)model {
     _model = model;
+    
+    self.tableViewModel = [YLTableViewModel mj_objectWithKeyValues:model.detail];
+    
     [self.icon sd_setImageWithURL:[NSURL URLWithString:model.detail.displayImg] placeholderImage:nil];
     self.title.text = model.detail.title;
     self.lookCarTime.text = [NSString stringWithFormat:@"看车时间: %@", model.appointTime];

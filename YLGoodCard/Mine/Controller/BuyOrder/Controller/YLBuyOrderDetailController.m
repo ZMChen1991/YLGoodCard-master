@@ -12,6 +12,7 @@
 #import "YLCompleteView.h"
 #import "YLStepView.h"
 #import "YLRequest.h"
+#import "YLDetailController.h"
 
 @interface YLBuyOrderDetailController ()
 
@@ -42,6 +43,12 @@
     
     YLBuyOrderCommand *command = [[YLBuyOrderCommand alloc] initWithFrame:CGRectMake(0, 64, YLScreenWidth, 110)];
     command.model = self.model;
+    __weak typeof(self) weakSelf = self;
+    command.buyOrderCommandBlock = ^(YLTableViewModel * _Nonnull model) {
+        YLDetailController *detai = [[YLDetailController alloc] init];
+        detai.model = model;
+        [weakSelf.navigationController pushViewController:detai animated:YES];
+    };
     [self.view addSubview:command];
     
     NSArray *titles = @[@"合同签署", @"车辆复检", @"交易完成"];

@@ -14,6 +14,7 @@
 #import "YLLookCarNumberView.h"
 #import "YLRequest.h"
 #import "YLSaleOrderModel.h"
+#import "YLDetailController.h"
 
 @interface YLSaleDetailController ()
 
@@ -107,6 +108,11 @@
     
     YLCommandView *command = [[YLCommandView alloc] initWithFrame:CGRectMake(0, 64, YLScreenWidth, 110)];
 //    command.model = self.model;
+    command.saleOrderCommandBlock = ^(YLTableViewModel * _Nonnull model) {
+        YLDetailController *detail = [[YLDetailController alloc] init];
+        detail.model = model;
+        [self.navigationController pushViewController:detail animated:YES];
+    };
     [self.view addSubview:command];
     self.command = command;
     

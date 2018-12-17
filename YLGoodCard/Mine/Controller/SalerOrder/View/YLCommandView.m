@@ -18,6 +18,8 @@
 @property (nonatomic, strong) UILabel *price; // 销售价格
 @property (nonatomic, strong) UILabel *originalPrice; // 新车价
 
+@property (nonatomic, strong) YLTableViewModel *tableViewModel;
+
 @end
 
 @implementation YLCommandView
@@ -27,8 +29,18 @@
     self = [super initWithFrame:frame];
     if (self) {
         [self setupUI];
+        
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapClick:)];
+        [self addGestureRecognizer:tap];
+        self.userInteractionEnabled = YES;
     }
     return self;
+}
+
+- (void)tapClick:(UITapGestureRecognizer *)sender {
+    if (self.saleOrderCommandBlock) {
+        self.saleOrderCommandBlock(self.tableViewModel);
+    }
 }
 
 - (void)setupUI {
@@ -72,7 +84,6 @@
     [super layoutSubviews];
     
     self.icon.frame = CGRectMake(YLLeftMargin, YLTopSpace, 120, 86);
-    
     float titleX = CGRectGetMaxX(self.icon.frame) + YLLeftMargin;
     float titleW = YLScreenWidth - 120 - 2 * YLLeftMargin - YLTopSpace;
     self.title.frame = CGRectMake(titleX, YLTopSpace, titleW, 34);
@@ -83,6 +94,9 @@
 
 - (void)setModel:(YLSaleOrderModel *)model {
     _model = model;
+    
+    self.tableViewModel = [YLTableViewModel mj_objectWithKeyValues:model.detail];
+    NSLog(@"%@", self.tableViewModel);
     
     [self.icon sd_setImageWithURL:[NSURL URLWithString:model.detail.displayImg] placeholderImage:nil];
     self.title.text = model.detail.title;

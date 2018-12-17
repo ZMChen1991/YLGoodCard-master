@@ -22,6 +22,7 @@
 //@property (nonatomic, strong) YLCondition *bargainNumber;// 砍价数量
 @property (nonatomic, strong) UIView *line;
 
+@property (nonatomic, strong) YLTableViewModel *tableViewModel;
 //@property (nonatomic, strong) UIView *line;
 
 @end
@@ -34,8 +35,18 @@
     if (self) {
         self.backgroundColor = [UIColor whiteColor];
         [self setupUI];
+        
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapClick:)];
+        [self addGestureRecognizer:tap];
+        self.userInteractionEnabled = YES;
     }
     return self;
+}
+
+- (void)tapClick:(UITapGestureRecognizer *)sender {
+    if (self.bargainHistoryBlock) {
+        self.bargainHistoryBlock(self.tableViewModel);
+    }
 }
 
 - (void)setupUI {
@@ -96,6 +107,9 @@
 - (void)setModel:(YLBargainHistoryModel *)model {
     
     _model = model;
+    
+    self.tableViewModel = [YLTableViewModel mj_objectWithKeyValues:model.detail];
+    NSLog(@"%@", self.tableViewModel);
     
     self.icon.frame = CGRectMake(YLLeftMargin, YLTopSpace, 120, 86);
     

@@ -11,6 +11,7 @@
 #define YLTopSpace 10
 @interface YLBuyOrderCommand ()
 
+@property (nonatomic, strong) YLTableViewModel *tableViewModel;
 @property (nonatomic, strong) UIImageView *icon; // 图片
 @property (nonatomic, strong) UILabel *title; // 名称
 @property (nonatomic, strong) UILabel *course; // 年/万公里
@@ -26,8 +27,17 @@
     self = [super initWithFrame:frame];
     if (self) {
         [self setupUI];
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapClick:)];
+        [self addGestureRecognizer:tap];
+        self.userInteractionEnabled = YES;
     }
     return self;
+}
+
+- (void)tapClick:(UITapGestureRecognizer *)sender {
+    if (self.buyOrderCommandBlock) {
+        self.buyOrderCommandBlock(self.tableViewModel);
+    }
 }
 
 - (void)setupUI {
@@ -76,12 +86,16 @@
     float titleW = YLScreenWidth - 120 - 2 * YLLeftMargin - YLTopSpace;
     self.title.frame = CGRectMake(titleX, YLTopSpace, titleW, 34);
     self.course.frame = CGRectMake(titleX, CGRectGetMaxY(self.title.frame) + 5, titleW, 17);
-    self.price.frame = CGRectMake(titleX, CGRectGetMaxY(self.course.frame) + 5, titleW/3, 25);
+    self.price.frame = CGRectMake(titleX, CGRectGetMaxY(self.course.frame) + 5, titleW/2, 25);
     self.originalPrice.frame = CGRectMake(CGRectGetMaxX(self.price.frame), CGRectGetMaxY(self.course.frame) + 9, YLScreenWidth - CGRectGetMaxX(self.price.frame) - YLTopSpace, 17);
 }
 
 - (void)setModel:(YLBuyOrderModel *)model {
     _model = model;
+    
+    self.tableViewModel = [YLTableViewModel mj_objectWithKeyValues:model.detail];
+    NSLog(@"%@", self.tableViewModel);
+    
     [self.icon sd_setImageWithURL:[NSURL URLWithString:model.detail.displayImg] placeholderImage:nil];
     self.title.text = model.detail.title;
     self.price.text = [self stringToNumber:model.detail.price];

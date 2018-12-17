@@ -139,6 +139,7 @@
 		8AC75BBF219996BB00D159C9 /* YLSkipView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AC75BBE219996BB00D159C9 /* YLSkipView.m */; };
 		8ACDC9BE2193FF3B00B5EF41 /* huo.png in Resources */ = {isa = PBXBuildFile; fileRef = 8ACDC9BD2193FF3B00B5EF41 /* huo.png */; };
 		8ACDC9C321942C4700B5EF41 /* NSString+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 8ACDC9C221942C4700B5EF41 /* NSString+Extension.m */; };
+		8AD17BD821C751E9009F67DF /* YLChoiceView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AD17BD721C751E9009F67DF /* YLChoiceView.m */; };
 		8AD7897A21A7A65D0002946B /* YLBuyCellFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AD7897921A7A65D0002946B /* YLBuyCellFrame.m */; };
 		8AD7897D21A7FF830002946B /* YLCarTypeController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AD7897C21A7FF830002946B /* YLCarTypeController.m */; };
 		8AD7CEAF219FD00900E5962A /* YLSearchView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AD7CEAE219FD00900E5962A /* YLSearchView.m */; };
@@ -459,6 +460,8 @@
 		8ACDC9BD2193FF3B00B5EF41 /* huo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = huo.png; sourceTree = "<group>"; };
 		8ACDC9C121942C4700B5EF41 /* NSString+Extension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+Extension.h"; sourceTree = "<group>"; };
 		8ACDC9C221942C4700B5EF41 /* NSString+Extension.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSString+Extension.m"; sourceTree = "<group>"; };
+		8AD17BD621C751E9009F67DF /* YLChoiceView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YLChoiceView.h; sourceTree = "<group>"; };
+		8AD17BD721C751E9009F67DF /* YLChoiceView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YLChoiceView.m; sourceTree = "<group>"; };
 		8AD7897821A7A65D0002946B /* YLBuyCellFrame.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YLBuyCellFrame.h; sourceTree = "<group>"; };
 		8AD7897921A7A65D0002946B /* YLBuyCellFrame.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YLBuyCellFrame.m; sourceTree = "<group>"; };
 		8AD7897B21A7FF830002946B /* YLCarTypeController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YLCarTypeController.h; sourceTree = "<group>"; };
@@ -1353,10 +1356,20 @@
 		8AC386C121C4E3BB009F063B /* Complaint */ = {
 			isa = PBXGroup;
 			children = (
+				8AD17BD521C751C9009F67DF /* View */,
 				8AC386C221C4E3E3009F063B /* YLComplaintController.h */,
 				8AC386C321C4E3E3009F063B /* YLComplaintController.m */,
 			);
 			path = Complaint;
+			sourceTree = "<group>";
+		};
+		8AD17BD521C751C9009F67DF /* View */ = {
+			isa = PBXGroup;
+			children = (
+				8AD17BD621C751E9009F67DF /* YLChoiceView.h */,
+				8AD17BD721C751E9009F67DF /* YLChoiceView.m */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		8ADE764A21A6AA3000C78F00 /* Search */ = {
@@ -1731,6 +1744,7 @@
 				8AE1D6B821ABD3D000726A3E /* YLBrandView.m in Sources */,
 				8ADE764621A698B000C78F00 /* YLSaleTool.m in Sources */,
 				8A205FC521B8F060009EA592 /* YLSearchParamView.m in Sources */,
+				8AD17BD821C751E9009F67DF /* YLChoiceView.m in Sources */,
 				8A25C5E621B2388500538437 /* YLSaleOrderCell.m in Sources */,
 				8ADEE50B21B0E4E000BAD2CD /* YLBuyOrderController.m in Sources */,
 				8A211139219164AD0014132C /* YLCarInformationCell.m in Sources */,

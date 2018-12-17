@@ -8,12 +8,15 @@
 
 #import <UIKit/UIKit.h>
 #import "YLBargainHistoryModel.h"
+#import "YLTableViewModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef void(^BargainHistoryBlock)(YLTableViewModel *model);
 @interface YLBargainHistoryDetailHeader : UIView
 
 @property (nonatomic, strong) YLBargainHistoryModel *model;
+@property (nonatomic, copy) BargainHistoryBlock bargainHistoryBlock;
 
 @end
 

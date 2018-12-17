@@ -91,6 +91,8 @@
     
     NSLog(@"点击确定");
     self.sureBtn.userInteractionEnabled = YES;
+    [self.highPrice resignFirstResponder];
+    [self.lowPrice resignFirstResponder];
     if (self.delegate && [self.delegate respondsToSelector:@selector(pushLowPrice:highPrice:)]) {
         [self.delegate pushLowPrice:self.lowPrice.text highPrice:self.highPrice.text];
     }
@@ -99,6 +101,8 @@
 - (void)clickPrice:(UIButton *)sender {
     
     NSLog(@"%@", sender.titleLabel.text);
+    [self.highPrice resignFirstResponder];
+    [self.lowPrice resignFirstResponder];
     if (self.customPriceBlock) {
         self.customPriceBlock(sender);
     }
