@@ -44,6 +44,7 @@
 @property (nonatomic, copy) NSMutableArray *notableTitles; // 存放走马灯广告
 
 @property (nonatomic, strong) NSMutableDictionary *param;// 请求参数
+@property (nonatomic, strong) NSMutableDictionary *tempParam;
 
 @property (nonatomic, strong) YLNotable *notableView;// 成交记录轮播
 @property (nonatomic, strong) IXWheelV *banner;
@@ -91,13 +92,6 @@
         YLNavigationController *nav = tab.viewControllers[1];
         YLBuyController *buy = nav.viewControllers.firstObject;
         [weakSelf.param removeAllObjects];
-//        // 将需要传过去的值保存到本地，到时候跳转到买车的时候直接读取再请求数据
-//        BOOL success = [weakSelf.param writeToFile:YLBuyParamPath atomically:YES];
-//        if (success) {
-//            NSLog(@"保存成功");
-//        } else {
-//            NSLog(@"保存失败");
-//        }
         buy.param = weakSelf.param;
         [buy.titleBar setTitle:@"搜索您想要的车" forState:UIControlStateNormal];
         tab.selectedIndex = 1;
@@ -106,42 +100,36 @@
         // 判断传过来的字符串，如果是金额跳转到买车搜索，如果是品牌，同样
         // 点击列表，跳转买车控制器
         [weakSelf.param removeAllObjects];// 清空条件搜索
+        [weakSelf.tempParam removeAllObjects];// 清空条件搜索
         YLTabBarController *tab = (YLTabBarController *)[UIApplication sharedApplication].keyWindow.rootViewController;
         YLNavigationController *nav = tab.viewControllers[1];
         YLBuyController *buy = nav.viewControllers.firstObject;
         NSString *labelStr = brand;
         if ([labelStr isEqualToString:@"5万以下"]) {
             [weakSelf.param setValue:@"0fgf50000" forKey:@"price"];
+            [weakSelf.tempParam setValue:labelStr forKey:@"price"];
         } else if ([labelStr isEqualToString:@"5-10万"]) {
             [weakSelf.param setValue:@"50000fgf100000" forKey:@"price"];
+            [weakSelf.tempParam setValue:labelStr forKey:@"price"];
         } else if ([labelStr isEqualToString:@"10-15万"]) {
             [weakSelf.param setValue:@"100000fgf150000" forKey:@"price"];
+            [weakSelf.tempParam setValue:labelStr forKey:@"price"];
         } else if ([labelStr isEqualToString:@"15万以上"]) {
             [weakSelf.param setValue:@"150000fgf99999999" forKey:@"price"];
+            [weakSelf.tempParam setValue:labelStr forKey:@"price"];
         } else {
             [weakSelf.param setValue:labelStr forKey:@"brand"];
+            [weakSelf.tempParam setValue:labelStr forKey:@"brand"];
         }
-        
-//        // 将需要传过去的值保存到本地，到时候跳转到买车的时候直接读取再请求数据
-//        BOOL success = [weakSelf.param writeToFile:YLBuyParamPath atomically:YES];
-//        if (success) {
-//            NSLog(@"保存成功:%@", YLBuyParamPath);
-//        } else {
-//            NSLog(@"保存失败%@", YLBuyParamPath);
-//        }
         buy.param = weakSelf.param;
-        [buy.titleBar setTitle:labelStr forState:UIControlStateNormal];
+        buy.tempParam = weakSelf.tempParam;
         tab.selectedIndex = 1;
-        [weakSelf.param removeAllObjects];
     };
     [header addSubview:hotCar];
     self.hotCar = hotCar;
 }
 
 - (void)loadData {
-    
-    
-    
     
     // 获取轮播图
     NSString *bannerStr = @"http://ucarjava.bceapp.com/home?method=slide";
@@ -255,23 +243,6 @@
 
 
 #pragma mark 代理方法
-//// 这里是条件搜索框里的按钮代理方法，根据标题跳转到搜索框搜索相关的车辆
-//- (void)selectBtnTitle:(NSString *)title {
-//
-//    NSLog(@"%@", title);
-//    YLSearchController *search = [[YLSearchController alloc] init];
-//    search.searchTitle = title;
-//    [self.navigationController pushViewController:search animated:YES];
-//}
-//
-//// 查看更多
-//- (void)checkMore {
-//    
-//    NSLog(@"YLMainController:checkMore");
-//    YLSearchController *searchVc = [[YLSearchController alloc] init];
-//    [self.navigationController pushViewController:searchVc animated:YES];
-//}
-
 // 点击首页热门二手车的查看更多
 - (void)pushBuyControl {
     
@@ -286,16 +257,8 @@
 
 #pragma mark Private
 - (void)setNav {
-    
-//    // 设置导航栏透明
-//    [self.navigationController.navigationBar setTranslucent:YES];
-////    // 设置导航栏背景为空
-//    [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
-//    // 设置导航栏底部线条为空
-//    [self.navigationController.navigationBar setShadowImage:[UIImage new]];
     // 添加左右导航栏按钮
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"阳江" style:UIBarButtonItemStylePlain target:self action:@selector(leftBarButtonItemClick)];
-//    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"..." style:UIBarButtonItemStylePlain target:self action:@selector(rightBarButtonItemClick)];
     [self.navigationController.navigationBar setBackgroundColor:YLColor(8.f, 169.f, 255.f)];
     // 设置导航栏背景为空
     [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
@@ -331,10 +294,7 @@
         [self.navigationController pushViewController:search animated:YES];
     } failure:^(NSError * _Nonnull error) {
     }];
-    
 }
-
-
 - (void)leftBarButtonItemClick {
     
     [self showMessage:@"暂时只支持阳江市"];
@@ -350,7 +310,6 @@
 // 提示弹窗
 - (void)showMessage:(NSString *)message {
     UIWindow *window = [UIApplication sharedApplication].keyWindow;// 获取最上层窗口
-    
     UILabel *messageLabel = [[UILabel alloc] init];
     CGSize messageSize = CGSizeMake([message getSizeWithFont:[UIFont systemFontOfSize:12]].width + 30, 30);
     messageLabel.frame = CGRectMake((YLScreenWidth - messageSize.width) / 2, YLScreenHeight/2, messageSize.width, messageSize.height);
@@ -362,7 +321,6 @@
     messageLabel.layer.cornerRadius = 5.0f;
     messageLabel.layer.masksToBounds = YES;
     [window addSubview:messageLabel];
-    
     [UIView animateWithDuration:1 animations:^{
         messageLabel.alpha = 0;
     } completion:^(BOOL finished) {
@@ -372,7 +330,6 @@
 
 #pragma mark 懒加载
 - (NSMutableArray *)recommends {
-    
     if (!_recommends) {
         _recommends = [NSMutableArray array];
     }
@@ -380,7 +337,6 @@
 }
 
 - (NSMutableArray *)images {
-
     if (!_images) {
         _images = [NSMutableArray array];
     }
@@ -388,7 +344,6 @@
 }
 
 - (NSMutableArray *)notableTitles {
-
     if (!_notableTitles) {
         _notableTitles = [NSMutableArray array];
     }
@@ -397,11 +352,17 @@
 
 
 - (NSMutableDictionary *)param {
-    
     if (!_param) {
         _param = [NSMutableDictionary dictionary];
     }
     return _param;
 }
 
+- (NSMutableDictionary *)tempParam {
+    
+    if (!_tempParam) {
+        _tempParam = [NSMutableDictionary dictionary];
+    }
+    return _tempParam;
+}
 @end

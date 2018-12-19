@@ -20,6 +20,8 @@
 		8A0E3F51218A95F300275131 /* YLMineController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A0E3F50218A95F300275131 /* YLMineController.m */; };
 		8A0E3F67218AA14200275131 /* YLTitleBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A0E3F66218AA14200275131 /* YLTitleBar.m */; };
 		8A0E3F79218AEC8400275131 /* UIView+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A0E3F77218AEC8400275131 /* UIView+Extension.m */; };
+		8A1A846621C8D623001A1656 /* YLTitleLinkageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A1A846421C8D623001A1656 /* YLTitleLinkageView.m */; };
+		8A1A846C21C8E1B8001A1656 /* YLConditionParamView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A1A846B21C8E1B8001A1656 /* YLConditionParamView.m */; };
 		8A205FBC21B8BAAB009EA592 /* IXWheelV.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A205FBB21B8BAAB009EA592 /* IXWheelV.m */; };
 		8A205FC221B8C3DC009EA592 /* YLHotCarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A205FC121B8C3DC009EA592 /* YLHotCarView.m */; };
 		8A205FC521B8F060009EA592 /* YLSearchParamView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A205FC421B8F060009EA592 /* YLSearchParamView.m */; };
@@ -226,6 +228,10 @@
 		8A0E3F72218AE60300275131 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
 		8A0E3F77218AEC8400275131 /* UIView+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Extension.m"; sourceTree = "<group>"; };
 		8A0E3F78218AEC8400275131 /* UIView+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Extension.h"; sourceTree = "<group>"; };
+		8A1A846421C8D623001A1656 /* YLTitleLinkageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YLTitleLinkageView.m; sourceTree = "<group>"; };
+		8A1A846521C8D623001A1656 /* YLTitleLinkageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YLTitleLinkageView.h; sourceTree = "<group>"; };
+		8A1A846A21C8E1B8001A1656 /* YLConditionParamView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YLConditionParamView.h; sourceTree = "<group>"; };
+		8A1A846B21C8E1B8001A1656 /* YLConditionParamView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YLConditionParamView.m; sourceTree = "<group>"; };
 		8A205FBA21B8BAAB009EA592 /* IXWheelV.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXWheelV.h; sourceTree = "<group>"; };
 		8A205FBB21B8BAAB009EA592 /* IXWheelV.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IXWheelV.m; sourceTree = "<group>"; };
 		8A205FC021B8C3DC009EA592 /* YLHotCarView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YLHotCarView.h; sourceTree = "<group>"; };
@@ -751,6 +757,8 @@
 				8AF0DB132196C91A00A3A11F /* YLConditionCell.m */,
 				8A6913A321903491003B0EE2 /* YLLinkageView.h */,
 				8A6913A421903491003B0EE2 /* YLLinkageView.m */,
+				8A1A846521C8D623001A1656 /* YLTitleLinkageView.h */,
+				8A1A846421C8D623001A1656 /* YLTitleLinkageView.m */,
 				8AF43E552192DF3F003E2D5B /* YLCustomPrice.h */,
 				8AF43E562192DF3F003E2D5B /* YLCustomPrice.m */,
 				8AF0DB0F2196C74400A3A11F /* YLSelectView.h */,
@@ -761,6 +769,8 @@
 				8ADE763321A65CAF00C78F00 /* YLBuyTableViewCell.m */,
 				8A205FC321B8F060009EA592 /* YLSearchParamView.h */,
 				8A205FC421B8F060009EA592 /* YLSearchParamView.m */,
+				8A1A846A21C8E1B8001A1656 /* YLConditionParamView.h */,
+				8A1A846B21C8E1B8001A1656 /* YLConditionParamView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1654,6 +1664,7 @@
 				8A205FC221B8C3DC009EA592 /* YLHotCarView.m in Sources */,
 				8AC348C021B4264A00BC9D11 /* YLDepreciateCell.m in Sources */,
 				8AF43E512192CB83003E2D5B /* YLCondition.m in Sources */,
+				8A1A846C21C8E1B8001A1656 /* YLConditionParamView.m in Sources */,
 				8ADE765021A6AFF000C78F00 /* YLSearchParamModel.m in Sources */,
 				8AC3489F21B3D51100BC9D11 /* YLCommandView.m in Sources */,
 				8A3E6AA221B503E6008C5D6F /* YLStepView.m in Sources */,
@@ -1811,6 +1822,7 @@
 				8AFC7B4121A3F21600570E83 /* UIBarButtonItem+Extension.m in Sources */,
 				8A0E3F51218A95F300275131 /* YLMineController.m in Sources */,
 				8A90399B21A285140099BC98 /* YLDetectCenterView.m in Sources */,
+				8A1A846621C8D623001A1656 /* YLTitleLinkageView.m in Sources */,
 				8AC75BBF219996BB00D159C9 /* YLSkipView.m in Sources */,
 				8AC386C021C4D2CE009F063B /* YLBannerCollectionView.m in Sources */,
 				8AC3868F21C49187009F063B /* YLBlemishModel.m in Sources */,

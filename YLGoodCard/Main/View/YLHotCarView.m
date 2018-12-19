@@ -26,8 +26,7 @@
     
     CGRect goupHeaderRect = CGRectMake(0, 0, YLScreenWidth, 44);
     YLTableGroupHeader *groupHeader = [[YLTableGroupHeader alloc] initWithFrame:goupHeaderRect image:@"热门二手车" title:@"热门二手车" detailTitle:@"查看更多" arrowImage:@"更多"];
-    groupHeader.labelBlock = ^(NSString * _Nonnull string) {
-        NSLog(@"%@", string);
+    groupHeader.labelBlock = ^() {
         if (self.moreBlock) {
             self.moreBlock();
         }

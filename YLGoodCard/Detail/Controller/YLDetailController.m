@@ -174,17 +174,11 @@
     CGRect headerRect = CGRectMake(0, 0, YLScreenWidth, 44);
     NSArray *titles = @[@"服务保障",@"基本信息",@"检测报告",@"车辆图文"];
     NSArray *images = @[@"服务保障", @"基本信息", @"检测报告", @"车辆图文"];
-    NSArray *details = @[@"", @"查看更多配置", @"", @""];
+    NSArray *details = @[@"", @"", @"", @""];
     YLTableGroupHeader *header = [[YLTableGroupHeader alloc] initWithFrame:headerRect image:images[section] title:titles[section] detailTitle:details[section] arrowImage:@"更多"];
-    header.labelBlock = ^(NSString * _Nonnull string) {
-        NSLog(@"string:%@",string);
-        BOOL success = [string isEqualToString:@"查看更多配置"];
-        NSLog(@"success:%d", success);
-        if ([string isEqualToString:@"查看更多配置"]) {
-            NSLog(@"跳转更多配置界面");
-            [self showMessage:@"正在开发中，敬请期待"];
-        }
-    };
+//    header.labelBlock = ^() {
+//            [self showMessage:@"正在开发中，敬请期待"];
+//    };
     header.backgroundColor = [UIColor whiteColor];
     return header;
 }

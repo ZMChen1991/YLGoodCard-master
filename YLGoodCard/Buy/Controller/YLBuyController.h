@@ -17,5 +17,7 @@
 @property (nonatomic, strong) YLTitleBar *titleBar;
 
 @property (nonatomic, strong) NSMutableDictionary *param;
+@property (nonatomic, strong) NSMutableDictionary *tempParam;
+
 
 @end

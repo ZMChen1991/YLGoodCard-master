@@ -56,7 +56,7 @@
     consult.type = YLConditionTypeBlue;
     consult.titleLabel.font = [UIFont systemFontOfSize:14];
     [consult setTitle:@"咨询车况" forState:UIControlStateNormal];
-    [consult addTarget:self action:@selector(conssultClick) forControlEvents:UIControlEventTouchUpInside];
+    [consult addTarget:self action:@selector(consultClick) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:consult];
     
     UIView *bg = [[UIView alloc] initWithFrame:CGRectMake(YLLeftMargin,CGRectGetMaxY(icon.frame) + YLTopMargin, 345, 180)];
@@ -65,7 +65,6 @@
 //    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(YLLeftMargin, YLLeftMargin, 308, 180)];
 //    view.backgroundColor = [UIColor redColor];
     
-#warning 这里是一个UIlabel控件，以后修改到在改
     UILabel *textView = [[UILabel alloc] initWithFrame:CGRectMake(YLLeftMargin, 0, 308, 180)];
     textView.backgroundColor = YLColor(244.f, 244.f, 244.f);
     textView.font = [UIFont systemFontOfSize:14];
@@ -87,9 +86,15 @@
     [self addSubview:pic];
 }
 
-- (void)conssultClick {
+- (void)consultClick {
     
     NSLog(@"reportCell:咨询车况");
+    NSString *callPhone = [NSString stringWithFormat:@"telprompt://%@", @"4008301282"];
+    if (@available(iOS 10.0, *)) {
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:callPhone] options:@{} completionHandler:nil];
+    } else {
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:callPhone]];
+    }
 }
 
 // cell获取的宽不对，这里重设宽

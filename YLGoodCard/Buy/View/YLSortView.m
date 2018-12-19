@@ -60,8 +60,11 @@
 //    NSLog(@"%@", self.dataArray[indexPath.row]);
     
     // 代理
-    if (self.delegate && [self.delegate respondsToSelector:@selector(didSelectSort:)]) {
-        [self.delegate didSelectSort:indexPath.row];
+//    if (self.delegate && [self.delegate respondsToSelector:@selector(didSelectSort:)]) {
+//        [self.delegate didSelectSort:indexPath.row];
+//    }
+    if (self.sortViewBlock) {
+        self.sortViewBlock(indexPath.row, self.dataArray[indexPath.row]);
     }
 }
 

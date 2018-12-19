@@ -39,6 +39,7 @@
         
         UILabel *detailTitleLabel = [[UILabel alloc] init];
         detailTitleLabel.text = detailTitle;
+        detailTitleLabel.textColor = YLColor(155.f, 155.f, 155.f);
         detailTitleLabel.textAlignment = NSTextAlignmentRight;
         detailTitleLabel.font = [UIFont systemFontOfSize:12];
         detailTitleLabel.userInteractionEnabled = YES;
@@ -49,6 +50,9 @@
         
         UIImageView *arrowIcon = [[UIImageView alloc] init];
         arrowIcon.image = [UIImage imageNamed:arrowImage];
+//        UITapGestureRecognizer *tap1 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(labelClick:)];
+//        [arrowIcon addGestureRecognizer:tap];
+//        [arrowIcon setUserInteractionEnabled:YES];
         [self addSubview:arrowIcon];
         self.arrowIcon = arrowIcon;
         
@@ -62,13 +66,16 @@
 
 - (void)labelClick:(UITapGestureRecognizer *)tap {
     
-    UILabel *label = (UILabel *)tap.view;
-    if (![self isBlankString:label.text]) {
-        self.labelBlock(label.text);
-    }
+//    UILabel *label = (UILabel *)tap.view;
+//    if (![self isBlankString:label.text]) {
+//        self.labelBlock(label.text);
+//    }
 //    if (self.delegate && [self.delegate respondsToSelector:@selector(pushBuyControl)]) {
 //        [self.delegate pushBuyControl];
 //    }
+    if (self.labelBlock) {
+        self.labelBlock();
+    }
 }
 
 // 判断字符串是否为空或者空格符
@@ -95,8 +102,8 @@
     float titleW = width / 3;
     self.icon.frame = CGRectMake(YLLeftMargin, YLTopMargin, 20, iconH);
     self.titleLabel.frame = CGRectMake(CGRectGetMaxX(self.icon.frame) + 5, YLTopMargin, titleW, iconH);
-    self.arrowIcon.frame = CGRectMake(width - YLTopMargin - 8, YLTopMargin  + 4, 8, iconH / 2);
-    self.detailTitleLabel.frame = CGRectMake(CGRectGetMidX(self.arrowIcon.frame) - titleW - 5, YLTopMargin, titleW, iconH);
+    self.arrowIcon.frame = CGRectMake(width - YLTopMargin - 10 - 5, YLTopMargin  + 4, 10, iconH / 1.5);
+    self.detailTitleLabel.frame = CGRectMake(CGRectGetMidX(self.arrowIcon.frame) - titleW - 10, YLTopMargin + 1, titleW, iconH);
 //    self.line.frame = CGRectMake(0, CGRectGetMaxY(self.icon.frame) + YLTopMargin, width, 1);
 }
 

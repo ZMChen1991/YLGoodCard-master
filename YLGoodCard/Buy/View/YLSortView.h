@@ -16,8 +16,11 @@
 
 @end
 
+
+typedef void(^SortViewBlock)(NSInteger index, NSString *title);
 @interface YLSortView : UIView
 
 @property (nonatomic, weak) id<YLSortViewDelegate> delegate;
+@property (nonatomic, copy) SortViewBlock sortViewBlock;
 
 @end
