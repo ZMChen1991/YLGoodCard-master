@@ -35,6 +35,8 @@
 #import "IXWheelV.h"
 #import "YLHotCarView.h"
 
+#define YLMainPath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"main.plist"]
+
 @interface YLMainController ()<UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) UITableView *tableView;
@@ -50,6 +52,8 @@
 @property (nonatomic, strong) IXWheelV *banner;
 @property (nonatomic, strong) YLHotCarView *hotCar;
 
+@property (nonatomic, strong) NSMutableDictionary *datas;// 存放数据的字典
+
 @end
 
 @implementation YLMainController
@@ -59,9 +63,11 @@
     self.view.backgroundColor = [UIColor whiteColor];
     self.automaticallyAdjustsScrollViewInsets = NO; // 不自动调节滚动区域
 
-    [self loadData];
+    
     [self setNav];
     [self createTableView];
+    
+    [self loadData];
 }
 
 - (void)createTableView {
@@ -138,7 +144,6 @@
             NSLog(@"bannerStr%@", responseObject[@"message"]);
         } else {
             [self.images removeAllObjects];
-            NSLog(@"bannerStr%@", responseObject[@"data"]);
             NSArray *banners = [YLBannerModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"]];
             for (YLBannerModel *model in banners) {
                 if (!model.img) {
@@ -146,7 +151,7 @@
                 }
                 [self.images addObject:model.img];
             }
-            NSLog(@"%@", self.images);
+//            NSLog(@"%@", self.images);
             self.banner.items = self.images;
         }
     } failed:nil];
@@ -158,7 +163,6 @@
             NSLog(@"notableStr%@", responseObject[@"message"]);
         } else {
             [self.notableTitles removeAllObjects];
-            NSLog(@"notableStr%@", responseObject[@"data"]);
             NSArray *notables = [YLNotableModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"]];
             for (YLNotableModel *model in notables) {
                 NSString *notable = model.text;
@@ -167,7 +171,7 @@
                 }
                 [self.notableTitles addObject:notable];
             }
-            NSLog(@"%@", self.notableTitles);
+//            NSLog(@"%@", self.notableTitles);
             self.notableView.titles = self.notableTitles;
         }
     } failed:nil];
@@ -179,7 +183,6 @@
             NSLog(@"recommendStr%@", responseObject[@"message"]);
         } else {
             [self.recommends removeAllObjects];
-            NSLog(@"recommendStr%@", responseObject[@"data"]);
             NSArray *recomments = [YLTableViewModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"]];
             for (YLTableViewModel *model in recomments) {
                 [self.recommends addObject:model];
@@ -188,6 +191,43 @@
         }
     } failed:nil];
 }
+
+- (void)getData {
+    NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:YLMainPath];
+    NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithContentsOfFile:YLMainPath];
+    if (!dict) {
+        [self loadData];
+    } else {
+        
+    }
+//    NSDictionary *temp = [dict objectForKey:@"banner"];
+//    NSLog(@"%@", temp);
+//    NSArray *banners = [YLBannerModel mj_keyValuesArrayWithObjectArray:temp];
+//    for (YLBannerModel *model in temp) {
+//        if (!model.img) {
+//            break;
+//        }
+//        [self.images addObject:model.img];
+//    }
+//    self.banner.items = self.images;
+//
+//    NSArray *trades = [YLNotableModel mj_keyValuesArrayWithObjectArray:dict[@"trade"]];
+//    for (YLNotableModel *model in trades) {
+//        if (!model.text) {
+//            break;
+//        }
+//        [self.notableTitles addObject:model.text];
+//    }
+//    self.notableView.titles = self.notableTitles;
+//
+//    NSArray *recommends = [YLTableViewModel mj_keyValuesArrayWithObjectArray:dict[@"recommend"]];
+//    for (YLTableViewModel *model in recommends) {
+//        [self.recommends addObject:model];
+//    }
+//    [self.tableView reloadData];
+    
+}
+
 
 - (void)loadMoreData {
     
@@ -364,5 +404,12 @@
         _tempParam = [NSMutableDictionary dictionary];
     }
     return _tempParam;
+}
+
+- (NSMutableDictionary *)datas {
+    if (!_datas) {
+        _datas = [NSMutableDictionary dictionary];
+    }
+    return _datas;
 }
 @end

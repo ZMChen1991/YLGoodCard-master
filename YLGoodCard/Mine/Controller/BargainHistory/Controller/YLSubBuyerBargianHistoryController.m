@@ -47,7 +47,7 @@
     NSMutableDictionary *param = [NSMutableDictionary dictionary];
     [param setValue:account.telephone forKey:@"telephone"];
     [YLRequest GET:urlString parameters:param success:^(id  _Nonnull responseObject) {
-        NSLog(@"%@", responseObject);
+         NSLog(@"YLSubBuyerBargianHistoryController-urlString:%@-param:%@ \nresponseObject:%@",urlString, param, responseObject);
         if ([responseObject[@"code"] isEqualToNumber:[NSNumber numberWithInteger:200]]) {
             NSLog(@"请求成功%@", responseObject[@"data"]);
             NSArray *models = [YLBargainHistoryModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"]];

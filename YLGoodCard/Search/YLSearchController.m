@@ -59,11 +59,14 @@
             // 这里跳转到买车控制器
             NSMutableDictionary *param = [NSMutableDictionary dictionary];
             [param setValue:string forKey:@"brand"];
+            NSMutableDictionary *tempParam = [NSMutableDictionary dictionary];
+            [tempParam setValue:string forKey:@"brand"];
             // 获取tabBarVC里的导航控制器存放的子控制器，传值到子控制器，再切换视图
             YLTabBarController *tab = (YLTabBarController *)[UIApplication sharedApplication].keyWindow.rootViewController;
             YLNavigationController *nav2 = tab.viewControllers[1];
             YLBuyController *buy = nav2.viewControllers.firstObject;
             buy.param = param;
+            buy.tempParam = tempParam;
             tab.selectedIndex = 1;
             [weakSelf.navigationController popToRootViewControllerAnimated:YES];
         };
@@ -141,11 +144,14 @@
         NSString *titleString = self.searchBar.text;
         NSMutableDictionary *dict = [NSMutableDictionary dictionary];
         [dict setValue:titleString forKey:@"title"];
+        NSMutableDictionary *tempParam = [NSMutableDictionary dictionary];
+        [tempParam setValue:titleString forKey:@"title"];
         // 跳转m到买车控制器
         YLTabBarController *tab = (YLTabBarController *)[UIApplication sharedApplication].keyWindow.rootViewController;
         YLNavigationController *nav = tab.viewControllers[1];
         YLBuyController *buy = nav.viewControllers.firstObject;
         buy.param = dict;
+        buy.tempParam = tempParam;
         [buy.titleBar setTitle:titleString forState:UIControlStateNormal];
         tab.selectedIndex = 1;
         [self.navigationController popToRootViewControllerAnimated:YES];

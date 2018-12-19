@@ -28,6 +28,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = @"设置";
+//    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
     self.titles = @[@"清除缓存", @"关于优卡", @"用户隐私条款"];
     NSDictionary *info = [[NSBundle mainBundle] infoDictionary];
@@ -35,7 +36,7 @@
     NSString *appName = [info objectForKey:@"CFBundleName"];
     NSLog(@"当前版本号：%@--%@", versionNum, appName);
     
-    self.detailTitles = @[@"126.5M", versionNum, appName];
+    self.detailTitles = @[@"0.0M", versionNum, @""];
     
     UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, YLScreenWidth, 200)];
     YLCondition *logOut = [[YLCondition alloc] initWithFrame:CGRectMake(YLLeftMargin, 30, YLScreenWidth - 2 * YLLeftMargin, 40)];
@@ -57,12 +58,15 @@
 - (void)logout {
     
     NSLog(@"退出登录");
+    
     [YLAccountTool loginOut];
+    
 //    // 跳转m到买车控制器
     YLTabBarController *tab = (YLTabBarController *)[UIApplication sharedApplication].keyWindow.rootViewController;
     YLNavigationController *nav = tab.viewControllers[3];
     YLMineController *mine = nav.viewControllers.firstObject;
     mine.isLogin = NO;
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"REFRESHTABLEVIEW" object:nil];
     [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
@@ -90,6 +94,7 @@
     cell.detailTextLabel.font = [UIFont systemFontOfSize:12];
     cell.textLabel.text = self.titles[indexPath.row];
     cell.detailTextLabel.text = self.detailTitles[indexPath.row];
+    cell.selectionStyle = UITableViewCellSeparatorStyleNone;
     return cell;
 }
 

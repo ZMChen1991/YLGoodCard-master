@@ -75,7 +75,7 @@
     YlBannerCollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"YlBannerCollectionCell" forIndexPath:indexPath];
 //    YLVehicleModel *model = self.images[indexPath.row];
     cell.image = self.images[indexPath.row];
-    cell.backgroundColor = YLRandomColor;
+//    cell.backgroundColor = YLRandomColor;
     return cell;
 }
 

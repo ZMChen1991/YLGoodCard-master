@@ -20,7 +20,8 @@
     self.navigationItem.title = @"关于优卡";
     
     UIImageView *icon = [[UIImageView alloc] initWithFrame:CGRectMake(148, 94, 80, 80)];
-    icon.backgroundColor = [UIColor redColor];
+    icon.image = [UIImage imageNamed:@"优卡"];
+    icon.backgroundColor = YLColor(233.f, 233.f, 233.f);
     [self.view addSubview:icon];
     
     UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(icon.frame) + 5, YLScreenWidth, 22)];

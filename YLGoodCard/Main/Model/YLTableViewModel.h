@@ -32,6 +32,8 @@ typedef NS_ENUM(NSInteger, YLTableViewCellStatus) {
 @property (nonatomic, strong) NSString *downPrice;
 @property (nonatomic, strong) NSString *bargain;
 @property (nonatomic, strong) NSString *status;
+@property (nonatomic, strong) NSString *location;
+@property (nonatomic, strong) NSString *licenseTime;
 
 @property (nonatomic, assign) YLTableViewCellStatus cellStatus;
 //@property (nonatomic, assign) BOOL isLargeImage;

@@ -55,7 +55,7 @@
 @property (nonatomic, strong) YLMineIcon *mineIcon;
 @property (nonatomic, strong) YLFunctionView *functionView;
 
-@property (nonatomic, strong) YLAccount *account;
+//@property (nonatomic, strong) YLAccount *account;
 @property (nonatomic, strong) NSMutableArray *browsingHistory;
 @property (nonatomic, assign) NSInteger browsingHistoryCount;
 
@@ -74,10 +74,10 @@
     [self setupNav];
     [self setupUI];
     
-    self.account = [YLAccountTool account];
-    if (self.account) {
+    YLAccount *account = [YLAccountTool account];
+    if (account) {
         self.isLogin = YES;
-        self.mineIcon.telephone = self.account.telephone;
+        self.mineIcon.telephone = account.telephone;
         self.mineIcon.hidden = NO;
         self.loginHeader.hidden =YES;
         
@@ -102,10 +102,11 @@
     self.browsingHistoryCount = self.browsingHistory.count;
     [self getLastTime];
     NSLog(@"self.lastTime:%@", self.lastTime);
-    if (self.account) {
+    YLAccount *account = [YLAccountTool account];
+    if (account) {
         // 获取我的收藏个数
         NSMutableDictionary *param1 = [NSMutableDictionary dictionary];
-        [param1 setValue:self.account.telephone forKey:@"telephone"];
+        [param1 setValue:account.telephone forKey:@"telephone"];
         [param1 setValue:[self getcurrendDate] forKey:@"nowTime"];
         [param1 setValue:[self stringFromDate:self.lastTime] forKey:@"lastTime"];
 //        NSString *urlString = @"http://ucarjava.bceapp.com/home?method=num";
@@ -473,8 +474,8 @@
 - (void)setIsLogin:(BOOL)isLogin {
     _isLogin = isLogin;
     if (isLogin) {
-        self.account = [YLAccountTool account];
-        self.mineIcon.telephone = self.account.telephone;
+        YLAccount *account = [YLAccountTool account];
+        self.mineIcon.telephone = account.telephone;
         self.mineIcon.hidden = NO;
         self.loginHeader.hidden = YES;
         [self loadDate];

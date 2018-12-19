@@ -26,6 +26,8 @@
     [aCoder encodeObject:self.downPrice forKey:@"downPrice"];
     [aCoder encodeObject:self.bargain forKey:@"bargain"];
     [aCoder encodeObject:self.status forKey:@"status"];
+    [aCoder encodeObject:self.location forKey:@"location"];
+    [aCoder encodeObject:self.licenseTime forKey:@"licenseTime"];
 }
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder {
@@ -40,6 +42,8 @@
         self.bargain = [aDecoder decodeObjectForKey:@"bargain"];
         self.status = [aDecoder decodeObjectForKey:@"status"];
         self.downPrice = [aDecoder decodeObjectForKey:@"downPrice"];
+        self.location = [aDecoder decodeObjectForKey:@"location"];
+        self.licenseTime = [aDecoder decodeObjectForKey:@"licenseTime"];
     }
     return self;
 }

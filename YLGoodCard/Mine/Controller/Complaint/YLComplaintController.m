@@ -14,7 +14,7 @@
 #import "YLAccount.h"
 #import "YLAccountTool.h"
 
-@interface YLComplaintController () <UITextViewDelegate>
+@interface YLComplaintController () <UITextViewDelegate, UIAlertViewDelegate>
 
 @property (nonatomic, strong) UIButton *btn1;
 @property (nonatomic, strong) UIButton *btn2;
@@ -326,14 +326,24 @@
     [YLRequest GET:urlString parameters:param success:^(id  _Nonnull responseObject) {
         if ([responseObject[@"code"] isEqualToNumber:[NSNumber numberWithInteger:200]]) {
             NSLog(@"发送成功");
-            [self showMessage:@"发送成功"];
+            NSString *title = @"你的投诉已提交，我们将尽快严肃处理。感谢您的支持，给您带来不便，我们深表歉意！";
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:title delegate:self cancelButtonTitle:@"好的" otherButtonTitles:nil, nil];
+            [alert show];
+//            [self showMessage:@"发送成功"];
+//            [self.navigationController popViewControllerAnimated:YES];
         } else {
             NSLog(@"发送失败:%@", responseObject[@"message"]);
-            [self showMessage:@"发送失败"];
+            [self showMessage:@"请检查是否选择了检测中心和问题或者其他选项"];
         }
         
     } failed:nil];
 }
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+//    NSLog(@"%ld", buttonIndex);
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
 
 // 提示弹窗
 - (void)showMessage:(NSString *)message {
