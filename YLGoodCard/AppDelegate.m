@@ -8,6 +8,11 @@
 
 #import "AppDelegate.h"
 #import "YLTabBarController.h"
+#import <UMCommon/UMCommon.h>
+#import <UMCommonLog/UMCommonLogHeaders.h>
+#import <UMAnalytics/MobClick.h>
+#import "YLAccount.h"
+#import "YLAccountTool.h"
 
 @interface AppDelegate ()
 
@@ -18,10 +23,26 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     
+    
+    
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
+    // 启动图片延时: 1秒
+    [NSThread sleepForTimeInterval:3];
+    
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     self.window.rootViewController = [[YLTabBarController alloc] init];
     [self.window makeKeyAndVisible];
+    
+    NSString *const Appkey = @"5befae30b465f5b3de0001d4";
+    [UMConfigure setLogEnabled:NO];// 测试日志：console打印,上线必须设置为NO
+    [UMConfigure setEncryptEnabled:YES]; // 打开加密传输
+    [UMConfigure initWithAppkey:Appkey channel:@"App Store"]; // 初始化友盟所有组件
+//    [UMCommonLogManager setUpUMCommonLogManager]; // 设置日志
+//    [MobClick setCrashReportEnabled:YES]; // 错误收集
+    
+    YLAccount *account = [YLAccountTool account];
+    [MobClick profileSignInWithPUID:account.telephone];// 统计用户
+    [MobClick profileSignOff];
 
     return YES;
 }

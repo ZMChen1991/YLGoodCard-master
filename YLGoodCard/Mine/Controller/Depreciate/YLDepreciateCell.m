@@ -80,7 +80,7 @@
     UILabel *depreciate = [[UILabel alloc] init];
 //    depreciate.text = @"比原价下降了2.8万";
     depreciate.font = [UIFont systemFontOfSize:12];
-    depreciate.textColor = [UIColor grayColor];
+    depreciate.textColor = YLColor(155.f, 155.f, 155.f);
     [self addSubview:depreciate];
     self.depreciate = depreciate;
     

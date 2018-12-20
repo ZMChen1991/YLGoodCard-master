@@ -32,7 +32,7 @@
     
     UIImageView *icon = [[UIImageView alloc] init];
 //    icon.backgroundColor = YLRandomColor;
-    icon.image = [UIImage imageNamed:@"汽车"];
+    icon.image = [UIImage imageNamed:@"卖车页面"];
     [self addSubview:icon];
     self.icon = icon;
     

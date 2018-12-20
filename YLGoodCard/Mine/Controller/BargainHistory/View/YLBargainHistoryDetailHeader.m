@@ -81,6 +81,7 @@
     UILabel *originalPrice = [[UILabel alloc] init];
     originalPrice.font = [UIFont systemFontOfSize:12];
     originalPrice.textAlignment = NSTextAlignmentLeft;
+    originalPrice.textColor = YLColor(155.f, 155.f, 155.f);
     [self addSubview:originalPrice];
     self.originalPrice = originalPrice;
     

@@ -19,6 +19,9 @@
     self.view.backgroundColor = [UIColor whiteColor];
     self.navigationItem.title = @"关于优卡";
     
+    UIImage *image = [UIImage imageNamed:@"内页"];
+    NSLog(@"%.f-%.f", image.size.width, image.size.height);
+    
     UIImageView *icon = [[UIImageView alloc] initWithFrame:CGRectMake(148, 94, 80, 80)];
     icon.image = [UIImage imageNamed:@"优卡"];
     icon.backgroundColor = YLColor(233.f, 233.f, 233.f);

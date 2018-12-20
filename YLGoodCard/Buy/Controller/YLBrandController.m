@@ -10,6 +10,9 @@
 #import "YLBuyTool.h"
 #import "YLBrandModel.h"
 #import "YLSeriesController.h"
+#import "YLRequest.h"
+
+#define YLBrandPath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"brand.plist"]
 
 @interface YLBrandController ()
 
@@ -28,6 +31,21 @@
 }
 
 - (void)loadData {
+    
+//    NSString *urlString = @"http://ucarjava.bceapp.com/vehicle?method=brand";
+//    [YLRequest GET:urlString parameters:nil success:^(id  _Nonnull responseObject) {
+//        NSDictionary *brands = responseObject[@"data"];
+//        NSFileManager *fileManage = [NSFileManager defaultManager];
+//        NSLog(@"%@", YLBrandPath);
+//        if (![fileManage fileExistsAtPath:YLBrandPath]) {
+//            [fileManage createFileAtPath:YLBrandPath contents:nil attributes:nil];
+//        }
+//        if ([brands writeToFile:YLBrandPath atomically:YES]) {
+//            NSLog(@"保存成功!");
+//        } else {
+//            NSLog(@"保存失败！");
+//        }
+//    } failed:nil];
     
     // 思路：一组装字母，再以字母x筛选出品牌装进数组，然后用另一数组存该数组
     NSMutableDictionary *param = [NSMutableDictionary dictionary];
@@ -62,6 +80,7 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    
     return self.groups.count;
 }
 

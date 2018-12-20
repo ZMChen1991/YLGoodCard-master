@@ -81,6 +81,17 @@
 		8A9039A421A299B40099BC98 /* YLDetectCenterModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A9039A321A299B40099BC98 /* YLDetectCenterModel.m */; };
 		8A9039AD21A2D1F60099BC98 /* YLConfigController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A9039AC21A2D1F60099BC98 /* YLConfigController.m */; };
 		8A9039B021A2F6600099BC98 /* YLDetailTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A9039AF21A2F6600099BC98 /* YLDetailTool.m */; };
+		8AA8CB5D21CB36B90006B972 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AA8CB5C21CB36B90006B972 /* libz.tbd */; };
+		8AA8CB5F21CB36CB0006B972 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AA8CB5E21CB36CB0006B972 /* libsqlite3.tbd */; };
+		8AA8CB6121CB36DA0006B972 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AA8CB6021CB36DA0006B972 /* CoreTelephony.framework */; };
+		8AA8CB6321CB36E70006B972 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AA8CB6221CB36E70006B972 /* SystemConfiguration.framework */; };
+		8AA8CB6521CB37380006B972 /* UMAnalytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AA8CB6421CB37380006B972 /* UMAnalytics.framework */; };
+		8AA8CB6721CB37480006B972 /* UMCommon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AA8CB6621CB37480006B972 /* UMCommon.framework */; };
+		8AA8CB6A21CB37570006B972 /* SecurityEnvSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AA8CB6821CB37560006B972 /* SecurityEnvSDK.framework */; };
+		8AA8CB6B21CB37570006B972 /* UTDID.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AA8CB6921CB37570006B972 /* UTDID.framework */; };
+		8AA8CB6E21CB37660006B972 /* UMCommonLog.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AA8CB6C21CB37650006B972 /* UMCommonLog.framework */; };
+		8AA8CB6F21CB37660006B972 /* UMCommonLog.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 8AA8CB6D21CB37660006B972 /* UMCommonLog.bundle */; };
+		8AA8CB7221CB4AA70006B972 /* YLTableViewCellFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AA8CB7121CB4AA70006B972 /* YLTableViewCellFrame.m */; };
 		8AB874492199149500FB0A93 /* YLLoginHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AB874482199149500FB0A93 /* YLLoginHeader.m */; };
 		8AB8744C219918E100FB0A93 /* YLFunctionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AB8744B219918E100FB0A93 /* YLFunctionView.m */; };
 		8AB874522199462C00FB0A93 /* YLSuggestionController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AB874512199462C00FB0A93 /* YLSuggestionController.m */; };
@@ -347,6 +358,18 @@
 		8A9039AC21A2D1F60099BC98 /* YLConfigController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YLConfigController.m; sourceTree = "<group>"; };
 		8A9039AE21A2F6600099BC98 /* YLDetailTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YLDetailTool.h; sourceTree = "<group>"; };
 		8A9039AF21A2F6600099BC98 /* YLDetailTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YLDetailTool.m; sourceTree = "<group>"; };
+		8AA8CB5C21CB36B90006B972 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		8AA8CB5E21CB36CB0006B972 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
+		8AA8CB6021CB36DA0006B972 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		8AA8CB6221CB36E70006B972 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		8AA8CB6421CB37380006B972 /* UMAnalytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = UMAnalytics.framework; sourceTree = "<group>"; };
+		8AA8CB6621CB37480006B972 /* UMCommon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = UMCommon.framework; sourceTree = "<group>"; };
+		8AA8CB6821CB37560006B972 /* SecurityEnvSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SecurityEnvSDK.framework; sourceTree = "<group>"; };
+		8AA8CB6921CB37570006B972 /* UTDID.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = UTDID.framework; sourceTree = "<group>"; };
+		8AA8CB6C21CB37650006B972 /* UMCommonLog.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = UMCommonLog.framework; sourceTree = "<group>"; };
+		8AA8CB6D21CB37660006B972 /* UMCommonLog.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = UMCommonLog.bundle; sourceTree = "<group>"; };
+		8AA8CB7021CB4AA70006B972 /* YLTableViewCellFrame.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YLTableViewCellFrame.h; sourceTree = "<group>"; };
+		8AA8CB7121CB4AA70006B972 /* YLTableViewCellFrame.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YLTableViewCellFrame.m; sourceTree = "<group>"; };
 		8AB874472199149500FB0A93 /* YLLoginHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YLLoginHeader.h; sourceTree = "<group>"; };
 		8AB874482199149500FB0A93 /* YLLoginHeader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YLLoginHeader.m; sourceTree = "<group>"; };
 		8AB8744A219918E100FB0A93 /* YLFunctionView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YLFunctionView.h; sourceTree = "<group>"; };
@@ -589,7 +612,16 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8AA8CB6321CB36E70006B972 /* SystemConfiguration.framework in Frameworks */,
+				8AA8CB6121CB36DA0006B972 /* CoreTelephony.framework in Frameworks */,
+				8AA8CB5F21CB36CB0006B972 /* libsqlite3.tbd in Frameworks */,
+				8AA8CB6721CB37480006B972 /* UMCommon.framework in Frameworks */,
+				8AA8CB6E21CB37660006B972 /* UMCommonLog.framework in Frameworks */,
+				8AA8CB5D21CB36B90006B972 /* libz.tbd in Frameworks */,
 				C9DF289EC26FBD47D0C4C8CF /* libPods-YLGoodCard.a in Frameworks */,
+				8AA8CB6521CB37380006B972 /* UMAnalytics.framework in Frameworks */,
+				8AA8CB6A21CB37570006B972 /* SecurityEnvSDK.framework in Frameworks */,
+				8AA8CB6B21CB37570006B972 /* UTDID.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -599,6 +631,16 @@
 		41A5783BB656B2839CF4319C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8AA8CB6D21CB37660006B972 /* UMCommonLog.bundle */,
+				8AA8CB6C21CB37650006B972 /* UMCommonLog.framework */,
+				8AA8CB6821CB37560006B972 /* SecurityEnvSDK.framework */,
+				8AA8CB6921CB37570006B972 /* UTDID.framework */,
+				8AA8CB6621CB37480006B972 /* UMCommon.framework */,
+				8AA8CB6421CB37380006B972 /* UMAnalytics.framework */,
+				8AA8CB6221CB36E70006B972 /* SystemConfiguration.framework */,
+				8AA8CB6021CB36DA0006B972 /* CoreTelephony.framework */,
+				8AA8CB5E21CB36CB0006B972 /* libsqlite3.tbd */,
+				8AA8CB5C21CB36B90006B972 /* libz.tbd */,
 				354BD0FEDED4D70B86828A3F /* libPods-YLGoodCard.a */,
 			);
 			name = Frameworks;
@@ -704,6 +746,8 @@
 				8AEFA69C219D553E00C21452 /* YLBannerModel.m */,
 				8AEFA69E219D55BB00C21452 /* YLNotableModel.h */,
 				8AEFA69F219D55BB00C21452 /* YLNotableModel.m */,
+				8AA8CB7021CB4AA70006B972 /* YLTableViewCellFrame.h */,
+				8AA8CB7121CB4AA70006B972 /* YLTableViewCellFrame.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1586,6 +1630,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8AA8CB6F21CB37660006B972 /* UMCommonLog.bundle in Resources */,
 				8A69139D218FCF86003B0EE2 /* pic_2.jpeg in Resources */,
 				8A69139C218FCF86003B0EE2 /* pic_3.jpeg in Resources */,
 				8A0E3F37218A927100275131 /* LaunchScreen.storyboard in Resources */,
@@ -1651,6 +1696,7 @@
 				8A0E3F45218A942D00275131 /* YLNavigationController.m in Sources */,
 				8A4A66F9219E7EB0001B3CC0 /* YLBrandModel.m in Sources */,
 				8A3E6AAB21B5136E008C5D6F /* YLDetailBargainView.m in Sources */,
+				8AA8CB7221CB4AA70006B972 /* YLTableViewCellFrame.m in Sources */,
 				8AB874492199149500FB0A93 /* YLLoginHeader.m in Sources */,
 				8A0E3F3A218A927100275131 /* main.m in Sources */,
 				8AC75B9821994AF100D159C9 /* UITextView+Extension.m in Sources */,
@@ -1970,9 +2016,14 @@
 			baseConfigurationReference = B0F3A3B774A2FBDC628A3365 /* Pods-YLGoodCard.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = ZRG49Y73VS;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PREFIX_HEADER = "${SRCROOT}/YLGoodCard/Other/PrefixHeader.pch";
 				INFOPLIST_FILE = YLGoodCard/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
@@ -1993,9 +2044,14 @@
 			baseConfigurationReference = B37F37E8E5F7F1E5DB0D87D4 /* Pods-YLGoodCard.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = ZRG49Y73VS;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PREFIX_HEADER = "${SRCROOT}/YLGoodCard/Other/PrefixHeader.pch";
 				INFOPLIST_FILE = YLGoodCard/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.1;

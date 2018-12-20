@@ -193,13 +193,13 @@
 }
 
 - (void)getData {
-    NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:YLMainPath];
-    NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithContentsOfFile:YLMainPath];
-    if (!dict) {
-        [self loadData];
-    } else {
-        
-    }
+//    NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:YLMainPath];
+//    NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithContentsOfFile:YLMainPath];
+//    if (!dict) {
+//        [self loadData];
+//    } else {
+//        
+//    }
 //    NSDictionary *temp = [dict objectForKey:@"banner"];
 //    NSLog(@"%@", temp);
 //    NSArray *banners = [YLBannerModel mj_keyValuesArrayWithObjectArray:temp];

@@ -113,6 +113,7 @@
         [weakSelf.selectParam removeAllObjects];
         [weakSelf.params removeAllObjects];
         [weakSelf loadData];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"RECOVERTITLEVIEW" object:nil];
     };
     conditionParamView.removeBlock = ^(NSInteger index, NSString * _Nonnull title) {
       // 删除选中的参数，重新请求数据
@@ -141,7 +142,7 @@
         if ([responseObject[@"code"] isEqualToNumber:[NSNumber numberWithInt:400]]) {
             NSLog(@"buyCar:%@", responseObject[@"message"]);
         } else {
-            NSLog(@"%@", responseObject);
+//            NSLog(@"%@", responseObject);
             [self.recommends removeAllObjects];
             self.modelArray = [YLTableViewModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"]];
             for (YLTableViewModel *model in self.modelArray) {
@@ -180,7 +181,8 @@
 
 #pragma  私有方法
 - (void)setNav {
-    
+    // 添加左右导航栏按钮
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"阳江" style:UIBarButtonItemStylePlain target:self action:@selector(leftBarButtonItemClick)];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:nil style:UIBarButtonItemStylePlain target:self action:@selector(rightBarButtonItemClick)];
     [self.navigationItem.rightBarButtonItem setImage:[[UIImage imageNamed:@"看图模式"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
     [self.navigationController.navigationBar setBackgroundColor:YLColor(8.f, 169.f, 255.f)];
@@ -195,6 +197,10 @@
     statusBarView.backgroundColor = YLColor(8.f, 169.f, 255.f);
     [self.navigationController.navigationBar addSubview:statusBarView];
     self.navigationItem.titleView = self.titleBar;
+}
+
+- (void)leftBarButtonItemClick {
+    [self showMessage:@"暂只支持阳江地区"];
 }
 
 - (void)refreshHeader {
@@ -224,10 +230,10 @@
     }];
 }
 
-- (void)leftBarButtonItemClick {
-    
-    NSLog(@"leftBarButtonItem被点击了！");
-}
+//- (void)leftBarButtonItemClick {
+//
+//    NSLog(@"leftBarButtonItem被点击了！");
+//}
 
 - (void)rightBarButtonItemClick {
     
@@ -257,6 +263,7 @@
             [weakSelf getParamArrayForParam];
             [weakSelf loadData];
             weakSelf.noneView.hidden = YES;
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"RECOVERTITLEVIEW" object:nil];
         };
     }
 }
@@ -442,7 +449,10 @@
         __weak typeof(self) weakSelf = self;
         _linkage.linkageBlock = ^(NSInteger index) {
             weakSelf.isSelect = !weakSelf.isSelect;
+            NSLog(@" weakSelf.isSelect:%d", weakSelf.isSelect);
             if (weakSelf.isSelect) {
+                
+                weakSelf.linkage.isSelect = weakSelf.isSelect; // 表示可更改颜色
                 if (index == 0) {
                     NSLog(@"排序");
                     weakSelf.coverView.hidden = NO;
@@ -484,6 +494,7 @@
                 }
 
             } else {
+                weakSelf.linkage.isSelect = weakSelf.isSelect; // 表示不可更改颜色
                 weakSelf.coverView.hidden = YES;
                 weakSelf.sortView.hidden = YES;
                 weakSelf.customPrice.hidden = YES;

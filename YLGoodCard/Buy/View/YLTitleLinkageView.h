@@ -14,6 +14,7 @@ typedef void(^LinkageBlock)(NSInteger index);
 @interface YLTitleLinkageView : UIView
 
 @property (nonatomic, copy) LinkageBlock linkageBlock;
+@property (nonatomic, assign) BOOL isSelect;
 
 @end
 
