@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "EA70B76DAF6B04332E72ED776E4DFC5D"
+               BlueprintIdentifier = "C19A0771F5C18841200B1AA3BC8DA93E"
                BlueprintName = "Pods-YLGoodCard"
                ReferencedContainer = "container:Pods.xcodeproj"
                BuildableName = "libPods-YLGoodCard.a">

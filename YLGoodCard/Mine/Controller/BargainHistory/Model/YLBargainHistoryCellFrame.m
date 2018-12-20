@@ -27,6 +27,7 @@
     self.originalPriceF = CGRectMake(CGRectGetMaxX(self.priceF), CGRectGetMaxY(self.courseF) + 9, YLScreenWidth - CGRectGetMaxX(self.priceF) - YLTopSpace, 17);
     self.messageF = CGRectMake(titleX, CGRectGetMaxY(self.priceF) + 5, titleW, 17);
     self.bargainNumberF = CGRectMake(YLScreenWidth - 36 - 15, 40, 36, 36);
+    self.soldOutF = CGRectMake(YLScreenWidth - 60 - 15, 40, 60, 60);
     self.lineF = CGRectMake(0, CGRectGetMaxY(self.iconF)-1 + YLLeftMargin, YLScreenWidth, 1);
     self.cellHeight = CGRectGetMaxY(self.lineF);
 }

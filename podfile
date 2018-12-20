@@ -8,6 +8,8 @@ pod 'AFNetwork'
 pod 'MJExtension'
 pod 'MJRefresh'
 pod 'SDCycleScrollView'
-
+pod 'UMCCommon'
+pod 'UMCAnalytics'
+pod 'UMCSecurityPlugins'
 
 end

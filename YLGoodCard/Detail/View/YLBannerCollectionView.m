@@ -22,7 +22,7 @@
     
     self = [super initWithFrame:frame];
     if (self) {
-//        self.backgroundColor = [UIColor redColor];
+        self.backgroundColor = YLColor(233.f, 233.f, 233.f);
         [self setupUI];
     }
     return self;
@@ -86,7 +86,11 @@
 
 - (void)setImages:(NSArray *)images {
     _images = images;
-    self.label.text = [NSString stringWithFormat:@"1/%ld", self.images.count];
+    if (images.count == 0) {
+        self.label.hidden = YES;
+    } else {
+       self.label.text = [NSString stringWithFormat:@"1/%ld", self.images.count];
+    }
     [self.collection reloadData];
 }
 

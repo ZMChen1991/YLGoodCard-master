@@ -103,7 +103,7 @@
     
     // 当车辆状态是下架的时候，显示该图片，位置与砍价数量一致
     UIImageView *soldOut = [[UIImageView alloc] init];
-    soldOut.backgroundColor = [UIColor redColor];
+    soldOut.backgroundColor = [UIColor clearColor];
     soldOut.hidden = YES;
     [self addSubview:soldOut];
     self.soldOut = soldOut;
@@ -119,7 +119,7 @@
     self.originalPrice.frame = cellFrame.originalPriceF;
     self.message.frame = cellFrame.messageF;
     self.bargainNumber.frame = cellFrame.bargainNumberF;
-    self.soldOut.frame = cellFrame.bargainNumberF;
+    self.soldOut.frame = cellFrame.soldOutF;
     self.line.frame = cellFrame.lineF;
     
     [self.icon sd_setImageWithURL:[NSURL URLWithString:cellFrame.model.detail.displayImg] placeholderImage:nil];
@@ -130,14 +130,25 @@
     
     if ([cellFrame.model.detail.status isEqualToString:@"4"]) { // 车辆下架
         self.soldOut.hidden = NO;
+        self.soldOut.image = [UIImage imageNamed:@"已下架"];
         self.bargainNumber.hidden = YES;
     } else if ([cellFrame.model.detail.status isEqualToString:@"0"]) { // 车辆取消
-        self.soldOut.hidden = YES;
+        self.soldOut.hidden = NO;
+        self.soldOut.image = [UIImage imageNamed:@"已取消"];
+        self.bargainNumber.hidden = YES;
+    } else if ([cellFrame.model.detail.status isEqualToString:@"5"]) { // 车辆已签合同
+        self.soldOut.hidden = NO;
+        self.soldOut.image = [UIImage imageNamed:@"已售"];
+        self.bargainNumber.hidden = YES;
+    } else if ([cellFrame.model.detail.status isEqualToString:@"6"]) { // 车辆复检
+        self.soldOut.hidden = NO;
         self.bargainNumber.hidden = YES;
     } else { // 车辆处于在售状态
         if ([cellFrame.model.count isEqualToString:@"0"]) {
             self.bargainNumber.hidden = YES;
+            self.soldOut.hidden = YES;
         } else {
+            self.soldOut.hidden = YES;
             self.bargainNumber.hidden = NO;
             [self.bargainNumber setTitle:cellFrame.model.count forState:UIControlStateNormal];
         }

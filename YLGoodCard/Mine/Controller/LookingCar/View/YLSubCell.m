@@ -109,7 +109,14 @@
 //    self.course.text = [NSString stringWithFormat:@"%@万公里/年",model.lookCarModel.detail.course];
     self.price.text = [self stringToNumber:model.lookCarModel.detail.price];
     self.originalPrice.text = [NSString stringWithFormat:@"新车价:%@", [self stringToNumber:model.lookCarModel.detail.originalPrice]];
-    self.lookCarTime.text = [NSString stringWithFormat:@"看车时间:%@", model.lookCarModel.appointTime];
+    
+    if ([model.lookCarModel.detail.status isEqualToString:@"3"]) {
+        self.lookCarTime.text = [NSString stringWithFormat:@"看车时间:%@", model.lookCarModel.appointTime];
+    } else {
+        self.lookCarTime.text = [NSString stringWithFormat:@"看车时间已取消，车辆已下架"];
+    }
+    
+    
 }
 
 - (NSString *)stringToNumber:(NSString *)number {
