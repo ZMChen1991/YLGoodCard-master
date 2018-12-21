@@ -42,10 +42,15 @@
     return self;
 }
 
-- (void)setModel:(YLTableViewModel *)model {
-    
-    _model = model;
-    self.cellView.model = model;
+//- (void)setModel:(YLTableViewModel *)model {
+//
+//    _model = model;
+//    self.cellView.model = model;
+//}
+
+- (void)setCellFrame:(YLTableViewCellFrame *)cellFrame {
+    _cellFrame = cellFrame;
+    self.cellView.cellFrame = cellFrame;
 }
 
 // cell获取的宽不对，这里重设宽

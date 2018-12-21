@@ -108,55 +108,79 @@
     
     [super layoutSubviews];
     
-    float width = self.frame.size.width;
-    
-    if (!self.isSmallImage) { // 大图模式
-        self.icon.frame = CGRectMake(YLLeftSpace, YLLeftSpace, width - 2 * YLLeftSpace, 228);
-        self.title.frame = CGRectMake(YLLeftSpace, CGRectGetMaxY(self.icon.frame)+YLLeftSpace, width - 2* YLLeftSpace, 17);
-        self.course.frame = CGRectMake(YLLeftSpace, CGRectGetMaxY(self.title.frame) + 5, width - 2* YLLeftSpace, 17);
-        self.price.frame = CGRectMake(YLLeftSpace, CGRectGetMaxY(self.course.frame) + 5, (width - 2* YLLeftSpace) / 2, 25);
-        self.originalPrice.frame = CGRectMake(CGRectGetMaxX(self.price.frame) + 5, CGRectGetMaxY(self.course.frame) + 5, (width - 2* YLLeftSpace) / 2, 25);
-        self.line.frame = CGRectMake(0, CGRectGetMaxY(self.price.frame)+YLTopSpace-1, width, 1);
-    } else {// 小图模式
-        self.icon.frame = CGRectMake(YLLeftSpace, YLTopSpace, 120, 86);
-        float titleX = CGRectGetMaxX(self.icon.frame) + YLLeftSpace;
-        float titleW = width - 120 - 2 * YLLeftSpace - YLTopSpace;
-        self.title.frame = CGRectMake(titleX, YLTopSpace, titleW, 34);
-        self.course.frame = CGRectMake(titleX, CGRectGetMaxY(self.title.frame) + 5, titleW, 17);
-        self.price.frame = CGRectMake(titleX, CGRectGetMaxY(self.course.frame) + 5, titleW/2, 25);
-        self.line.frame = CGRectMake(0, CGRectGetMaxY(self.icon.frame)+YLTopSpace-1, width, 1);
-        switch (self.model.cellStatus) {
-            case YLTableViewCellStatusSold:
-                self.originalPrice.frame = CGRectMake(CGRectGetMaxX(self.price.frame), CGRectGetMaxY(self.course.frame) + 5, titleW / 2, 25);
-                break;
-            case YLTableViewCellStatusBargain:
-                self.originalPrice.frame = CGRectMake(CGRectGetMaxX(self.price.frame), CGRectGetMaxY(self.course.frame) + 5, titleW / 2, 25);
-                float bargainX = width - 36 - YLLeftSpace;
-                float bargainY = 110 - 36 - YLLeftSpace;
-                self.bargain.frame = CGRectMake(bargainX, bargainY, 36, 36);
-                break;
-            case YLTableViewCellStatusDownPrice:
-                self.downIcon.frame = CGRectMake(CGRectGetMaxX(self.price.frame) + 5, CGRectGetMaxY(self.course.frame) + 13, 14, 14);
-                self.downTitle.frame = CGRectMake(CGRectGetMaxX(self.downIcon.frame) + 5, CGRectGetMaxY(self.course.frame) + 10, titleW / 2, 17);
-                break;
-            default:
-                break;
-        }
-    }
+//    float width = self.frame.size.width;
+//
+//    if (!self.isSmallImage) { // 大图模式
+//        self.icon.frame = CGRectMake(YLLeftSpace, YLLeftSpace, width - 2 * YLLeftSpace, 228);
+//        self.title.frame = CGRectMake(YLLeftSpace, CGRectGetMaxY(self.icon.frame)+YLLeftSpace, width - 2* YLLeftSpace, 17);
+//        self.course.frame = CGRectMake(YLLeftSpace, CGRectGetMaxY(self.title.frame) + 5, width - 2* YLLeftSpace, 17);
+//        self.price.frame = CGRectMake(YLLeftSpace, CGRectGetMaxY(self.course.frame) + 5, (width - 2* YLLeftSpace) / 2, 25);
+//        self.originalPrice.frame = CGRectMake(CGRectGetMaxX(self.price.frame) + 5, CGRectGetMaxY(self.course.frame) + 5, (width - 2* YLLeftSpace) / 2, 25);
+//        self.line.frame = CGRectMake(0, CGRectGetMaxY(self.price.frame)+YLTopSpace-1, width, 1);
+//    } else {// 小图模式
+//        self.icon.frame = CGRectMake(YLLeftSpace, YLTopSpace, 120, 86);
+//        float titleX = CGRectGetMaxX(self.icon.frame) + YLLeftSpace;
+//        float titleW = width - 120 - 2 * YLLeftSpace - YLTopSpace;
+//        self.title.frame = CGRectMake(titleX, YLTopSpace, titleW, 34);
+//        self.course.frame = CGRectMake(titleX, CGRectGetMaxY(self.title.frame) + 5, titleW, 17);
+//        self.price.frame = CGRectMake(titleX, CGRectGetMaxY(self.course.frame) + 5, titleW/2, 25);
+//        self.line.frame = CGRectMake(0, CGRectGetMaxY(self.icon.frame)+YLTopSpace-1, width, 1);
+//        switch (self.model.cellStatus) {
+//            case YLTableViewCellStatusSold:
+//                self.originalPrice.frame = CGRectMake(CGRectGetMaxX(self.price.frame), CGRectGetMaxY(self.course.frame) + 5, titleW / 2, 25);
+//                break;
+//            case YLTableViewCellStatusBargain:
+//                self.originalPrice.frame = CGRectMake(CGRectGetMaxX(self.price.frame), CGRectGetMaxY(self.course.frame) + 5, titleW / 2, 25);
+//                float bargainX = width - 36 - YLLeftSpace;
+//                float bargainY = 110 - 36 - YLLeftSpace;
+//                self.bargain.frame = CGRectMake(bargainX, bargainY, 36, 36);
+//                break;
+//            case YLTableViewCellStatusDownPrice:
+//                self.downIcon.frame = CGRectMake(CGRectGetMaxX(self.price.frame) + 5, CGRectGetMaxY(self.course.frame) + 13, 14, 14);
+//                self.downTitle.frame = CGRectMake(CGRectGetMaxX(self.downIcon.frame) + 5, CGRectGetMaxY(self.course.frame) + 10, titleW / 2, 17);
+//                break;
+//            default:
+//                break;
+//        }
+//    }
 }
 
-- (void)setModel:(YLTableViewModel *)model {
+//- (void)setModel:(YLTableViewModel *)model {
+//
+//    _model = model;
+//    [self.icon sd_setImageWithURL:[NSURL URLWithString:model.displayImg] placeholderImage:nil];
+//    self.title.text = model.title;
+//    NSString *course = [NSString stringWithFormat:@"%@年/万公里",model.course];
+//    self.course.text = course;
+//    self.price.text = [self stringToNumber:model.price];
+//    NSString *string =[self stringToNumber:model.originalPrice];
+//    self.originalPrice.text = [NSString stringWithFormat:@"新车价%@", string];
+//    self.downTitle.text = model.downPrice;
+//    [self.bargain setTitle:model.bargain forState:UIControlStateNormal];
+//}
+
+- (void)setCellFrame:(YLTableViewCellFrame *)cellFrame {
+    _cellFrame = cellFrame;
     
-    _model = model;
-    [self.icon sd_setImageWithURL:[NSURL URLWithString:model.displayImg] placeholderImage:nil];
-    self.title.text = model.title;
-    NSString *course = [NSString stringWithFormat:@"%@年/万公里",model.course];
+    self.icon.frame = cellFrame.displayImgF;
+    self.title.frame = cellFrame.titleF;
+    self.course.frame = cellFrame.courseF;
+    self.price.frame = cellFrame.priceF;
+    self.originalPrice.frame = cellFrame.originalPriceF;
+    
+    [self.icon sd_setImageWithURL:[NSURL URLWithString:cellFrame.model.displayImg] placeholderImage:nil];
+    self.title.text = cellFrame.model.title;
+    NSString *course = [NSString stringWithFormat:@"%@年/万公里",cellFrame.model.course];
     self.course.text = course;
-    self.price.text = [self stringToNumber:model.price];
-    NSString *string =[self stringToNumber:model.originalPrice];
-    self.originalPrice.text = [NSString stringWithFormat:@"新车价%@", string];
-    self.downTitle.text = model.downPrice;
-    [self.bargain setTitle:model.bargain forState:UIControlStateNormal];
+    self.price.text = [self stringToNumber:cellFrame.model.price];
+    NSString *string =[self stringToNumber:cellFrame.model.originalPrice];
+    NSString *str = [NSString stringWithFormat:@"新车价%@", string];
+    NSDictionary *attri = @{NSStrikethroughStyleAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle]};
+    NSMutableAttributedString *attriStr = [[NSMutableAttributedString alloc] initWithString:str attributes:attri];
+    self.self.originalPrice.attributedText = attriStr;
+//    self.originalPrice.text = [NSString stringWithFormat:@"新车价%@", string];
+    self.downTitle.text = cellFrame.model.downPrice;
+    [self.bargain setTitle:cellFrame.model.bargain forState:UIControlStateNormal];
 }
 
 - (NSString *)stringToNumber:(NSString *)number {

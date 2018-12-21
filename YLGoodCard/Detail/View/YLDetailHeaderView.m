@@ -19,6 +19,8 @@
 @property (nonatomic, strong) UIView *tagView; // 标签集合视图
 @property (nonatomic, strong) UILabel *secondPrice; // 二手价
 @property (nonatomic, strong) UILabel *price;// 新车价价
+@property (nonatomic, strong) UILabel *label; // 车主报价
+@property (nonatomic, strong) UIButton *button;// 新车价提醒
 
 @property (nonatomic, strong) YLCondition *bargain;
 
@@ -73,25 +75,28 @@
     UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(YLLeftMargin, CGRectGetMaxY(self.tagView.frame) + 20, 50, 17)];
     label1.font = [UIFont systemFontOfSize:12];
     label1.text = @"车主报价";
+    self.label = label1;
     
-    self.secondPrice = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(label1.frame) + 5, CGRectGetMaxY(self.tagView.frame) + 10, 120, 37)];
+    self.secondPrice = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(label1.frame) + 5, CGRectGetMaxY(self.tagView.frame) + 10, 70, 37)];
     self.secondPrice.font = [UIFont systemFontOfSize:26];
     [self.secondPrice setTextColor:[UIColor redColor]];
     self.secondPrice.text = @"0.0万";
     
     self.price = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.secondPrice.frame), CGRectGetMaxY(self.tagView.frame) + 20, 100, 17)];
+    self.price.textColor = YLColor(155.f, 155.f, 155.f);
     self.price.font = [UIFont systemFontOfSize:12];
     // 添加中划线
-    NSString *str = @"新车含税价0.0万";
-    NSDictionary *attri = @{NSStrikethroughStyleAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle]};
-    NSMutableAttributedString *attriStr = [[NSMutableAttributedString alloc] initWithString:str attributes:attri];
-    self.price.attributedText = attriStr;
+//    NSString *str = @"新车含税价0.0万";
+//    NSDictionary *attri = @{NSStrikethroughStyleAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle]};
+//    NSMutableAttributedString *attriStr = [[NSMutableAttributedString alloc] initWithString:str attributes:attri];
+//    self.price.attributedText = attriStr;
     
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.frame = CGRectMake(CGRectGetMaxX(self.price.frame), CGRectGetMaxY(self.tagView.frame) + 22, 14, 14);
     [button setImage:[UIImage imageNamed:@"提醒"] forState:UIControlStateNormal];
     [button addTarget:self action:@selector(remind) forControlEvents:UIControlEventTouchUpInside];
 //    [button setBackgroundColor:[UIColor grayColor]];
+    self.button = button;
     
     self.bargain = [[YLCondition alloc] initWithFrame:CGRectMake(self.frame.size.width - YLLeftMargin - 56, CGRectGetMaxY(self.tagView.frame) + 20, 56, 24)];
     self.bargain.type = YLConditionTypeWhite;
@@ -144,8 +149,18 @@
     
 //    [self.icon sd_setImageWithURL:[NSURL URLWithString:model.displayImg] placeholderImage:nil];;
     self.text.text = model.title;
-    self.price.text = [NSString stringWithFormat:@"新车价%@", [self stringToNumber:model.originalPrice]];
+    NSString *str = [NSString stringWithFormat:@"新车价%@", [self stringToNumber:model.originalPrice]];
+    NSDictionary *attri = @{NSStrikethroughStyleAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle]};
+    NSMutableAttributedString *attriStr = [[NSMutableAttributedString alloc] initWithString:str attributes:attri];
+    self.price.attributedText = attriStr;
+//    self.price.text = [NSString stringWithFormat:@"新车价%@", [self stringToNumber:model.originalPrice]];
     self.secondPrice.text = [self stringToNumber:model.price];
+    
+    CGFloat priceW = [self.secondPrice.text getSizeWithFont:[UIFont systemFontOfSize:26]].width + 10;
+    CGFloat originalPriceW = [self.price.text getSizeWithFont:[UIFont systemFontOfSize:12]].width + 5;
+    self.secondPrice.frame = CGRectMake(CGRectGetMaxX(self.label.frame) + 5, CGRectGetMaxY(self.tagView.frame) + 10, priceW, 37);
+    self.price.frame = CGRectMake(CGRectGetMaxX(self.secondPrice.frame), CGRectGetMaxY(self.tagView.frame) + 20, originalPriceW, 17);
+    self.button.frame = CGRectMake(CGRectGetMaxX(self.price.frame), CGRectGetMaxY(self.tagView.frame) + 22, 14, 14);
 }
 
 - (void)setVehicle:(NSMutableArray *)vehicle {

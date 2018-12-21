@@ -10,6 +10,7 @@
 #import "YLTableViewCell.h"
 #import "YLTableViewModel.h"
 #import "YLDetailController.h"
+#import "YLTableViewCellFrame.h"
 
 // 浏览记录路径
 #define YLBrowsingHistoryPath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"browsingHistory.plist"]
@@ -45,8 +46,9 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     YLTableViewCell *cell = [YLTableViewCell cellWithTableView:tableView];
-    YLTableViewModel *model = self.browsingHistory[indexPath.row];
-    cell.model = model;
+    YLTableViewCellFrame *cellFrame = [[YLTableViewCellFrame alloc] init];
+    cellFrame.model = self.browsingHistory[indexPath.row];
+    cell.cellFrame = cellFrame;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }

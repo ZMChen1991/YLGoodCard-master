@@ -126,7 +126,11 @@
     self.title.text = cellFrame.model.detail.title;
     self.price.text = [self stringToNumber:cellFrame.model.detail.price];
     self.course.text = [NSString stringWithFormat:@"%@万公里/年", cellFrame.model.detail.course];
-    self.originalPrice.text = [NSString stringWithFormat:@"新车价%@", [self stringToNumber:cellFrame.model.detail.originalPrice]];
+    NSString *str = [NSString stringWithFormat:@"新车价%@", [self stringToNumber:cellFrame.model.detail.originalPrice]];
+    NSDictionary *attri = @{NSStrikethroughStyleAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle]};
+    NSMutableAttributedString *attriStr = [[NSMutableAttributedString alloc] initWithString:str attributes:attri];
+    self.self.originalPrice.attributedText = attriStr;
+//    self.originalPrice.text = [NSString stringWithFormat:@"新车价%@", [self stringToNumber:cellFrame.model.detail.originalPrice]];
     
     if ([cellFrame.model.detail.status isEqualToString:@"4"]) { // 车辆下架
         self.soldOut.hidden = NO;

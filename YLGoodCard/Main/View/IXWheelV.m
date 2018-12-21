@@ -145,8 +145,12 @@ UICollectionViewDataSource
     //点击处理
     IXWheelCell    * cell = (IXWheelCell *)[collectionView cellForItemAtIndexPath:indexPath];
     
-    if (self.selectBlk) {
-        self.selectBlk([_oriItems indexOfObject:cell.imgPath]);
+//    if (self.selectBlk) {
+//        self.selectBlk([_oriItems indexOfObject:cell.imgPath]);
+//    }
+    
+    if (self.bannerBlock) {
+        self.bannerBlock();
     }
 }
 
@@ -245,8 +249,8 @@ UICollectionViewDataSource
         _pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(0, self.bounds.size.height - 15,
                                                                        self.bounds.size.width,
                                                                        10)];
-        _pageControl.pageIndicatorTintColor = [UIColor whiteColor];
-        _pageControl.currentPageIndicatorTintColor = [UIColor lightGrayColor];
+        _pageControl.pageIndicatorTintColor = [UIColor lightGrayColor];
+        _pageControl.currentPageIndicatorTintColor = [UIColor whiteColor];
     }
     return _pageControl;
 }

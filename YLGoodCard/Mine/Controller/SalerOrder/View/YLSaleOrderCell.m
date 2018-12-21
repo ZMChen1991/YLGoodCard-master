@@ -103,8 +103,12 @@
     [self.icon sd_setImageWithURL:[NSURL URLWithString:saleOrderCellFrame.model.detail.displayImg] placeholderImage:nil];
     self.title.text = saleOrderCellFrame.model.detail.title;
     self.price.text = [NSString stringWithFormat:@"%@", [self stringToNumber:saleOrderCellFrame.model.detail.price]];;
-    self.course.text = [NSString stringWithFormat:@"%@万公里/年", saleOrderCellFrame.model.detail.course];;
-    self.originalPrice.text = [NSString stringWithFormat:@"新车价:%@", [self stringToNumber:saleOrderCellFrame.model.detail.originalPrice]];
+    self.course.text = [NSString stringWithFormat:@"%@万公里/年", saleOrderCellFrame.model.detail.course];
+    NSString *str = [NSString stringWithFormat:@"新车价:%@", [self stringToNumber:saleOrderCellFrame.model.detail.originalPrice]];
+    NSDictionary *attri = @{NSStrikethroughStyleAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle]};
+    NSMutableAttributedString *attriStr = [[NSMutableAttributedString alloc] initWithString:str attributes:attri];
+    self.self.originalPrice.attributedText = attriStr;
+//    self.originalPrice.text = [NSString stringWithFormat:@"新车价:%@", [self stringToNumber:saleOrderCellFrame.model.detail.originalPrice]];
 }
 
 

@@ -36,8 +36,8 @@
 #import "YLDetailBargainView.h"
 
 // 进入详情页，保存当前汽车的ID
-//// 浏览记录路径
-//#define YLBrowsingHistoryPath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"browsingHistory.plist"]
+// 详情页数据
+#define YLDetailPath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"detail.txt"]
 
 @interface YLDetailController () <UITableViewDelegate, UITableViewDataSource>
 
@@ -68,6 +68,7 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     self.carInformations = @[@"正侧",@"正前",@"前排",@"后排",@"中控",@"发动机舱",@"瑕疵"];
+    [self getLocationData];
     [self loadData];
     [self setupNav];
     [self addTableView];
@@ -85,41 +86,66 @@
     [YLRequest GET:urlString parameters:param success:^(id  _Nonnull responseObject) {
         NSLog(@"%@", responseObject);
         NSLog(@"%@", responseObject[@"data"]);
-        self.detailModel = [YLDetailModel mj_objectWithKeyValues:responseObject[@"data"][@"detail"]];
-        NSArray *vehicles = [YLVehicleModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"][@"image"][@"vehicle"]];
-        for (YLVehicleModel *model in vehicles) {
-            [self.vehicle addObject:model.img];
-            [self.cars addObject:model.img];
-        }
-        NSArray *blemishs = [YLBlemishModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"][@"image"][@"blemish"]];
-        for (YLBlemishModel *model in blemishs) {
-            [self.blemish addObject:model];
-            [self.xiaci addObject:[NSString stringWithFormat:@"%@", model.img]];
-        }
-        YLDetailHeaderModel *headerModel = [YLDetailHeaderModel mj_objectWithKeyValues:self.detailModel];
-        self.header.vehicle = self.vehicle;
-        self.header.model = headerModel;
-        self.footer.model = self.detailModel;
-        self.detailBargain.salePrice = self.detailModel.price;
         
-        [self.tableView reloadData];
+        [self keyedArchiverObject:responseObject toFile:YLDetailPath];
+        [self getLocationData];
+        
+//        self.detailModel = [YLDetailModel mj_objectWithKeyValues:responseObject[@"data"][@"detail"]];
+//        NSArray *vehicles = [YLVehicleModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"][@"image"][@"vehicle"]];
+//        for (YLVehicleModel *model in vehicles) {
+//            [self.vehicle addObject:model.img];
+//            [self.cars addObject:model.img];
+//        }
+//        NSArray *blemishs = [YLBlemishModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"][@"image"][@"blemish"]];
+//        for (YLBlemishModel *model in blemishs) {
+//            [self.blemish addObject:model];
+//            [self.xiaci addObject:[NSString stringWithFormat:@"%@", model.img]];
+//        }
+//        YLDetailHeaderModel *headerModel = [YLDetailHeaderModel mj_objectWithKeyValues:self.detailModel];
+//        self.header.vehicle = self.vehicle;
+//        self.header.model = headerModel;
+//        self.footer.model = self.detailModel;
+//        self.detailBargain.salePrice = self.detailModel.price;
+//
+//        [self.tableView reloadData];
     } failed:nil];
+}
+
+- (void)getLocationData {
     
+    [self.vehicle removeAllObjects];
+    [self.cars removeAllObjects];
+    [self.blemish removeAllObjects];
+    [self.xiaci removeAllObjects];
     
+    NSDictionary *dict = [NSKeyedUnarchiver unarchiveObjectWithFile:YLDetailPath];
+    self.detailModel = [YLDetailModel mj_objectWithKeyValues:dict[@"data"][@"detail"]];
+    NSArray *vehicles = [YLVehicleModel mj_objectArrayWithKeyValuesArray:dict[@"data"][@"image"][@"vehicle"]];
+    for (YLVehicleModel *model in vehicles) {
+        [self.vehicle addObject:model.img];
+        [self.cars addObject:model.img];
+    }
+    NSArray *blemishs = [YLBlemishModel mj_objectArrayWithKeyValuesArray:dict[@"data"][@"image"][@"blemish"]];
+    for (YLBlemishModel *model in blemishs) {
+        [self.blemish addObject:model];
+        [self.xiaci addObject:[NSString stringWithFormat:@"%@", model.img]];
+    }
+    YLDetailHeaderModel *headerModel = [YLDetailHeaderModel mj_objectWithKeyValues:self.detailModel];
+    self.header.vehicle = self.vehicle;
+    self.header.model = headerModel;
+    self.footer.model = self.detailModel;
+    self.detailBargain.salePrice = self.detailModel.price;
     
-//    // 获取详情车辆数据
-//    [YLDetailTool detailWithParam:param success:^(YLDetailModel *result) {
-//        self.detailModel = result;
-//        YLDetailHeaderModel *headerModel = [YLDetailHeaderModel mj_objectWithKeyValues:weakSelf.detailModel];
-//        // 给头脚赋值
-//        weakSelf.header.model = headerModel;
-//        weakSelf.footer.model = self.detailModel;
-//        weakSelf.detailBargain.salePrice = self.detailModel.price;
-//
-//        [weakSelf.tableView reloadData];
-//    } failure:^(NSError *error) {
-//
-//    }];
+    [self.tableView reloadData];
+}
+
+- (void)keyedArchiverObject:(id)obj toFile:(NSString *)filePath {
+    BOOL success = [NSKeyedArchiver archiveRootObject:obj toFile:filePath];
+    if (success) {
+        NSLog(@"保存成功");
+    } else {
+        NSLog(@"保存失败");
+    }
 }
 
 #pragma mark UITableViewDelegate
@@ -200,7 +226,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     if (indexPath.section == 0) {
-        return 160 + YLLeftMargin;
+        return 140 + YLLeftMargin;
     }
     if (indexPath.section == 1) {
         return 211;

@@ -109,7 +109,11 @@
     self.title.text = model.lookCarModel.detail.title;
 //    self.course.text = [NSString stringWithFormat:@"%@万公里/年",model.lookCarModel.detail.course];
     self.price.text = [self stringToNumber:model.lookCarModel.detail.price];
-    self.originalPrice.text = [NSString stringWithFormat:@"新车价:%@", [self stringToNumber:model.lookCarModel.detail.originalPrice]];
+    NSString *str = [NSString stringWithFormat:@"新车价:%@", [self stringToNumber:model.lookCarModel.detail.originalPrice]];
+    NSDictionary *attri = @{NSStrikethroughStyleAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle]};
+    NSMutableAttributedString *attriStr = [[NSMutableAttributedString alloc] initWithString:str attributes:attri];
+    self.self.originalPrice.attributedText = attriStr;
+//    self.originalPrice.text = [NSString stringWithFormat:@"新车价:%@", [self stringToNumber:model.lookCarModel.detail.originalPrice]];
     
     if ([model.lookCarModel.detail.status isEqualToString:@"3"]) {
         self.lookCarTime.text = [NSString stringWithFormat:@"看车时间:%@", model.lookCarModel.appointTime];

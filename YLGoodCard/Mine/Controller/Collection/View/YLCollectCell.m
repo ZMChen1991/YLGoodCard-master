@@ -97,7 +97,11 @@
     self.title.text = collectCellFrame.collectionModel.detail.title;
     self.course.text = [NSString stringWithFormat:@"%@万公里/年",collectCellFrame.collectionModel.detail.course];
     self.price.text = [self stringToNumber:collectCellFrame.collectionModel.detail.price];
-    self.originalPrice.text = [NSString stringWithFormat:@"新车价:%@", [self stringToNumber:collectCellFrame.collectionModel.detail.originalPrice]];
+    NSString *str = [NSString stringWithFormat:@"新车价:%@", [self stringToNumber:collectCellFrame.collectionModel.detail.originalPrice]];
+    NSDictionary *attri = @{NSStrikethroughStyleAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle]};
+    NSMutableAttributedString *attriStr = [[NSMutableAttributedString alloc] initWithString:str attributes:attri];
+    self.self.originalPrice.attributedText = attriStr;
+//    self.originalPrice.text = [NSString stringWithFormat:@"新车价:%@", [self stringToNumber:collectCellFrame.collectionModel.detail.originalPrice]];
     
 }
 

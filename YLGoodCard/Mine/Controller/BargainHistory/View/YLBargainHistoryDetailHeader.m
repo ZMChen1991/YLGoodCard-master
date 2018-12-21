@@ -128,7 +128,11 @@
     self.title.text = model.detail.title;
     self.course.text = [NSString stringWithFormat:@"%@万公里/年", model.detail.course];
     self.price.text = [self stringToNumber:model.detail.price];
-    self.originalPrice.text = [NSString stringWithFormat:@"新车价:%@", [self stringToNumber:model.detail.originalPrice]];
+    NSString *str = [NSString stringWithFormat:@"新车价:%@", [self stringToNumber:model.detail.originalPrice]];
+    NSDictionary *attri = @{NSStrikethroughStyleAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle]};
+    NSMutableAttributedString *attriStr = [[NSMutableAttributedString alloc] initWithString:str attributes:attri];
+    self.self.originalPrice.attributedText = attriStr;
+//    self.originalPrice.text = [NSString stringWithFormat:@"新车价:%@", [self stringToNumber:model.detail.originalPrice]];
 //    if ([model.count isEqualToString:@"0"]) {
 //        self.bargainNumber.hidden = YES;
 //    } else {

@@ -8,11 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
+typedef void(^BannerBlock)(void);
+
 /** 轮播图 */
 @interface IXWheelV : UIView
 
 /** 点击回调 */
 @property (nonatomic, copy) void (^selectBlk)(NSInteger idx);
+@property (nonatomic, copy) BannerBlock bannerBlock;
 
 /** 切换每一页的时间间隔，默认5s */
 @property (nonatomic, assign) CGFloat   timeSpace;

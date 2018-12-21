@@ -49,9 +49,10 @@
     [self.collection registerClass:[YlBannerCollectionCell class] forCellWithReuseIdentifier:@"YlBannerCollectionCell"];
     [self addSubview:self.collection];
     
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(self.frame.size.width - 60, self.frame.size.height - 30, 50, 20)];
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(self.frame.size.width - 50, self.frame.size.height - 30, 40, 20)];
 //    UILabel *label = [[UILabel alloc] init];
-    label.backgroundColor = YLColor(233.f, 233.f, 233.f);
+//    label.backgroundColor = YLColor(233.f, 233.f, 233.f);
+    label.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.5];
     label.textAlignment = NSTextAlignmentCenter;
 //    label.text = @"1/30";
     label.textColor = [UIColor lightGrayColor];

@@ -105,7 +105,11 @@
     self.title.text = buyOrderCellFrame.model.detail.title;
     self.price.text = [self stringToNumber:buyOrderCellFrame.model.detail.price];
     self.course.text = [NSString stringWithFormat:@"%@万公里/年", buyOrderCellFrame.model.detail.course];
-    self.originalPrice.text = [NSString stringWithFormat:@"新车价%@",[self stringToNumber:buyOrderCellFrame.model.detail.originalPrice]];
+    NSString *str = [NSString stringWithFormat:@"新车价%@",[self stringToNumber:buyOrderCellFrame.model.detail.originalPrice]];
+    NSDictionary *attri = @{NSStrikethroughStyleAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle]};
+    NSMutableAttributedString *attriStr = [[NSMutableAttributedString alloc] initWithString:str attributes:attri];
+    self.self.originalPrice.attributedText = attriStr;
+//    self.originalPrice.text = [NSString stringWithFormat:@"新车价%@",[self stringToNumber:buyOrderCellFrame.model.detail.originalPrice]];
 }
 
 

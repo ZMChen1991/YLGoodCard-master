@@ -131,7 +131,11 @@
     self.course.text = course;
     self.price.text = [self stringToNumber:cellFrame.model.price];
     NSString *originalPrice =[self stringToNumber:cellFrame.model.originalPrice];
-    self.originalPrice.text = [NSString stringWithFormat:@"新车价%@", originalPrice];
+    NSString *str = [NSString stringWithFormat:@"新车价%@", originalPrice];
+    NSDictionary *attri = @{NSStrikethroughStyleAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle]};
+    NSMutableAttributedString *attriStr = [[NSMutableAttributedString alloc] initWithString:str attributes:attri];
+    self.self.originalPrice.attributedText = attriStr;
+//    self.originalPrice.text = [NSString stringWithFormat:@"新车价%@", originalPrice];
     self.downTitle.text = cellFrame.model.downPrice;
     [self.bargain setTitle:cellFrame.model.bargain forState:UIControlStateNormal];
 }

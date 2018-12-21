@@ -47,7 +47,7 @@
     NSArray *array = @[@"售后保障", @"30天可退", @"调表车赔付", @"服务费低"];
     NSArray *images = @[@"售后保障", @"30天可退", @"专业检测", @"服务费低"];
     float width = (self.frame.size.width - 2 * YLLeftMargin) / array.count;
-    float height = 80;
+    float height = 60;
     for (int i = 0; i < array.count; i++) {
         YLCustomButton *btn = [[YLCustomButton alloc] initWithFrame:CGRectMake(i * width + YLLeftMargin, 0, width, height)];
         [btn setTitle:array[i] forState:UIControlStateNormal];

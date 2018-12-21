@@ -30,13 +30,13 @@
     self.navigationItem.title = @"设置";
 //    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
-    self.titles = @[@"清除缓存", @"关于优卡", @"用户隐私条款"];
+    self.titles = @[@"关于优卡"];
     NSDictionary *info = [[NSBundle mainBundle] infoDictionary];
     NSString *versionNum = [info objectForKey:@"CFBundleShortVersionString"];
-    NSString *appName = [info objectForKey:@"CFBundleName"];
-    NSLog(@"当前版本号：%@--%@", versionNum, appName);
+//    NSString *appName = [info objectForKey:@"CFBundleName"];
+//    NSLog(@"当前版本号：%@--%@", versionNum, appName);
     
-    self.detailTitles = @[@"0.0M", versionNum, @""];
+    self.detailTitles = @[versionNum];
     
     UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, YLScreenWidth, 200)];
     YLCondition *logOut = [[YLCondition alloc] initWithFrame:CGRectMake(YLLeftMargin, 30, YLScreenWidth - 2 * YLLeftMargin, 40)];
@@ -77,7 +77,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 3;
+    return self.titles.count;
 }
 
 #pragma mark 循环利用cell
@@ -100,10 +100,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    if (indexPath.row == 1) {
-        YLAboutController *about = [[YLAboutController alloc] init];
-        [self.navigationController pushViewController:about animated:YES];
-    }
+    YLAboutController *about = [[YLAboutController alloc] init];
+    [self.navigationController pushViewController:about animated:YES];
 }
 
 @end

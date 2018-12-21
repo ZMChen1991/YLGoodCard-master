@@ -7,14 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "YLTableViewModel.h"
+//#import "YLTableViewModel.h"
+#import "YLTableViewCellFrame.h"
 
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface YLTableViewCell : UITableViewCell
 
-@property (nonatomic, strong) YLTableViewModel *model;
+//@property (nonatomic, strong) YLTableViewModel *model;
+@property (nonatomic, strong) YLTableViewCellFrame *cellFrame;
 @property (nonatomic, assign) BOOL islargeImage;
 
 + (instancetype)cellWithTableView:(UITableView *)tableView;

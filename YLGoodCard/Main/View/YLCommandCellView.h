@@ -7,13 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "YLTableViewModel.h"
+//#import "YLTableViewModel.h"
+#import "YLTableViewCellFrame.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface YLCommandCellView : UIView
 
-@property (nonatomic, strong) YLTableViewModel *model;
+//@property (nonatomic, strong) YLTableViewModel *model;
+@property (nonatomic, strong) YLTableViewCellFrame *cellFrame;
 
 @property (nonatomic, assign) BOOL isSmallImage; //默认是No
 @end

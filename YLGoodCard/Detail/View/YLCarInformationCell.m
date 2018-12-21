@@ -57,6 +57,7 @@
         
         UILabel *detail = [[UILabel alloc] init];
         detail.textColor = [UIColor grayColor];
+        detail.font = [UIFont systemFontOfSize:14];
 //        detail.backgroundColor = [UIColor greenColor];
         [self addSubview:detail];
         [self.details addObject:detail];

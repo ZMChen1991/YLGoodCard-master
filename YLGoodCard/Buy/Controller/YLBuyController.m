@@ -25,10 +25,13 @@
 #import "YLHomeTool.h"
 #import "YLTitleLinkageView.h"
 #import "YLConditionParamView.h"
+#import "YLBarButton.h"
+#import "YLBarView.h"
 
 /*
  品牌列表
  */
+#define YLBuyPath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"buy.text"]
 
 #define screenW self.view.frame.size.width
 #define screenH self.view.frame.size.height
@@ -75,6 +78,7 @@
     [self addParamView];
     [self config];
     [self getParamArrayForParam];
+    [self getLocationData];
     [self loadData];
 }
 
@@ -143,19 +147,46 @@
             NSLog(@"buyCar:%@", responseObject[@"message"]);
         } else {
 //            NSLog(@"%@", responseObject);
-            [self.recommends removeAllObjects];
-            self.modelArray = [YLTableViewModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"]];
-            for (YLTableViewModel *model in self.modelArray) {
-                YLBuyCellFrame *cellFrame = [[YLBuyCellFrame alloc] init];
-                cellFrame.isLargeImage = self.isLarge;
-                cellFrame.model = model;
-                [self.recommends addObject:cellFrame];
-            }
-            [self noneToSearchResult];
-            [self.tableView reloadData];
+            [self keyedArchiverObject:responseObject toFile:YLBuyPath];
+            [self getLocationData];
+            
+//            [self.recommends removeAllObjects];
+//            self.modelArray = [YLTableViewModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"]];
+//            for (YLTableViewModel *model in self.modelArray) {
+//                YLBuyCellFrame *cellFrame = [[YLBuyCellFrame alloc] init];
+//                cellFrame.model = model;
+//                cellFrame.isLargeImage = self.isLarge;
+//                [self.recommends addObject:cellFrame];
+//            }
+//            [self noneToSearchResult];
+//            [self.tableView reloadData];
         }
     } failed:nil];
     
+}
+- (void)getLocationData {
+    
+    [self.recommends removeAllObjects];
+    NSDictionary *dict = [NSKeyedUnarchiver unarchiveObjectWithFile:YLBuyPath];
+    self.modelArray = [YLTableViewModel mj_objectArrayWithKeyValuesArray:dict[@"data"]];
+    for (YLTableViewModel *model in self.modelArray) {
+        YLBuyCellFrame *cellFrame = [[YLBuyCellFrame alloc] init];
+        cellFrame.model = model;
+        cellFrame.isLargeImage = self.isLarge;
+        [self.recommends addObject:cellFrame];
+    }
+    [self noneToSearchResult];
+    [self.tableView reloadData];
+
+}
+
+- (void)keyedArchiverObject:(id)obj toFile:(NSString *)filePath {
+    BOOL success = [NSKeyedArchiver archiveRootObject:obj toFile:filePath];
+    if (success) {
+        NSLog(@"保存成功");
+    } else {
+        NSLog(@"保存失败");
+    }
 }
 
 #pragma mark 从请求参数中获取相应的值展示到视图上
@@ -182,7 +213,13 @@
 #pragma  私有方法
 - (void)setNav {
     // 添加左右导航栏按钮
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"阳江" style:UIBarButtonItemStylePlain target:self action:@selector(leftBarButtonItemClick)];
+    YLBarButton *barButton = [YLBarButton buttonWithType:UIButtonTypeCustom];
+    barButton.frame = CGRectMake(0, 0, 45, 44);
+    barButton.title = @"阳江";
+    barButton.icon = @"地区下拉";
+    [barButton addTarget:self action:@selector(leftBarButtonItemClick) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *leftBtn = [[UIBarButtonItem alloc] initWithCustomView:barButton];
+    self.navigationItem.leftBarButtonItem = leftBtn;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:nil style:UIBarButtonItemStylePlain target:self action:@selector(rightBarButtonItemClick)];
     [self.navigationItem.rightBarButtonItem setImage:[[UIImage imageNamed:@"看图模式"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
     [self.navigationController.navigationBar setBackgroundColor:YLColor(8.f, 169.f, 255.f)];
@@ -196,7 +233,27 @@
     UIView *statusBarView = [[UIView alloc] initWithFrame:CGRectMake(0, -20, YLScreenWidth, 20)];
     statusBarView.backgroundColor = YLColor(8.f, 169.f, 255.f);
     [self.navigationController.navigationBar addSubview:statusBarView];
-    self.navigationItem.titleView = self.titleBar;
+    
+    YLBarView *barView = [[YLBarView alloc] initWithFrame:CGRectMake(0, (44 - 36) / 2, 265, 36)];
+    barView.layer.cornerRadius = 5.f;
+    barView.layer.masksToBounds = YES;
+    barView.backgroundColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:0.3];
+    barView.icon = @"搜索";
+    barView.title = @"搜索您想要的车";
+    __weak typeof(self) weakSelf = self;
+    barView.barViewBlock = ^{
+        NSLog(@"点击了barView标题视图");
+        NSMutableDictionary *param = [NSMutableDictionary dictionary];
+        [YLHomeTool hotBrandWithParam:param success:^(NSDictionary * _Nonnull result) {
+            NSMutableArray *hotBrands = (NSMutableArray *)result[@"data"][@"keyword"];
+            YLSearchController *search = [[YLSearchController alloc] init];
+            search.hotSearch = hotBrands;
+            [weakSelf.navigationController pushViewController:search animated:YES];
+        } failure:^(NSError * _Nonnull error) {
+        }];
+    };
+    self.navigationItem.titleView = barView;
+//    self.navigationItem.titleView = self.titleBar;
 }
 
 - (void)leftBarButtonItemClick {
@@ -598,7 +655,7 @@
 - (YLNoneView *)noneView {
     
     if (!_noneView) {
-        _noneView = [[YLNoneView alloc] initWithFrame:CGRectMake(0, 64, YLScreenWidth, YLScreenHeight)];
+        _noneView = [[YLNoneView alloc] initWithFrame:CGRectMake(0, 64+50+30, YLScreenWidth, YLScreenHeight)];
         _noneView.hidden = YES;
         _noneView.backgroundColor = [UIColor whiteColor];
     }

@@ -19,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) CGRect titleF;
 @property (nonatomic, assign) CGRect courseF;
 @property (nonatomic, assign) CGRect priceF;
-@property (nonatomic, assign) CGRect originalPrice;
+@property (nonatomic, assign) CGRect originalPriceF;
 //@property (nonatomic, assign) CGRect iconF;
 
 @end
