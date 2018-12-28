@@ -115,14 +115,13 @@
 #pragma mark YLSaleButton代理方法
 - (void)pushController:(UIButton *)sender {
     
-    NSLog(@"sender.titleLabel:%@---%ld", sender.titleLabel.text, sender.tag);
+//    NSLog(@"sender.titleLabel:%@---%ld", sender.titleLabel.text, sender.tag);
     NSString *title = sender.titleLabel.text;
     NSInteger index = sender.tag;
     if (index == 301) {
         // 这里判断用户是否登录，如果没有，跳转到登录界面
         YLAccount *account = [YLAccountTool account];
         if (account) {
-            
             YLOrderController *orderVc = [[YLOrderController alloc] init];
             orderVc.telephone = account.telephone;
             orderVc.navigationItem.title = title;
@@ -168,7 +167,7 @@
     UIWindow *window = [UIApplication sharedApplication].keyWindow;// 获取最上层窗口
     
     UILabel *messageLabel = [[UILabel alloc] init];
-    CGSize messageSize = CGSizeMake([message getSizeWithFont:[UIFont systemFontOfSize:12]].width + 30, 30);
+    CGSize messageSize = CGSizeMake([message getSizeWithFont:[UIFont systemFontOfSize:12]].width + 50, 50);
     messageLabel.frame = CGRectMake((YLScreenWidth - messageSize.width) / 2, YLScreenHeight/2, messageSize.width, messageSize.height);
     messageLabel.text = message;
     messageLabel.font = [UIFont systemFontOfSize:12];

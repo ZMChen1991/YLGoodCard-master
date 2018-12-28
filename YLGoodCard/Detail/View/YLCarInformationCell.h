@@ -7,11 +7,15 @@
 // 车辆图文
 
 #import <UIKit/UIKit.h>
+#import "YLBlemishModel.h"
 
 @interface YLCarInformationCell : UITableViewCell
 
+@property (nonatomic, strong) NSArray *blemishModels;
+
 @property (nonatomic, strong) NSArray *images;
 @property (nonatomic, strong) NSArray *blemishs;
+@property (nonatomic, strong) NSArray *blemishTitles;
 
 
 @property (nonatomic, strong) NSString *image;

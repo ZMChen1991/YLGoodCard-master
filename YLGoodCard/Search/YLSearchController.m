@@ -111,7 +111,7 @@
 - (void)setTitleBar {
 
     YLSearchBar *searchBar = [YLSearchBar searchBar];
-    searchBar.width = 260;
+    searchBar.width = 240;
     searchBar.height = 36;
     searchBar.placeholder = @"请搜索您想要的车";
     searchBar.backgroundColor = YLColor(239.f, 242.f, 247.f);;
@@ -196,7 +196,7 @@
     UIWindow *window = [UIApplication sharedApplication].keyWindow;// 获取最上层窗口
     
     UILabel *messageLabel = [[UILabel alloc] init];
-    CGSize messageSize = CGSizeMake([message getSizeWithFont:[UIFont systemFontOfSize:12]].width + 30, 30);
+    CGSize messageSize = CGSizeMake([message getSizeWithFont:[UIFont systemFontOfSize:12]].width + 50, 50);
     messageLabel.frame = CGRectMake((YLScreenWidth - messageSize.width) / 2, YLScreenHeight/2, messageSize.width, messageSize.height);
     messageLabel.text = message;
     messageLabel.font = [UIFont systemFontOfSize:12];

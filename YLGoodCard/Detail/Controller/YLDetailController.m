@@ -60,6 +60,7 @@
 
 @property (nonatomic, strong) NSMutableArray *cars;// 细节图片数组
 @property (nonatomic, strong) NSMutableArray *xiaci;// 瑕疵
+@property (nonatomic, strong) NSMutableArray *xiaciTitles;// 瑕疵
 @property (nonatomic, strong) NSString *isCollect; // 是否收藏
 @property (nonatomic, strong) NSString *isBook;// 是否预约看车
 @property (nonatomic, strong) YLAccount *account;
@@ -160,6 +161,7 @@
     for (YLBlemishModel *model in blemishs) {
         [self.blemish addObject:model];
         [self.xiaci addObject:[NSString stringWithFormat:@"%@", model.img]];
+        [self.xiaciTitles addObject:model.remarks];
     }
     
     YLDetailHeaderModel *headerModel = [YLDetailHeaderModel mj_objectWithKeyValues:self.detailModel];
@@ -231,6 +233,7 @@
             NSLog(@"%@", model.remarks);
         }
         
+        cell.blemishTitles = self.xiaciTitles;
         cell.images = self.cars;
         cell.blemishs = self.xiaci;
         return cell;
@@ -469,6 +472,7 @@
 #pragma mark 懒加载
 - (void)setModel:(YLTableViewModel *)model {
     _model = model;
+    [self loadData];
 }
 
 - (UIView *)cover {
@@ -614,5 +618,11 @@
         _xiaci = [NSMutableArray array];
     }
     return _xiaci;
+}
+- (NSMutableArray *)xiaciTitles {
+    if (!_xiaciTitles) {
+        _xiaciTitles = [NSMutableArray array];
+    }
+    return _xiaciTitles;
 }
 @end

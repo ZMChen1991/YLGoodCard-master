@@ -399,7 +399,7 @@
 //    statusBarView.backgroundColor = YLColor(8.f, 169.f, 255.f);
 //    [self.navigationController.navigationBar addSubview:statusBarView];
     
-    YLBarView *barView = [[YLBarView alloc] initWithFrame:CGRectMake(0, (44 - 36) / 2, 290, 36)];
+    YLBarView *barView = [[YLBarView alloc] initWithFrame:CGRectMake(0, (44 - 36) / 2, 270, 36)];
     barView.layer.cornerRadius = 5.f;
     barView.layer.masksToBounds = YES;
     barView.backgroundColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:0.3];
@@ -417,6 +417,7 @@
         } failure:^(NSError * _Nonnull error) {
         }];
     };
+//    [barView sizeThatFits:CGSizeMake(250, 36)];
     self.navigationItem.titleView = barView;
     
     [self setNavgationBarBackgroundImage];
@@ -472,7 +473,7 @@
 - (void)showMessage:(NSString *)message {
     UIWindow *window = [UIApplication sharedApplication].keyWindow;// 获取最上层窗口
     UILabel *messageLabel = [[UILabel alloc] init];
-    CGSize messageSize = CGSizeMake([message getSizeWithFont:[UIFont systemFontOfSize:12]].width + 30, 30);
+    CGSize messageSize = CGSizeMake([message getSizeWithFont:[UIFont systemFontOfSize:12]].width + 50, 50);
     messageLabel.frame = CGRectMake((YLScreenWidth - messageSize.width) / 2, YLScreenHeight/2, messageSize.width, messageSize.height);
     messageLabel.text = message;
     messageLabel.font = [UIFont systemFontOfSize:12];

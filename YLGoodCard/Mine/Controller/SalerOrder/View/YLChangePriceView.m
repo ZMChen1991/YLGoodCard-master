@@ -176,7 +176,7 @@
 - (void)showMessage:(NSString *)message {
     UIWindow *window = [UIApplication sharedApplication].keyWindow;// 获取最上层窗口
     UILabel *messageLabel = [[UILabel alloc] init];
-    CGSize messageSize = CGSizeMake([message getSizeWithFont:[UIFont systemFontOfSize:12]].width + 30, 30);
+    CGSize messageSize = CGSizeMake([message getSizeWithFont:[UIFont systemFontOfSize:12]].width + 50, 50);
     messageLabel.frame = CGRectMake((YLScreenWidth - messageSize.width) / 2, YLScreenHeight/2, messageSize.width, messageSize.height);
     messageLabel.text = message;
     messageLabel.font = [UIFont systemFontOfSize:12];

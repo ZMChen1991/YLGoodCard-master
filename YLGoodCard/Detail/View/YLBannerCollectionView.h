@@ -10,9 +10,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef void(^BannerCollectViewBlock)(NSInteger index);
 @interface YLBannerCollectionView : UIView
 
 @property (nonatomic, strong) NSArray *images;
+@property (nonatomic, copy) BannerCollectViewBlock bannerCollectViewBlock;
 
 @end
 

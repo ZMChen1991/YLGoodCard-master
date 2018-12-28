@@ -34,7 +34,7 @@
 
 - (void)setupUI {
     
-    UIScrollView *scroll = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, YLScreenWidth - 70, self.frame.size.height - 7)];
+    UIScrollView *scroll = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, YLScreenWidth - 70, self.frame.size.height)];
 //    scroll.backgroundColor = YLColor(233.f, 233.f, 233.f);
     scroll.backgroundColor = [UIColor whiteColor];
     [self addSubview:scroll];
@@ -99,7 +99,7 @@
     CGFloat labelH = self.scroll.frame.size.height;
     for (NSInteger i = 0; i < self.titles.count; i++) {
         CGSize size = [self getSizeWithString:self.titles[i] font:[UIFont systemFontOfSize:14]];
-        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(labelX, 5, size.width + 30, labelH)];
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(labelX, 7, size.width + 30, labelH - 14)];
         label.text = self.titles[i];
         label.textColor = YLColor(51.f, 51.f, 51.f);
         label.font = [UIFont systemFontOfSize:12];

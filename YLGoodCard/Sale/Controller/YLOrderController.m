@@ -193,10 +193,10 @@
     // 获取键盘位置变化前后纵坐标Y的变化值
     CGFloat deltaY = endRect.origin.y - beginRect.origin.y;
     NSLog(@"%f", deltaY);
-    
+    __weak typeof(self) weakSelf = self;
     [UIView animateWithDuration:0.25 animations:^{
-        [self.cityView setFrame:CGRectMake(self.cityView.frame.origin.x, self.cityView.frame.origin.y + deltaY, self.cityView.frame.size.width, self.cityView.frame.size.height)];
-        [self.courseView setFrame:CGRectMake(self.courseView.frame.origin.x, self.courseView.frame.origin.y + deltaY, self.courseView.frame.size.width, self.courseView.frame.size.height)];
+        [weakSelf.cityView setFrame:CGRectMake(weakSelf.cityView.frame.origin.x, weakSelf.cityView.frame.origin.y + deltaY, weakSelf.cityView.frame.size.width, weakSelf.cityView.frame.size.height)];
+        [weakSelf.courseView setFrame:CGRectMake(weakSelf.courseView.frame.origin.x, weakSelf.courseView.frame.origin.y + deltaY, weakSelf.courseView.frame.size.width, weakSelf.courseView.frame.size.height)];
     }];
 }
 
@@ -221,7 +221,7 @@
     UIWindow *window = [UIApplication sharedApplication].keyWindow;// 获取最上层窗口
     
     UILabel *messageLabel = [[UILabel alloc] init];
-    CGSize messageSize = CGSizeMake([message getSizeWithFont:[UIFont systemFontOfSize:12]].width + 30, 30);
+    CGSize messageSize = CGSizeMake([message getSizeWithFont:[UIFont systemFontOfSize:12]].width + 50, 50);
     messageLabel.frame = CGRectMake((YLScreenWidth - messageSize.width) / 2, YLScreenHeight/2, messageSize.width, messageSize.height);
     messageLabel.text = message;
     messageLabel.font = [UIFont systemFontOfSize:12];

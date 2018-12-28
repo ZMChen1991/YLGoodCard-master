@@ -10,4 +10,8 @@
 
 @implementation YLDepreciateDetailModel
 
++ (NSDictionary *)mj_replacedKeyFromPropertyName {
+    return @{@"carID":@"id"};
+}
+
 @end

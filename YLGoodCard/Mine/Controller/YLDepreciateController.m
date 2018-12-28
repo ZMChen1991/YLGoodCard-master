@@ -16,6 +16,7 @@
 #import "YLAccount.h"
 #import "YLDepreciateModel.h"
 #import "YLDepreciateCellFrame.h"
+#import "YLTableViewModel.h"
 
 #define YLDepreciatePath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"Depreciate.txt"]
 
@@ -118,10 +119,12 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSLog(@"查看当前降价情况跳转详情页");
-#warning 这里传当前车辆的模型数据,不然跳转详情页会崩溃
-//    YLDetailController *detail = [[YLDetailController alloc] init];
-//    detail.model = nil;
-//    [self.navigationController pushViewController:detail animated:YES];
+    YLDepreciateCellFrame *cellFrame = self.depreciates[indexPath.row];
+    YLDepreciateDetailModel *detailModel = cellFrame.model.detail;
+    YLTableViewModel *model = [YLTableViewModel mj_objectWithKeyValues:detailModel];
+    YLDetailController *detail = [[YLDetailController alloc] init];
+    detail.model = model;
+    [self.navigationController pushViewController:detail animated:YES];
 }
 
 - (NSMutableArray *)depreciates {

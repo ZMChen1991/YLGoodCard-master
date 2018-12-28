@@ -157,6 +157,10 @@
     
     NSInteger index = scrollView.contentOffset.x / self.frame.size.width + 1;
     self.label.text = [NSString stringWithFormat:@"%ld/%ld", index, self.images.count];
+    if (self.bannerCollectViewBlock) {
+        self.bannerCollectViewBlock(index);
+        NSLog(@"-------------");
+    }
 }
 
 - (void)setImages:(NSArray *)images {
