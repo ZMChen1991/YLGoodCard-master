@@ -39,7 +39,7 @@
         [self addSubview:line];
         
         // 使用定时器更新title
-        [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(updataTitles) userInfo:nil repeats:YES];
+        [NSTimer scheduledTimerWithTimeInterval:6 target:self selector:@selector(updataTitles) userInfo:nil repeats:YES];
     }
     return self;
 }

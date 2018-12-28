@@ -23,26 +23,42 @@
     if (self) {
         [self setupUI];
         [self setUserInteractionEnabled:YES];
-        self.backgroundColor = YLColor(233.f, 233.f, 233.f);
+//        self.backgroundColor = YLColor(233.f, 233.f, 233.f);
+        self.backgroundColor = [UIColor whiteColor];
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, frame.size.height-1, frame.size.width, 1)];
+        label.backgroundColor = YLColor(233.f, 233.f, 233.f);
+        [self addSubview:label];
     }
     return self;
 }
 
 - (void)setupUI {
     
-    UIScrollView *scroll = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, YLScreenWidth - 70, self.frame.size.height)];
-    scroll.backgroundColor = YLColor(233.f, 233.f, 233.f);
+    UIScrollView *scroll = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, YLScreenWidth - 70, self.frame.size.height - 7)];
+//    scroll.backgroundColor = YLColor(233.f, 233.f, 233.f);
+    scroll.backgroundColor = [UIColor whiteColor];
     [self addSubview:scroll];
     self.scroll = scroll;
     
-    UIButton *delete = [UIButton buttonWithType:UIButtonTypeCustom];
-    delete.frame = CGRectMake(CGRectGetMaxX(scroll.frame) + 10, 0, 50, self.frame.size.height);
-    delete.backgroundColor = YLColor(233.f, 233.f, 233.f);
-    delete.titleLabel.font = [UIFont systemFontOfSize:14];
-    [delete setTitle:@"重置" forState:UIControlStateNormal];
-    [delete setTitleColor:YLColor(155.f, 155.f, 155.f) forState:UIControlStateNormal];
-    [delete addTarget:self action:@selector(deleteClick) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:delete];
+//    UIButton *delete = [UIButton buttonWithType:UIButtonTypeCustom];
+//    delete.frame = CGRectMake(CGRectGetMaxX(scroll.frame) + 10, 0, 50, self.frame.size.height);
+//    delete.backgroundColor = [UIColor whiteColor];
+//    delete.titleLabel.font = [UIFont systemFontOfSize:14];
+//    [delete setTitle:@"重置" forState:UIControlStateNormal];
+//    [delete setTitleColor:YLColor(155.f, 155.f, 155.f) forState:UIControlStateNormal];
+//    [delete addTarget:self action:@selector(deleteClick) forControlEvents:UIControlEventTouchUpInside];
+//    [self addSubview:delete];
+    
+//    UIView *deleteView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 50, self.frame.size.height)];
+    UIImageView *imageView = [[UIImageView alloc] init];
+//    imageView.backgroundColor = [UIColor redColor];
+    imageView.frame = CGRectMake(CGRectGetMaxX(scroll.frame) + 10, 17, 43, self.frame.size.height - 34);
+    imageView.image = [UIImage imageNamed:@"重置"];
+    imageView.contentMode = UIViewContentModeScaleToFill;
+    [imageView setUserInteractionEnabled:YES];
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(deleteClick)];
+    [imageView addGestureRecognizer:tap];
+    [self addSubview:imageView];
 }
 
 #pragma mark 清空参数label
@@ -80,24 +96,24 @@
     
     [self.scroll.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     CGFloat labelX = 10;
-    CGFloat labelH = self.scroll.frame.size.height - 10;
+    CGFloat labelH = self.scroll.frame.size.height;
     for (NSInteger i = 0; i < self.titles.count; i++) {
         CGSize size = [self getSizeWithString:self.titles[i] font:[UIFont systemFontOfSize:14]];
-        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(labelX, 5, size.width + 20, labelH)];
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(labelX, 5, size.width + 30, labelH)];
         label.text = self.titles[i];
-        label.textColor = YLColor(155.f, 155.f, 155.f);
-        label.font = [UIFont systemFontOfSize:14];
+        label.textColor = YLColor(51.f, 51.f, 51.f);
+        label.font = [UIFont systemFontOfSize:12];
         label.textAlignment = NSTextAlignmentCenter;
-        label.backgroundColor = YLColor(250.f, 250.f, 250.f);
-        label.layer.masksToBounds = YES;
-        label.layer.cornerRadius = 10.f;
+        label.backgroundColor = YLColor(247.f, 247.f, 247.f);
+//        label.layer.masksToBounds = YES;
+//        label.layer.cornerRadius = 10.f;
         label.tag = 100 + i;
         label.userInteractionEnabled = YES;
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(labelClick:)];
         tap.numberOfTapsRequired = 1;
         [label addGestureRecognizer:tap];
         [self.scroll addSubview:label];
-        labelX += size.width + 30;
+        labelX += size.width + 40;
         self.scroll.contentSize = CGSizeMake(labelX, self.scroll.frame.size.height);
     }
 }

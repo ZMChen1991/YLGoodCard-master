@@ -15,6 +15,8 @@
 #import "YLRequest.h"
 #import "YLSaleDetailController.h"
 
+#define YLAllSaleOrderPath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"AllSaleOrder.txt"]
+
 @interface YLAllSaleOrderController ()
 
 @property (nonatomic, strong) NSMutableArray *saleOrders;
@@ -32,7 +34,7 @@
         [self loadData];
         [self.tableView.mj_header endRefreshing];
     }];
-    
+    [self getLocalData];
     [self loadData];
 }
 
@@ -44,19 +46,38 @@
     NSMutableDictionary *param = [NSMutableDictionary dictionary];
     [param setValue:account.telephone forKey:@"telephone"];
     [param setValue:@"" forKey:@"status"];
-//    NSLog(@"param:%@", param);
+    __weak typeof(self) weakSelf = self;
     [YLRequest GET:urlString parameters:param success:^(id  _Nonnull responseObject) {
-        NSLog(@"param:%@ responseObject%@", param, responseObject);
-        NSArray *modelArray = [YLSaleOrderModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"]];
-        for (YLSaleOrderModel *model in modelArray) {
-            YLSaleOrderCellFrame *cellFrame = [[YLSaleOrderCellFrame alloc] init];
-            cellFrame.model = model;
-            [self.saleOrders addObject:cellFrame];
+        if ([responseObject[@"code"] isEqualToNumber:[NSNumber numberWithInteger:200]]) {
+            [weakSelf keyedArchiverObject:responseObject toFile:YLAllSaleOrderPath];
+            [weakSelf getLocalData];
         }
-        [self.tableView reloadData];
     } failed:nil];
     
 }
+
+- (void)getLocalData {
+    
+    [self.saleOrders removeAllObjects];
+    NSDictionary *dict = [NSKeyedUnarchiver unarchiveObjectWithFile:YLAllSaleOrderPath];
+    NSArray *modelArray = [YLSaleOrderModel mj_objectArrayWithKeyValuesArray:dict[@"data"]];
+    for (YLSaleOrderModel *model in modelArray) {
+        YLSaleOrderCellFrame *cellFrame = [[YLSaleOrderCellFrame alloc] init];
+        cellFrame.model = model;
+        [self.saleOrders addObject:cellFrame];
+    }
+    [self.tableView reloadData];
+}
+
+- (void)keyedArchiverObject:(id)obj toFile:(NSString *)filePath {
+    BOOL success = [NSKeyedArchiver archiveRootObject:obj toFile:filePath];
+    if (success) {
+        NSLog(@"即将看车下架数据保存成功");
+    } else {
+        NSLog(@"保存失败");
+    }
+}
+
 
 #pragma mark - Table view data source
 

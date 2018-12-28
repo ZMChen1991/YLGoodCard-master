@@ -27,6 +27,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    
 }
 
 - (void)loadData {
@@ -87,7 +88,6 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSLog(@"");
     
     YLSubCellModel *model = self.dataArray[indexPath.row];
     YLLookCarDetailController *detail = [[YLLookCarDetailController alloc] init];

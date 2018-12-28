@@ -94,7 +94,8 @@
     cell.detailTextLabel.font = [UIFont systemFontOfSize:12];
     cell.textLabel.text = self.titles[indexPath.row];
     cell.detailTextLabel.text = self.detailTitles[indexPath.row];
-    cell.selectionStyle = UITableViewCellSeparatorStyleNone;
+//    cell.selectionStyle = UITableViewCellSeparatorStyleNone;
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
 

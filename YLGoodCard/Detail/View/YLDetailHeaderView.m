@@ -59,18 +59,18 @@
     self.tagView = [[UIView alloc] initWithFrame:CGRectMake(YLLeftMargin, CGRectGetMaxY(self.text.frame) + 7, self.frame.size.width - 2 * YLLeftMargin, 22)];
     //    self.tagView.backgroundColor = [UIColor redColor];
     
-    NSArray *tags = @[@"4S保养", @"0过户"];
-    for (int i = 0; i < tags.count; i++) {
-        NSString *string = tags[i];
-        CGSize size = [string getSizeWithFont:[UIFont boldSystemFontOfSize:12]];
-        float width = size.width;
-        float height = self.tagView.frame.size.height;
-        YLCondition *btn = [[YLCondition alloc] initWithFrame:CGRectMake(i * (width + YLTopMargin), 0, width, height)];
-        btn.type = YLConditionTypeWhite;
-        [btn setTitle:tags[i] forState:UIControlStateNormal];
-        btn.titleLabel.font = [UIFont systemFontOfSize:12];
-        [self.tagView addSubview:btn];
-    }
+//    NSArray *tags = @[@"4S保养", @"0过户"];
+//    for (int i = 0; i < tags.count; i++) {
+//        NSString *string = tags[i];
+//        CGSize size = [string getSizeWithFont:[UIFont boldSystemFontOfSize:12]];
+//        float width = size.width;
+//        float height = self.tagView.frame.size.height;
+//        YLCondition *btn = [[YLCondition alloc] initWithFrame:CGRectMake(i * (width + YLTopMargin), 0, width, height)];
+//        btn.type = YLConditionTypeWhite;
+//        [btn setTitle:tags[i] forState:UIControlStateNormal];
+//        btn.titleLabel.font = [UIFont systemFontOfSize:12];
+//        [self.tagView addSubview:btn];
+//    }
     
     UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(YLLeftMargin, CGRectGetMaxY(self.tagView.frame) + 20, 50, 17)];
     label1.font = [UIFont systemFontOfSize:12];
@@ -166,6 +166,35 @@
 - (void)setVehicle:(NSMutableArray *)vehicle {
     _vehicle = vehicle;
     self.banner.images = vehicle;
+}
+
+- (void)setDetailModel:(YLDetailModel *)detailModel {
+    _detailModel = detailModel;
+    
+    CGFloat btnX = 0;
+    if (detailModel.newCar) {
+        NSString *string = @"准新车";
+        CGSize size = [string getSizeWithFont:[UIFont boldSystemFontOfSize:12]];
+        CGFloat width = size.width + 10;
+        CGFloat height = self.tagView.frame.size.height;
+        YLCondition *btn = [[YLCondition alloc] initWithFrame:CGRectMake(btnX, 0, width, height)];
+        btn.type = YLConditionTypeWhite;
+        [btn setTitle:string forState:UIControlStateNormal];
+        btn.titleLabel.font = [UIFont systemFontOfSize:12];
+        [self.tagView addSubview:btn];
+        btnX += width + 10;
+    }
+    if (detailModel.zeroTransfer) {
+        NSString *string = @"0过户";
+        CGSize size = [string getSizeWithFont:[UIFont boldSystemFontOfSize:12]];
+        CGFloat width = size.width + 10;
+        CGFloat height = self.tagView.frame.size.height;
+        YLCondition *btn = [[YLCondition alloc] initWithFrame:CGRectMake(btnX, 0, width, height)];
+        btn.type = YLConditionTypeWhite;
+        [btn setTitle:string forState:UIControlStateNormal];
+        btn.titleLabel.font = [UIFont systemFontOfSize:12];
+        [self.tagView addSubview:btn];
+    }
 }
 
 - (NSString *)stringToNumber:(NSString *)number {

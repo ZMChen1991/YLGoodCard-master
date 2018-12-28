@@ -72,6 +72,7 @@
     
     UILabel *blemishL = [[UILabel alloc] initWithFrame:CGRectMake(YLLeftMargin, CGRectGetMaxY(self.banner.frame) + 5, self.frame.size.width - 2 * YLLeftMargin, 20)];
     blemishL.textColor = [UIColor grayColor];
+    blemishL.font = [UIFont systemFontOfSize:14];
 //    blemishL.text = @"瑕疵";
     [self addSubview:blemishL];
     self.blemishL = blemishL;
@@ -92,7 +93,7 @@
         detail.frame = CGRectMake(YLLeftMargin, CGRectGetMaxY(icon.frame) + 5, width, 20);
         detail.text = self.titles[i];
         iconH += 230;
-        NSLog(@"%f", iconH);
+//        NSLog(@"%f", iconH);
     }
     
 //    self.banner.frame = CGRectMake(YLLeftMargin, iconH, width, 200);
@@ -114,15 +115,6 @@
 
 - (void)setImages:(NSArray *)images {
     _images = images;
-    
-//    for (NSInteger i = 0; i < images.count; i++) {
-//        if (!images[i] || i < 7) {
-//            return;
-//        }
-//        UIImageView *icon = self.icons[i];
-//        [icon sd_setImageWithURL:[NSURL URLWithString:images[i]] placeholderImage:nil];
-//    }
-    
     
     for (NSInteger i = 0; i < self.titles.count; i++) {
         UIImageView *icon = self.icons[i];

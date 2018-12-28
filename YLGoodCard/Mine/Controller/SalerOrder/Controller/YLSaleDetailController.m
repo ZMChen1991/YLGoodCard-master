@@ -16,6 +16,8 @@
 #import "YLSaleOrderModel.h"
 #import "YLDetailController.h"
 
+#define YLSaleDetailPath(carID) [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:[NSString stringWithFormat:@"SaleDetail-%@", carID]]
+
 @interface YLSaleDetailController ()
 
 @property (nonatomic, strong) UIView *cover;
@@ -40,6 +42,7 @@
     self.title = @"卖车订单详情";
     
     [self setupUI];
+    [self getLocalData];
     [self loadData];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(transformView:) name:@"UIKeyboardWillChangeFrameNotification" object:nil];
@@ -49,64 +52,129 @@
     NSString *urlString = @"http://ucarjava.bceapp.com/sell?method=record";
     NSMutableDictionary *param = [NSMutableDictionary dictionary];
     [param setValue:self.model.detail.carID forKey:@"detailId"];
+    __weak typeof(self) weakSelf = self;
     [YLRequest GET:urlString parameters:param success:^(id  _Nonnull responseObject) {
         if ([responseObject[@"code"] isEqualToNumber:[NSNumber numberWithInteger:200]]) {
             NSLog(@"请求成功:%@", responseObject[@"data"]);
-            self.saleOrderModel = [YLSaleOrderModel mj_objectWithKeyValues:responseObject[@"data"]];
-            NSLog(@"self.saleOrderModel%@", self.saleOrderModel.examineTime);
-            self.command.model = self.saleOrderModel;
-            // 根据车辆状态修改显示修改价格、下架和重新上架的按钮还有进度条的位置
-            if ([self.saleOrderModel.detail.status isEqualToString:@"3"]) { // 车辆在售状态、显示修改价格、下架
-                self.changePrice.hidden = NO;
-                self.soldOut.hidden = NO;
-                self.stepView.hidden = NO;
-                self.repeatOn.hidden = YES;
-                CGRect frame = CGRectMake(0, CGRectGetMaxY(self.changePrice.frame) + 20, YLScreenWidth, 100);
-                [self.stepView setFrame:frame];
-                self.numberView.frame = CGRectMake(0, CGRectGetMaxY(self.stepView.frame), YLScreenWidth, 30);
-            } else if ([self.saleOrderModel.detail.status isEqualToString:@"0"]) { // 车辆下架状态，显示重新上架按钮
-                self.changePrice.hidden = YES;
-                self.soldOut.hidden = YES;
-                self.stepView.hidden = YES;
-                self.repeatOn.hidden = NO;
-//                CGRect frame = CGRectMake(0, CGRectGetMaxY(self.repeatOn.frame) + 20, YLScreenWidth, 100);
+            [weakSelf keyedArchiverObject:responseObject toFile:YLSaleDetailPath(weakSelf.model.detail.carID)];
+            [weakSelf getLocalData];
+            
+//            self.saleOrderModel = [YLSaleOrderModel mj_objectWithKeyValues:responseObject[@"data"]];
+//            NSLog(@"self.saleOrderModel%@", self.saleOrderModel.examineTime);
+//            self.command.model = self.saleOrderModel;
+//            // 根据车辆状态修改显示修改价格、下架和重新上架的按钮还有进度条的位置
+//            if ([self.saleOrderModel.detail.status isEqualToString:@"3"]) { // 车辆在售状态、显示修改价格、下架
+//                self.changePrice.hidden = NO;
+//                self.soldOut.hidden = NO;
+//                self.stepView.hidden = NO;
+//                self.repeatOn.hidden = YES;
+//                CGRect frame = CGRectMake(0, CGRectGetMaxY(self.changePrice.frame) + 20, YLScreenWidth, 100);
 //                [self.stepView setFrame:frame];
-                self.numberView.frame = CGRectMake(0, CGRectGetMaxY(self.repeatOn.frame) + YLLeftMargin, YLScreenWidth, 30);
-            } else {// d车辆未上架：待验车、待约定状态，不显示修改价格、上架、重新上架的按钮
-                self.changePrice.hidden = YES;
-                self.soldOut.hidden = YES;
-                self.repeatOn.hidden = YES;
-                self.stepView.hidden = NO;
-                CGRect frame = CGRectMake(0, CGRectGetMaxY(self.command.frame) + 20, YLScreenWidth, 100);
-                [self.stepView setFrame:frame];
-                self.numberView.frame = CGRectMake(0, CGRectGetMaxY(self.stepView.frame), YLScreenWidth, 30);
-            }
-        
-            if ([self.saleOrderModel.detail.status isEqualToString:@"0"]) { // 车辆下架状态，显示重新上架按钮
-                self.stepView.stepIndex = 0;
-            } else {
-                // 根据订单状态修改进度条
-                if ([self.saleOrderModel.status isEqualToString:@"1"]) {
-                    self.stepView.stepIndex = 0;
-                } else if ([self.saleOrderModel.status isEqualToString:@"2"]) {
-                    self.stepView.stepIndex = 1;
-                } else if ([self.saleOrderModel.status isEqualToString:@"3"]) {
-                    self.stepView.stepIndex = 2;
-                } else {
-                    self.stepView.stepIndex = 3;
-                }
-            }
-        
-            self.numberView.tureNumber = self.saleOrderModel.detail.lookSum;
-            self.numberView.browseNumber = self.saleOrderModel.detail.clickSum;
+//                self.numberView.frame = CGRectMake(0, CGRectGetMaxY(self.stepView.frame), YLScreenWidth, 30);
+//            } else if ([self.saleOrderModel.detail.status isEqualToString:@"0"]) { // 车辆下架状态，显示重新上架按钮
+//                self.changePrice.hidden = YES;
+//                self.soldOut.hidden = YES;
+//                self.stepView.hidden = YES;
+//                self.repeatOn.hidden = NO;
+////                CGRect frame = CGRectMake(0, CGRectGetMaxY(self.repeatOn.frame) + 20, YLScreenWidth, 100);
+////                [self.stepView setFrame:frame];
+//                self.numberView.frame = CGRectMake(0, CGRectGetMaxY(self.repeatOn.frame) + YLLeftMargin, YLScreenWidth, 30);
+//            } else {// d车辆未上架：待验车、待约定状态，不显示修改价格、上架、重新上架的按钮
+//                self.changePrice.hidden = YES;
+//                self.soldOut.hidden = YES;
+//                self.repeatOn.hidden = YES;
+//                self.stepView.hidden = NO;
+//                CGRect frame = CGRectMake(0, CGRectGetMaxY(self.command.frame) + 20, YLScreenWidth, 100);
+//                [self.stepView setFrame:frame];
+//                self.numberView.frame = CGRectMake(0, CGRectGetMaxY(self.stepView.frame), YLScreenWidth, 30);
+//            }
+//
+//            if ([self.saleOrderModel.detail.status isEqualToString:@"0"]) { // 车辆下架状态，显示重新上架按钮
+//                self.stepView.stepIndex = 0;
+//            } else {
+//                // 根据订单状态修改进度条
+//                if ([self.saleOrderModel.status isEqualToString:@"1"]) {
+//                    self.stepView.stepIndex = 0;
+//                } else if ([self.saleOrderModel.status isEqualToString:@"2"]) {
+//                    self.stepView.stepIndex = 1;
+//                } else if ([self.saleOrderModel.status isEqualToString:@"3"]) {
+//                    self.stepView.stepIndex = 2;
+//                } else {
+//                    self.stepView.stepIndex = 3;
+//                }
+//            }
+//
+//            self.numberView.tureNumber = self.saleOrderModel.detail.lookSum;
+//            self.numberView.browseNumber = self.saleOrderModel.detail.clickSum;
         }
     } failed:nil];
 }
 
 
+- (void)getLocalData {
+    
+    NSDictionary *dict = [NSKeyedUnarchiver unarchiveObjectWithFile:YLSaleDetailPath(self.model.detail.carID)];
+    self.saleOrderModel = [YLSaleOrderModel mj_objectWithKeyValues:dict[@"data"]];
+    NSLog(@"self.saleOrderModel%@", self.saleOrderModel.examineTime);
+    self.command.model = self.saleOrderModel;
+    // 根据车辆状态修改显示修改价格、下架和重新上架的按钮还有进度条的位置
+    if ([self.saleOrderModel.detail.status isEqualToString:@"3"]) { // 车辆在售状态、显示修改价格、下架
+        self.changePrice.hidden = NO;
+        self.soldOut.hidden = NO;
+        self.stepView.hidden = NO;
+        self.repeatOn.hidden = YES;
+        CGRect frame = CGRectMake(0, CGRectGetMaxY(self.changePrice.frame) + 20, YLScreenWidth, 100);
+        [self.stepView setFrame:frame];
+        self.numberView.frame = CGRectMake(0, CGRectGetMaxY(self.stepView.frame), YLScreenWidth, 30);
+    } else if ([self.saleOrderModel.detail.status isEqualToString:@"0"]) { // 车辆下架状态，显示重新上架按钮
+        self.changePrice.hidden = YES;
+        self.soldOut.hidden = YES;
+        self.stepView.hidden = YES;
+        self.repeatOn.hidden = NO;
+        //                CGRect frame = CGRectMake(0, CGRectGetMaxY(self.repeatOn.frame) + 20, YLScreenWidth, 100);
+        //                [self.stepView setFrame:frame];
+        self.numberView.frame = CGRectMake(0, CGRectGetMaxY(self.repeatOn.frame) + YLLeftMargin, YLScreenWidth, 30);
+    } else {// d车辆未上架：待验车、待约定状态，不显示修改价格、上架、重新上架的按钮
+        self.changePrice.hidden = YES;
+        self.soldOut.hidden = YES;
+        self.repeatOn.hidden = YES;
+        self.stepView.hidden = NO;
+        CGRect frame = CGRectMake(0, CGRectGetMaxY(self.command.frame) + 20, YLScreenWidth, 100);
+        [self.stepView setFrame:frame];
+        self.numberView.frame = CGRectMake(0, CGRectGetMaxY(self.stepView.frame), YLScreenWidth, 30);
+    }
+    
+    if ([self.saleOrderModel.detail.status isEqualToString:@"0"]) { // 车辆下架状态，显示重新上架按钮
+        self.stepView.stepIndex = 0;
+    } else {
+        // 根据订单状态修改进度条
+        if ([self.saleOrderModel.status isEqualToString:@"1"]) {
+            self.stepView.stepIndex = 0;
+        } else if ([self.saleOrderModel.status isEqualToString:@"2"]) {
+            self.stepView.stepIndex = 1;
+        } else if ([self.saleOrderModel.status isEqualToString:@"3"]) {
+            self.stepView.stepIndex = 2;
+        } else {
+            self.stepView.stepIndex = 3;
+        }
+    }
+    
+    self.numberView.tureNumber = self.saleOrderModel.detail.lookSum;
+    self.numberView.browseNumber = self.saleOrderModel.detail.clickSum;
+}
+
+- (void)keyedArchiverObject:(id)obj toFile:(NSString *)filePath {
+    BOOL success = [NSKeyedArchiver archiveRootObject:obj toFile:filePath];
+    if (success) {
+        NSLog(@"即将看车下架数据保存成功");
+    } else {
+        NSLog(@"保存失败");
+    }
+}
+
 - (void)setupUI {
     
-    YLCommandView *command = [[YLCommandView alloc] initWithFrame:CGRectMake(0, 64, YLScreenWidth, 110)];
+    YLCommandView *command = [[YLCommandView alloc] initWithFrame:CGRectMake(0, 0, YLScreenWidth, 110)];
 //    command.model = self.model;
     command.saleOrderCommandBlock = ^(YLTableViewModel * _Nonnull model) {
         YLDetailController *detail = [[YLDetailController alloc] init];
@@ -232,7 +300,7 @@
 #pragma mark 懒加载
 - (UIView *)cover {
     if (!_cover) {
-        _cover = [[UIView alloc] initWithFrame:CGRectMake(0, 64, YLScreenWidth, YLScreenHeight)];
+        _cover = [[UIView alloc] initWithFrame:CGRectMake(0, 0, YLScreenWidth, YLScreenHeight)];
         _cover.backgroundColor = [UIColor colorWithRed:0.f green:0.f blue:0.f alpha:0.5];
         _cover.hidden = YES;
     }
@@ -344,7 +412,7 @@
     messageLabel.layer.masksToBounds = YES;
     [window addSubview:messageLabel];
     
-    [UIView animateWithDuration:1 animations:^{
+    [UIView animateWithDuration:2 animations:^{
         messageLabel.alpha = 0;
     } completion:^(BOOL finished) {
         [messageLabel removeFromSuperview];

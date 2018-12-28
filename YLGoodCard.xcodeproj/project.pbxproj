@@ -84,6 +84,10 @@
 		8A9039A421A299B40099BC98 /* YLDetectCenterModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A9039A321A299B40099BC98 /* YLDetectCenterModel.m */; };
 		8A9039AD21A2D1F60099BC98 /* YLConfigController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A9039AC21A2D1F60099BC98 /* YLConfigController.m */; };
 		8A9039B021A2F6600099BC98 /* YLDetailTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A9039AF21A2F6600099BC98 /* YLDetailTool.m */; };
+		8A9C60E621D0C9F100307701 /* YLLookingCarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A9C60E521D0C9F100307701 /* YLLookingCarController.m */; };
+		8A9C60E921D0CA0600307701 /* YLLookedCarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A9C60E821D0CA0600307701 /* YLLookedCarController.m */; };
+		8A9C60EC21D0D48800307701 /* YLCollectingCarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A9C60EB21D0D48800307701 /* YLCollectingCarController.m */; };
+		8A9C60EF21D0D49400307701 /* YLCollectedCarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A9C60EE21D0D49400307701 /* YLCollectedCarController.m */; };
 		8AA8CB5D21CB36B90006B972 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AA8CB5C21CB36B90006B972 /* libz.tbd */; };
 		8AA8CB5F21CB36CB0006B972 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AA8CB5E21CB36CB0006B972 /* libsqlite3.tbd */; };
 		8AA8CB6121CB36DA0006B972 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AA8CB6021CB36DA0006B972 /* CoreTelephony.framework */; };
@@ -367,6 +371,14 @@
 		8A9039AC21A2D1F60099BC98 /* YLConfigController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YLConfigController.m; sourceTree = "<group>"; };
 		8A9039AE21A2F6600099BC98 /* YLDetailTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YLDetailTool.h; sourceTree = "<group>"; };
 		8A9039AF21A2F6600099BC98 /* YLDetailTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YLDetailTool.m; sourceTree = "<group>"; };
+		8A9C60E421D0C9F100307701 /* YLLookingCarController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YLLookingCarController.h; sourceTree = "<group>"; };
+		8A9C60E521D0C9F100307701 /* YLLookingCarController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YLLookingCarController.m; sourceTree = "<group>"; };
+		8A9C60E721D0CA0600307701 /* YLLookedCarController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YLLookedCarController.h; sourceTree = "<group>"; };
+		8A9C60E821D0CA0600307701 /* YLLookedCarController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YLLookedCarController.m; sourceTree = "<group>"; };
+		8A9C60EA21D0D48800307701 /* YLCollectingCarController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YLCollectingCarController.h; sourceTree = "<group>"; };
+		8A9C60EB21D0D48800307701 /* YLCollectingCarController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YLCollectingCarController.m; sourceTree = "<group>"; };
+		8A9C60ED21D0D49400307701 /* YLCollectedCarController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YLCollectedCarController.h; sourceTree = "<group>"; };
+		8A9C60EE21D0D49400307701 /* YLCollectedCarController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YLCollectedCarController.m; sourceTree = "<group>"; };
 		8AA8CB5C21CB36B90006B972 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		8AA8CB5E21CB36CB0006B972 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		8AA8CB6021CB36DA0006B972 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
@@ -1203,6 +1215,10 @@
 				8ADEE4F521B0E4D400BAD2CD /* YLSubController.m */,
 				8ADEE4F621B0E4D400BAD2CD /* YLFunctionController.h */,
 				8ADEE4FB21B0E4D400BAD2CD /* YLFunctionController.m */,
+				8A9C60E421D0C9F100307701 /* YLLookingCarController.h */,
+				8A9C60E521D0C9F100307701 /* YLLookingCarController.m */,
+				8A9C60E721D0CA0600307701 /* YLLookedCarController.h */,
+				8A9C60E821D0CA0600307701 /* YLLookedCarController.m */,
 				8AC19BAF21BA59DE00A9E52A /* YLLookCarDetailController.h */,
 				8AC19BB021BA59DE00A9E52A /* YLLookCarDetailController.m */,
 			);
@@ -1214,6 +1230,10 @@
 			children = (
 				8AC354EA21B0468A00A464AF /* YLCollectController.h */,
 				8AC354EB21B0468B00A464AF /* YLCollectController.m */,
+				8A9C60EA21D0D48800307701 /* YLCollectingCarController.h */,
+				8A9C60EB21D0D48800307701 /* YLCollectingCarController.m */,
+				8A9C60ED21D0D49400307701 /* YLCollectedCarController.h */,
+				8A9C60EE21D0D49400307701 /* YLCollectedCarController.m */,
 				8ADEE4D421B0C56B00BAD2CD /* YLSubCollectController.h */,
 				8ADEE4D521B0C56B00BAD2CD /* YLSubCollectController.m */,
 			);
@@ -1758,6 +1778,7 @@
 				8AC348A521B3F09300BC9D11 /* YLChangePriceView.m in Sources */,
 				8A205FBC21B8BAAB009EA592 /* IXWheelV.m in Sources */,
 				8A265C72219A629700FB58A3 /* YLAboutController.m in Sources */,
+				8A9C60E921D0CA0600307701 /* YLLookedCarController.m in Sources */,
 				8AC354FE21B0484500A464AF /* YLBrowseController.m in Sources */,
 				8A211130219163F20014132C /* YLSafeguardCell.m in Sources */,
 				8AC348CC21B42BF200BC9D11 /* YLBargainHistoryCell.m in Sources */,
@@ -1804,6 +1825,7 @@
 				8AC082A121C0DC5000B97D02 /* YLSubAllBuyOrderController.m in Sources */,
 				8ADEE50C21B0E4E000BAD2CD /* YLSubBuyOrderController.m in Sources */,
 				8AEFA690219D1D7B00C21452 /* YLTableGroupHeader.m in Sources */,
+				8A9C60E621D0C9F100307701 /* YLLookingCarController.m in Sources */,
 				8AEFA6A5219D720C00C21452 /* YLCommandCellView.m in Sources */,
 				8AC386C421C4E3E3009F063B /* YLComplaintController.m in Sources */,
 				8AC082A721C0DC9900B97D02 /* YLSubDoneBuyOrderController.m in Sources */,
@@ -1878,12 +1900,14 @@
 				8AC348BA21B405D500BC9D11 /* YLCompleteView.m in Sources */,
 				8AC75B9B2199544900D159C9 /* YLLoginController.m in Sources */,
 				8AE1D68B21A8EA4500726A3E /* YLCarTypeModel.m in Sources */,
+				8A9C60EC21D0D48800307701 /* YLCollectingCarController.m in Sources */,
 				8A2111332191642E0014132C /* YLInformationCell.m in Sources */,
 				8ADEE4D921B0C85500BAD2CD /* YLCollectModel.m in Sources */,
 				8A2111362191645D0014132C /* YLReportCell.m in Sources */,
 				8AC354F821B0470200A464AF /* YLSaleOrderController.m in Sources */,
 				8ADEE50221B0E4D400BAD2CD /* YLLookCarModel.m in Sources */,
 				8ADEE50421B0E4D400BAD2CD /* YLFunctionController.m in Sources */,
+				8A9C60EF21D0D49400307701 /* YLCollectedCarController.m in Sources */,
 				8ADE764321A696CE00C78F00 /* YLBuyTool.m in Sources */,
 				8A0E3F2C218A926F00275131 /* AppDelegate.m in Sources */,
 				8A3E6A9021B4BC90008C5D6F /* YLBargainHistoryDetailController.m in Sources */,
@@ -2045,6 +2069,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = ZRG49Y73VS;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2073,6 +2098,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = ZRG49Y73VS;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

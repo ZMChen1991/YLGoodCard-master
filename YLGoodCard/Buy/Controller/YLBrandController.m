@@ -36,6 +36,7 @@
     
     // 思路：一组装字母，再以字母x筛选出品牌装进数组，然后用另一数组存该数组
     NSMutableDictionary *param = [NSMutableDictionary dictionary];
+    __weak typeof(self) weakSelf = self;
     [YLBuyTool brandWithParam:param success:^(NSArray<YLBrandModel *> * _Nonnull result) {
         NSMutableArray *group = [NSMutableArray array];
         // 取出首字母
@@ -45,12 +46,12 @@
         }
         NSSet *set = [NSSet setWithArray:group];
         NSMutableArray *groups = [NSMutableArray arrayWithArray:[set allObjects]];
-        [self keyedArchiverObject:groups toFile:YLGroupPath];
+        [weakSelf keyedArchiverObject:groups toFile:YLGroupPath];
 
         // 根据首字母取出汽车品牌存放在数组里
         NSMutableArray *brands = [NSMutableArray array];
-        for (NSInteger i = 0; i < self.groups.count; i++) {
-            NSString *str = self.groups[i];
+        for (NSInteger i = 0; i < weakSelf.groups.count; i++) {
+            NSString *str = weakSelf.groups[i];
             NSMutableArray *array = [NSMutableArray array];
             for (YLBrandModel *model in result) {
                 if ([str isEqualToString:model.initialLetter]) {
@@ -60,8 +61,8 @@
             // 将首字母的c汽车品牌数组存放在数组里
             [brands addObject:array];
         }
-        [self keyedArchiverObject:brands toFile:YLBrandPath];
-        [self getLocationData];
+        [weakSelf keyedArchiverObject:brands toFile:YLBrandPath];
+        [weakSelf getLocationData];
 //        [self.tableView reloadData];
     } failure:^(NSError * error) {
 
@@ -123,10 +124,11 @@
     YLBrandModel *model = self.brands[indexPath.section][indexPath.row];
     YLSeriesController *series = [[YLSeriesController alloc] init];
     series.model = model;
+    __weak typeof(self) weakSelf = self;
     series.buySeriesBlock = ^(NSString * _Nonnull series) {
         NSLog(@"series%@", series);
-        if (self.buyBrandBlock) {
-            self.buyBrandBlock(model.brand, series);
+        if (weakSelf.buyBrandBlock) {
+            weakSelf.buyBrandBlock(model.brand, series);
         }
     };
     [self.navigationController pushViewController:series animated:YES];

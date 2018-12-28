@@ -49,7 +49,7 @@
 - (YLSkipView *)skip {
     
     if (!_skip) {
-        _skip = [[YLSkipView alloc] initWithFrame:CGRectMake(0, 64, self.view.frame.size.width, self.view.frame.size.height-64)];
+        _skip = [[YLSkipView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-64)];
     }
     return _skip;
 }

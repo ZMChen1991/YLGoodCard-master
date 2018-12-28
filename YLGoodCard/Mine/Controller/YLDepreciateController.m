@@ -17,6 +17,8 @@
 #import "YLDepreciateModel.h"
 #import "YLDepreciateCellFrame.h"
 
+#define YLDepreciatePath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"Depreciate.txt"]
+
 @interface YLDepreciateController ()
 
 @property (nonatomic, strong) NSMutableArray *depreciates;
@@ -31,6 +33,7 @@
     self.tableView.tableFooterView = [[UIView alloc] init];
     self.title = @"降价提醒";
     
+    [self getLocalData];
     [self loadData];
 }
 
@@ -44,22 +47,48 @@
     NSString *urlString = @"http://ucarjava.bceapp.com/reduce?method=my";
     NSMutableDictionary *param = [NSMutableDictionary dictionary];
     [param setValue:account.telephone forKey:@"telephone"];
+    __weak typeof(self) weakSelf = self;
     [YLRequest GET:urlString parameters:param success:^(id  _Nonnull responseObject) {
         NSLog(@"%@", responseObject);
         if ([responseObject[@"code"] isEqualToNumber:[NSNumber numberWithInt:200]]) {
             NSLog(@"降价提醒请求成功");
-            NSArray *array = [YLDepreciateModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"]];
-            for (YLDepreciateModel *model in array) {
-                YLDepreciateCellFrame *cellFrame = [[YLDepreciateCellFrame alloc] init];
-                cellFrame.model = model;
-                [self.depreciates addObject:cellFrame];
-            }
-            [self.tableView reloadData];
+            [weakSelf keyedArchiverObject:responseObject toFile:YLDepreciatePath];
+            [weakSelf getLocalData];
+            
+//            NSArray *array = [YLDepreciateModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"]];
+//            for (YLDepreciateModel *model in array) {
+//                YLDepreciateCellFrame *cellFrame = [[YLDepreciateCellFrame alloc] init];
+//                cellFrame.model = model;
+//                [self.depreciates addObject:cellFrame];
+//            }
+//            [self.tableView reloadData];
         } else {
             NSLog(@"降价提醒请求失败");
         }
         
     } failed:nil];
+}
+
+- (void)getLocalData {
+    
+    [self.depreciates removeAllObjects];
+    NSDictionary *dict = [NSKeyedUnarchiver unarchiveObjectWithFile:YLDepreciatePath];
+    NSArray *array = [YLDepreciateModel mj_objectArrayWithKeyValuesArray:dict[@"data"]];
+    for (YLDepreciateModel *model in array) {
+        YLDepreciateCellFrame *cellFrame = [[YLDepreciateCellFrame alloc] init];
+        cellFrame.model = model;
+        [self.depreciates addObject:cellFrame];
+    }
+    [self.tableView reloadData];
+}
+
+- (void)keyedArchiverObject:(id)obj toFile:(NSString *)filePath {
+    BOOL success = [NSKeyedArchiver archiveRootObject:obj toFile:filePath];
+    if (success) {
+        NSLog(@"即将看车下架数据保存成功");
+    } else {
+        NSLog(@"保存失败");
+    }
 }
 
 #pragma mark - Table view data source

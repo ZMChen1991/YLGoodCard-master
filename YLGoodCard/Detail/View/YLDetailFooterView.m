@@ -34,34 +34,32 @@
 
 - (void)setupUI {
     
+    UILabel *line = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, YLScreenWidth, 1)];
+    line.backgroundColor = YLColor( 233.f, 233.f, 233.f);
+    [self addSubview:line];
+    
+    self.customer = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.customer.tag = 100 + 2;
+    [self.customer setImage:[UIImage imageNamed:@"客服"] forState:UIControlStateNormal];
+    [self.customer setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    self.customer.frame = CGRectMake(YLLeftMargin, YLTopMargin, 30, self.frame.size.height - 2 * YLTopMargin);
+//    self.customer.frame = CGRectMake(CGRectGetMaxX(self.favorite.frame) + 5, YLTopMargin, 27, self.frame.size.height - 2 * YLTopMargin);
+    [self.customer addTarget:self action:@selector(clickCustomer:) forControlEvents:UIControlEventTouchUpInside];
+    
     self.favorite = [UIButton buttonWithType:UIButtonTypeCustom];
-//    self.favorite.backgroundColor = [UIColor redColor];
-//    [self.favorite setTitle:@"收藏" forState:UIControlStateNormal];
-//    self.favorite.titleLabel.font = [UIFont systemFontOfSize:11];
-//    self.favorite.imageView.backgroundColor = [UIColor redColor];
     self.favorite.tag = 100 + 1;
     [self.favorite setImage:[UIImage imageNamed:@"收藏"] forState:UIControlStateNormal];
     self.favorite.imageView.contentMode = UIViewContentModeScaleAspectFill;
     [self.favorite setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    self.favorite.frame = CGRectMake(YLLeftMargin, YLTopMargin, 30, self.frame.size.height - 2 * YLTopMargin);
+//    self.favorite.frame = CGRectMake(YLLeftMargin, YLTopMargin, 30, self.frame.size.height - 2 * YLTopMargin);
+    self.favorite.frame = CGRectMake(CGRectGetMaxX(self.customer.frame) + 10, YLTopMargin, 35, self.frame.size.height - 2 * YLTopMargin);
     [self.favorite addTarget:self action:@selector(clickFavorite:) forControlEvents:UIControlEventTouchUpInside];
-    
-    
-    self.customer = [UIButton buttonWithType:UIButtonTypeCustom];
-//    self.customer.backgroundColor = [UIColor greenColor];
-//    [self.customer setTitle:@"客服" forState:UIControlStateNormal];
-//    self.customer.titleLabel.font = [UIFont systemFontOfSize:11];
-    self.customer.tag = 100 + 2;
-    [self.customer setImage:[UIImage imageNamed:@"客服"] forState:UIControlStateNormal];
-    [self.customer setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    self.customer.frame = CGRectMake(CGRectGetMaxX(self.favorite.frame) + 5, YLTopMargin, 27, self.frame.size.height - 2 * YLTopMargin);
-    [self.customer addTarget:self action:@selector(clickCustomer:) forControlEvents:UIControlEventTouchUpInside];
     
     self.bargain = [YLCondition buttonWithType:UIButtonTypeCustom];
     [self.bargain setTitle:@"砍价" forState:UIControlStateNormal];
     self.bargain.type = YLConditionTypeWhite;
     self.bargain.titleLabel.font = [UIFont systemFontOfSize:14];
-    self.bargain.frame = CGRectMake(CGRectGetMaxX(self.customer.frame) + YLTopMargin, YLTopMargin, 125, self.frame.size.height - 2 * YLTopMargin);
+    self.bargain.frame = CGRectMake(CGRectGetMaxX(self.favorite.frame) + YLTopMargin + 5, YLTopMargin, 125, self.frame.size.height - 2 * YLTopMargin);
 //    [self.bargain addTarget:self action:@selector(clickBargain) forControlEvents:UIControlEventTouchUpInside];
     
     self.order = [YLCondition buttonWithType:UIButtonTypeCustom];
@@ -81,20 +79,21 @@
 //    NSLog(@"favorite");
     // 这里要判断用户是否登录
     if (self.account) {
-        self.model.isCollect = !self.model.isCollect;
-        if (self.model.isCollect) {
-            NSLog(@"收藏");
-            [self.favorite setImage:[UIImage imageNamed:@"已收藏"] forState:UIControlStateNormal];
-        } else {
+        if ([self.isCollect isEqualToString:@"1"]) {
+            self.isCollect = @"0";
             NSLog(@"取消收藏");
             [self.favorite setImage:[UIImage imageNamed:@"收藏"] forState:UIControlStateNormal];
+        } else {
+            self.isCollect = @"1";
+            NSLog(@"收藏");
+            [self.favorite setImage:[UIImage imageNamed:@"已收藏"] forState:UIControlStateNormal];
         }
     }  else {
         NSLog(@"用户没有登录，不能收藏");
         [self.favorite setImage:[UIImage imageNamed:@"收藏"] forState:UIControlStateNormal];
     }
     if (self.collectBlock) {
-        self.collectBlock(self.model.isCollect);
+        self.collectBlock(self.isCollect);
     }
 }
 
@@ -116,17 +115,36 @@
 - (void)setModel:(YLDetailModel *)model {
     
     _model = model;
-    if (model.isCollect) {
-        [self.favorite setImage:[UIImage imageNamed:@"已收藏"] forState:UIControlStateNormal];
-    } else {
-        [self.favorite setImage:[UIImage imageNamed:@"收藏"] forState:UIControlStateNormal];
-    }
-    
-    if (model.isBook) {
+//    if (model.isCollect) {
+//        [self.favorite setImage:[UIImage imageNamed:@"已收藏"] forState:UIControlStateNormal];
+//    } else {
+//        [self.favorite setImage:[UIImage imageNamed:@"收藏"] forState:UIControlStateNormal];
+//    }
+//
+//    if (model.isBook) {
+//        [self.order setTitle:@"已预约" forState:UIControlStateNormal];
+//        [self.order setUserInteractionEnabled:NO];
+//    } else {
+//
+//    }
+}
+
+- (void)setIsBook:(NSString *)isBook {
+    _isBook = isBook;
+    if ([isBook isEqualToString:@"0"]) { // 没有预约看车
+        [self.order setTitle:@"预约看车" forState:UIControlStateNormal];
+    } else { // 已预约
         [self.order setTitle:@"已预约" forState:UIControlStateNormal];
         [self.order setUserInteractionEnabled:NO];
-    } else {
-        
+
+    }
+}
+- (void)setIsCollect:(NSString *)isCollect {
+    _isCollect = isCollect;
+    if ([isCollect isEqualToString:@"0"]) { // 没有收藏
+        [self.favorite setImage:[UIImage imageNamed:@"收藏"] forState:UIControlStateNormal];
+    } else { // 已收藏
+        [self.favorite setImage:[UIImage imageNamed:@"已收藏"] forState:UIControlStateNormal];
     }
 }
 

@@ -29,7 +29,7 @@
     self.navigationItem.title = @"登录";
     
     float width = self.view.frame.size.width - 2 * YLLeftMargin;
-    UILabel *attention = [[UILabel alloc] initWithFrame:CGRectMake(YLLeftMargin, YLLeftMargin + 64, width, 17)];
+    UILabel *attention = [[UILabel alloc] initWithFrame:CGRectMake(YLLeftMargin, YLLeftMargin, width, 17)];
     attention.textColor = [UIColor grayColor];
     attention.text = @"无需注册，输入手机号码即可登录";
     attention.font = [UIFont systemFontOfSize:12];
@@ -43,13 +43,16 @@
     tel.layer.borderColor = [UIColor grayColor].CGColor;
     tel.layer.masksToBounds = YES;
     tel.delegate = self;
+    tel.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 0)];
+    tel.leftViewMode = UITextFieldViewModeAlways;
     [self.view addSubview:tel];
     self.tel = tel;
     
     UIButton *verificationCodeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     verificationCodeBtn.frame = CGRectMake(width - YLLeftMargin - width / 4, CGRectGetMaxY(attention.frame) + 5, width / 3, 40);
+//    verificationCodeBtn.titleLabel.font = [UIFont systemFontOfSize:14];
     [verificationCodeBtn setTitle:@"获取验证码" forState:UIControlStateNormal];
-    verificationCodeBtn.titleLabel.font = [UIFont systemFontOfSize:14];
+    verificationCodeBtn.titleLabel.font = [UIFont systemFontOfSize:12];
     [verificationCodeBtn setTitleColor:YLColor(8.f, 169.f, 255.f) forState:UIControlStateNormal];
     [verificationCodeBtn addTarget:self action:@selector(verificationCode) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:verificationCodeBtn];
@@ -63,6 +66,8 @@
     message.layer.borderColor = [UIColor grayColor].CGColor;
     message.layer.masksToBounds = YES;
     message.delegate = self;
+    message.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 0)];
+    message.leftViewMode = UITextFieldViewModeAlways;
     [self.view addSubview:message];
     self.message = message;
 
@@ -207,7 +212,7 @@
     messageLabel.layer.masksToBounds = YES;
     [window addSubview:messageLabel];
     
-    [UIView animateWithDuration:1 animations:^{
+    [UIView animateWithDuration:2 animations:^{
         messageLabel.alpha = 0;
     } completion:^(BOOL finished) {
         [messageLabel removeFromSuperview];

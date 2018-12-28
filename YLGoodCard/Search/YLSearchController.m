@@ -49,7 +49,7 @@
 //    tab.selectedIndex = 1;
     
     if (!_searchView) {
-        CGRect rect = CGRectMake(0, 64, YLScreenWidth, YLScreenHeight - 64);
+        CGRect rect = CGRectMake(0, 0, YLScreenWidth, YLScreenHeight - 64);
         self.searchView = [[YLSearchView alloc] initWithFrame:rect historyArray:self.searchHistory hotArray:self.hotSearch];
 //        self.searchView.hotArray = self.hotSearch;
         __weak typeof(self) weakSelf = self;
@@ -121,17 +121,7 @@
 
     UIBarButtonItem *rightBar = [[UIBarButtonItem alloc] initWithTitle:@"搜索" style:UIBarButtonItemStyleDone target:self action:@selector(search)];
     self.navigationItem.rightBarButtonItem = rightBar;
-    [self.navigationController.navigationBar setBackgroundColor:YLColor(8.f, 169.f, 255.f)];
-    // 设置导航栏背景为空
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
-    // 设置导航栏底部线条为空
-    [self.navigationController.navigationBar setShadowImage:[UIImage new]];
-    // 修改导航标题
-    [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:18], NSForegroundColorAttributeName:[UIColor whiteColor]}];
-    // 创建一个假状态栏
-    UIView *statusBarView = [[UIView alloc] initWithFrame:CGRectMake(0, -20, YLScreenWidth, 20)];
-    statusBarView.backgroundColor = YLColor(8.f, 169.f, 255.f);
-    [self.navigationController.navigationBar addSubview:statusBarView];
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
 }
 
 #pragma mark 私有方法
@@ -217,7 +207,7 @@
     messageLabel.layer.masksToBounds = YES;
     [window addSubview:messageLabel];
     
-    [UIView animateWithDuration:1 animations:^{
+    [UIView animateWithDuration:2 animations:^{
         messageLabel.alpha = 0;
     } completion:^(BOOL finished) {
         [messageLabel removeFromSuperview];

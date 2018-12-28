@@ -186,7 +186,7 @@
     messageLabel.layer.cornerRadius = 5.0f;
     messageLabel.layer.masksToBounds = YES;
     [window addSubview:messageLabel];
-    [UIView animateWithDuration:1 animations:^{
+    [UIView animateWithDuration:2 animations:^{
         messageLabel.alpha = 0;
     } completion:^(BOOL finished) {
         [messageLabel removeFromSuperview];

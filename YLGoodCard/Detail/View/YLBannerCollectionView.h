@@ -19,8 +19,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface YlBannerCollectionCell : UICollectionViewCell
 
-
-@property (nonatomic, strong) NSString *image;
+//@property (nonatomic, strong) NSString *image;
+@property (nonatomic, strong) UIImage *image;
 
 @end
 

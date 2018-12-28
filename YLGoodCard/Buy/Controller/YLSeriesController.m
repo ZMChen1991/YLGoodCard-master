@@ -30,9 +30,10 @@
     
     NSMutableDictionary *param = [NSMutableDictionary dictionary];
     param[@"id"] = self.model.brandId;
+    __weak typeof(self) weakSelf = self;
     [YLBuyTool seriesWithParam:param success:^(NSArray<YLSeriesModel *> * _Nonnull result) {
-        self.series = result;
-        [self.tableView reloadData];
+        weakSelf.series = result;
+        [weakSelf.tableView reloadData];
     } failure:^(NSError * _Nonnull error) {
         
     }];

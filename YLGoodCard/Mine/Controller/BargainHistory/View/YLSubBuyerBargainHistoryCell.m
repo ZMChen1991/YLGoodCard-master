@@ -137,18 +137,22 @@
         self.soldOut.hidden = NO;
         self.soldOut.image = [UIImage imageNamed:@"已下架"];
         self.bargainNumber.hidden = YES;
+        self.message.text = @"车辆已下架";
     } else if ([cellFrame.model.detail.status isEqualToString:@"5"]) {// 已签合同
         self.soldOut.hidden = NO;
         self.soldOut.image = [UIImage imageNamed:@"已售"];
         self.bargainNumber.hidden = YES;
+        self.message.text = @"车辆已出售";
     } else if ([cellFrame.model.detail.status isEqualToString:@"6"]) {// 复检
         self.soldOut.hidden = NO;
         self.soldOut.image = [UIImage imageNamed:@"已售"];
         self.bargainNumber.hidden = YES;
+        self.message.text = @"车辆已出售";
     } else if ([cellFrame.model.detail.status isEqualToString:@"0"]) {// 取消
         self.soldOut.hidden = NO;
         self.soldOut.image = [UIImage imageNamed:@"已取消"];
         self.bargainNumber.hidden = YES;
+        self.message.text = @"车辆已取消";
     } else {// 在售状态
         if ([cellFrame.model.count isEqualToString:@"0"]) {
             self.bargainNumber.hidden = YES;
@@ -158,25 +162,27 @@
             self.bargainNumber.hidden = NO;
             [self.bargainNumber setTitle:cellFrame.model.count forState:UIControlStateNormal];
         }
+        
+        if ([cellFrame.model.mark isEqualToString:@"2"]) { // Mark = 2
+            if ([cellFrame.model.status isEqualToString:@"1"]) {
+                self.message.text = [NSString stringWithFormat:@"卖家还价:%@,等待您的处理", [self stringToNumber:cellFrame.model.price]];
+            } else if ([cellFrame.model.status isEqualToString:@"2"]) {
+                self.message.text = [NSString stringWithFormat:@"您已接收卖家报价:%@", [self stringToNumber:cellFrame.model.price]];
+            } else {
+                self.message.text = [NSString stringWithFormat:@"卖家还价:%@", [self stringToNumber:cellFrame.model.price]];
+            }
+        } else { // Mark = 1
+            if ([cellFrame.model.status isEqualToString:@"1"]) {
+                self.message.text = [NSString stringWithFormat:@"卖家正在处理您的报价:%@", [self stringToNumber:cellFrame.model.price]];
+            } else if ([cellFrame.model.status isEqualToString:@"2"]) {
+                self.message.text = [NSString stringWithFormat:@"卖家已接受您的报价:%@", [self stringToNumber:cellFrame.model.price]];
+            } else {
+                self.message.text = [NSString stringWithFormat:@"您的还价:%@", [self stringToNumber:cellFrame.model.price]];
+            }
+        }
     }
     
-    if ([cellFrame.model.mark isEqualToString:@"2"]) { // Mark = 2
-        if ([cellFrame.model.status isEqualToString:@"1"]) {
-            self.message.text = [NSString stringWithFormat:@"卖家还价:%@", [self stringToNumber:cellFrame.model.price]];
-        } else if ([cellFrame.model.status isEqualToString:@"2"]) {
-            self.message.text = [NSString stringWithFormat:@"您已接收卖家报价:%@", [self stringToNumber:cellFrame.model.price]];
-        } else {
-            self.message.text = [NSString stringWithFormat:@"卖家还价:%@", [self stringToNumber:cellFrame.model.price]];
-        }
-    } else { // Mark = 1
-        if ([cellFrame.model.status isEqualToString:@"1"]) {
-            self.message.text = [NSString stringWithFormat:@"卖家正在处理您的报价:%@", [self stringToNumber:cellFrame.model.price]];
-        } else if ([cellFrame.model.status isEqualToString:@"2"]) {
-            self.message.text = [NSString stringWithFormat:@"卖家已接受您的报价:%@", [self stringToNumber:cellFrame.model.price]];
-        } else {
-            self.message.text = [NSString stringWithFormat:@"您的还价:%@", [self stringToNumber:cellFrame.model.price]];
-        }
-    }
+    
 }
 
 

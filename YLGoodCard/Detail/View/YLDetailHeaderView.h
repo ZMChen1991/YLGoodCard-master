@@ -8,12 +8,14 @@
 
 #import <UIKit/UIKit.h>
 #import "YLDetailHeaderModel.h"
+#import "YLDetailModel.h"
 
 typedef void(^DetailHeaderBargainBlock)(void);
 
 @interface YLDetailHeaderView : UIView
 
 @property (nonatomic, strong) NSMutableArray *vehicle;
+@property (nonatomic, strong) YLDetailModel *detailModel;
 @property (nonatomic, strong) YLDetailHeaderModel *model;
 @property (nonatomic, copy) DetailHeaderBargainBlock detailHeaderBargainBlock;
 

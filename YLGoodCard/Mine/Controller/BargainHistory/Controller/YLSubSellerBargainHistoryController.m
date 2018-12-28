@@ -18,6 +18,8 @@
 #import "YLAccountTool.h"
 #import "YLSubSellerBargainHistoryCell.h"
 
+#define YLSellerBargainHistoryPath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"SellerBargainHistory.txt"]
+
 @interface YLSubSellerBargainHistoryController ()
 
 @property (nonatomic, strong) NSMutableArray *sellerBargainHistorys;
@@ -35,7 +37,7 @@
         [self loadData];
         [self.tableView.mj_header endRefreshing];
     }];
-    
+    [self getLocalData];
     [self loadData];
 }
 
@@ -46,23 +48,49 @@
     NSString *urlString = @"http://ucarjava.bceapp.com/bargain?method=seller";
     NSMutableDictionary *param = [NSMutableDictionary dictionary];
     [param setValue:account.telephone forKey:@"telephone"];
+    __weak typeof(self) weakSelf = self;
     [YLRequest GET:urlString parameters:param success:^(id  _Nonnull responseObject) {
         NSLog(@"YLSubSellerBargainHistoryController-urlString:%@-param:%@ \nresponseObject:%@",urlString, param, responseObject);
         if ([responseObject[@"code"] isEqualToNumber:[NSNumber numberWithInteger:200]]) {
-            NSLog(@"请求成功%@", responseObject[@"data"]);
-            NSArray *models = [YLBargainHistoryModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"]];
-            for (YLBargainHistoryModel *model in models) {
-                YLBargainHistoryCellFrame *cellFrame = [[YLBargainHistoryCellFrame alloc] init];
-                cellFrame.model = model;
-                [self.sellerBargainHistorys addObject:cellFrame];
-            }
-            [self.tableView reloadData];
+            [weakSelf keyedArchiverObject:responseObject toFile:YLSellerBargainHistoryPath];
+            [weakSelf getLocalData];
+            
+//            NSLog(@"请求成功%@", responseObject[@"data"]);
+//            NSArray *models = [YLBargainHistoryModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"]];
+//            for (YLBargainHistoryModel *model in models) {
+//                YLBargainHistoryCellFrame *cellFrame = [[YLBargainHistoryCellFrame alloc] init];
+//                cellFrame.model = model;
+//                [self.sellerBargainHistorys addObject:cellFrame];
+//            }
+//            [self.tableView reloadData];
         } else {
             NSLog(@"请求失败");
         }
         
     } failed:nil];
     
+}
+
+- (void)getLocalData {
+    
+    [self.sellerBargainHistorys removeAllObjects];
+    NSDictionary *dict = [NSKeyedUnarchiver unarchiveObjectWithFile:YLSellerBargainHistoryPath];
+    NSArray *models = [YLBargainHistoryModel mj_objectArrayWithKeyValuesArray:dict[@"data"]];
+    for (YLBargainHistoryModel *model in models) {
+        YLBargainHistoryCellFrame *cellFrame = [[YLBargainHistoryCellFrame alloc] init];
+        cellFrame.model = model;
+        [self.sellerBargainHistorys addObject:cellFrame];
+    }
+    [self.tableView reloadData];
+}
+
+- (void)keyedArchiverObject:(id)obj toFile:(NSString *)filePath {
+    BOOL success = [NSKeyedArchiver archiveRootObject:obj toFile:filePath];
+    if (success) {
+        NSLog(@"即将看车下架数据保存成功");
+    } else {
+        NSLog(@"保存失败");
+    }
 }
 
 #pragma mark - Table view data source
@@ -104,9 +132,15 @@
         detail.isBuyer = NO;
         detail.model = model;
         [self.navigationController pushViewController:detail animated:YES];
-    } else {
+    } else if ([model.detail.status isEqualToString:@"4"]) {
         NSLog(@"车辆已下架");
         [self showMessage:@"车辆已下架"];
+    } else if ([model.detail.status isEqualToString:@"0"]) {
+        NSLog(@"车辆已取消");
+        [self showMessage:@"车辆已取消"];
+    } else {
+        NSLog(@"车辆已出售");
+        [self showMessage:@"车辆已出售"];
     }
     
     
@@ -128,7 +162,7 @@
     messageLabel.layer.masksToBounds = YES;
     [window addSubview:messageLabel];
     
-    [UIView animateWithDuration:1 animations:^{
+    [UIView animateWithDuration:2 animations:^{
         messageLabel.alpha = 0;
     } completion:^(BOOL finished) {
         [messageLabel removeFromSuperview];

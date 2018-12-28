@@ -10,7 +10,7 @@
 #import "YLCondition.h"
 #import "YLDetailModel.h"
 
-typedef void(^CollectBlock)(BOOL isCollect);
+typedef void(^CollectBlock)(NSString *isCollect);
 typedef void(^CustomBlock)(void);
 
 @interface YLDetailFooterView : UIView
@@ -23,6 +23,7 @@ typedef void(^CustomBlock)(void);
 @property (nonatomic, copy) CollectBlock collectBlock;
 @property (nonatomic, copy) CustomBlock customBlock;
 
-//@property (nonatomic, assign) BOOL isCollect;// 是否收藏
+@property (nonatomic, strong) NSString *isCollect;// 是否收藏
+@property (nonatomic, strong) NSString *isBook;// 是否预约看车
 
 @end

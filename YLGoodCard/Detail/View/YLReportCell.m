@@ -16,6 +16,7 @@
 @property (nonatomic, strong) NSArray *subTitles;
 
 @property (nonatomic, strong) UILabel *textView;
+@property (nonatomic, strong) NSString *centerPhone;
 
 @end
 
@@ -89,7 +90,7 @@
 - (void)consultClick {
     
     NSLog(@"reportCell:咨询车况");
-    NSString *callPhone = [NSString stringWithFormat:@"telprompt://%@", @"4008301282"];
+    NSString *callPhone = [NSString stringWithFormat:@"telprompt://%@", self.centerPhone];
     if (@available(iOS 10.0, *)) {
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:callPhone] options:@{} completionHandler:nil];
     } else {
@@ -106,5 +107,6 @@
 - (void)setModel:(YLDetailModel *)model {
     _model = model;
     self.textView.text = model.remarks;
+    self.centerPhone = model.centerPhone;
 }
 @end

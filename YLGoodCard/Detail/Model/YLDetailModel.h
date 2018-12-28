@@ -61,8 +61,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSString *type;//车型
 @property (nonatomic, strong) NSString *typeId;//车型ID
 @property (nonatomic, strong) NSString *updateAt;//更新时间
-@property (nonatomic, assign) BOOL isCollect; // 是否收藏
-@property (nonatomic, assign) BOOL isBook;// 是否订阅
+@property (nonatomic, strong) NSString *centerPhone;//检测中心电话
+@property (nonatomic, assign) BOOL newCar;
+@property (nonatomic, assign) BOOL zeroTransfer;
+//@property (nonatomic, assign) BOOL isCollect; // 是否收藏centerPhone
+//@property (nonatomic, assign) BOOL isBook;// 是否订阅
 
 - (instancetype)initWithDict:(NSDictionary *)dict;
 + (instancetype)initWithDict:(NSDictionary *)dict;

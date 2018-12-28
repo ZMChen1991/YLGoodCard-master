@@ -19,5 +19,6 @@
 
 // 颜色转换成图片的方法
 + (UIImage *)imageWithColor:(UIColor *)color;
+//+ (UIImage *)imageWithGradientColor:(UIColor *)color;
 
 @end

@@ -45,6 +45,7 @@
 
 // 保存上次进入我的界面的时间
 #define YLLASTTIME [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"lastTime.plist"]
+#define YLMineNumberPath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"number.txt"]
 
 
 @interface YLMineController () <YLFunctionViewDelegate, YLLoginHeaderDelegate, UITableViewDelegate, UITableViewDataSource, UIAlertViewDelegate>
@@ -69,10 +70,19 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
+    
     self.array = @[@"投诉检测中心", @"电话客服", @"意见反馈"];
     
     [self setupNav];
     [self setupUI];
+    
+    
+    [self isLoginView];
+    [self loadDate];
+    [self addNotification];
+}
+
+- (void)isLoginView {
     
     YLAccount *account = [YLAccountTool account];
     if (account) {
@@ -80,8 +90,7 @@
         self.mineIcon.telephone = account.telephone;
         self.mineIcon.hidden = NO;
         self.loginHeader.hidden =YES;
-        
-        [self loadDate];
+        [self getLoacation];
     } else {
         self.isLogin = NO;
         self.mineIcon.hidden = YES;
@@ -90,9 +99,9 @@
         NSMutableArray *mineArray = [NSMutableArray arrayWithObjects:@"0", @"0", count, @"0", nil];
         self.functionView.numbers = mineArray;
     }
-    
-    [self addNotification];
 }
+
+
 
 #pragma mark 加载即将看车、我的收藏、浏览记录、砍价数量
 - (void)loadDate {
@@ -115,13 +124,14 @@
 //        } failed:nil];
         
         [YLMineTool favoriteWithParam:param1 success:^(NSDictionary * _Nonnull result) {
-            NSLog(@"%@", result);
+            NSLog(@"result:%@", result);
             // 即将看车数：
             NSString *book = [result valueForKey:@"book"];
             // 收藏数：
             NSString *collect = [result valueForKey:@"collection"];
             // 降价提醒数：
             NSString *reduce = [NSString stringWithFormat:@"%@", [result valueForKey:@"reduce"]];
+            NSString *bargainNumber = [NSString stringWithFormat:@"%@", [result valueForKey:@"bargain"]];
             NSLog(@"即将看车:%@--我的收藏:%@--降价提醒:%@", book, collect, reduce);
             NSMutableArray *mineArray = [NSMutableArray array];
             if (!book) {
@@ -134,9 +144,12 @@
             }
             [mineArray addObject:[NSString stringWithFormat:@"%ld", self.browsingHistoryCount]];
             [mineArray addObject:@"0"];
-            self.functionView.numbers = mineArray;
-            NSLog(@"reduce:%@", reduce);
+            
+            [self keyedArchiverObject:mineArray toFile:YLMineNumberPath];
+            [self getLoacation];
+        
             self.functionView.depreciateNumber = reduce;
+            self.functionView.bargainNumber = bargainNumber;
         } failure:nil];
     } else {
         NSString *count = [NSString stringWithFormat:@"%ld", self.browsingHistoryCount];
@@ -145,19 +158,42 @@
     }
 }
 
+- (void)getLoacation {
+    NSArray *numbers = [NSKeyedUnarchiver unarchiveObjectWithFile:YLMineNumberPath];
+//    NSLog(@"getLoacation-numbers:%@", numbers);
+    self.functionView.numbers = numbers;
+}
+
+- (void)keyedArchiverObject:(id)obj toFile:(NSString *)filePath {
+    BOOL success = [NSKeyedArchiver archiveRootObject:obj toFile:filePath];
+    if (success) {
+        NSLog(@"买车数据保存成功");
+    } else {
+        NSLog(@"保存失败");
+    }
+}
+
+
 #pragma mark UI
 - (void)setupUI {
     
-    self.mineIcon = [[YLMineIcon alloc] initWithFrame:CGRectMake(0, 64, YLScreenWidth, 96)];
-    self.mineIcon.backgroundColor = YLColor(8.f, 169.f, 255.f);
+    CGRect rect = CGRectMake(0, 0, YLScreenWidth, 96);
+    self.mineIcon = [[YLMineIcon alloc] initWithFrame:rect];
+//    self.mineIcon.backgroundColor = YLColor(8.f, 169.f, 255.f);
     [self.view addSubview:self.mineIcon];
     
-    self.loginHeader = [[YLLoginHeader alloc] initWithFrame:CGRectMake(0, 64, YLScreenWidth, 96)];
-    self.loginHeader.backgroundColor = YLColor(8.f, 169.f, 255.f);
+    self.loginHeader = [[YLLoginHeader alloc] initWithFrame:rect];
+//    self.loginHeader.backgroundColor = YLColor(8.f, 169.f, 255.f);
     self.loginHeader.delegate = self;
     [self.view addSubview:self.loginHeader];
     
+//    UIImageView *imageView = [[UIImageView alloc] initWithFrame:rect];
+//    imageView.image = [self graphicsImageWithSize:rect.size];
+//    [self.mineIcon insertSubview:imageView atIndex:0];
+//    [self.loginHeader insertSubview:imageView atIndex:0];
+    
     YLFunctionView *functionView = [[YLFunctionView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.loginHeader.frame), YLScreenWidth, 176 + 1)];
+    functionView.numbers = [NSMutableArray arrayWithObjects:@"0", @"0", @"0", @"0", nil];
     functionView.delegate = self;
     [self.view addSubview:functionView];
     self.functionView = functionView;
@@ -177,18 +213,43 @@
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:nil style:UIBarButtonItemStylePlain target:self action:@selector(rightBarButtonItemClick)];
     [self.navigationItem.rightBarButtonItem setImage:[[UIImage imageNamed:@"设置"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
-    [self.navigationController.navigationBar setBackgroundColor:YLColor(8.f, 169.f, 255.f)];
-    // 设置导航栏背景为空
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
+//    [self.navigationController.navigationBar setBackgroundColor:YLColor(8.f, 169.f, 255.f)];
+//    // 设置导航栏背景为空
+//    [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
     // 设置导航栏底部线条为空
     [self.navigationController.navigationBar setShadowImage:[UIImage new]];
     // 修改导航标题
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:18], NSForegroundColorAttributeName:[UIColor whiteColor]}];
-    // 创建一个假状态栏
-    UIView *statusBarView = [[UIView alloc] initWithFrame:CGRectMake(0, -20, YLScreenWidth, 20)];
-    statusBarView.backgroundColor = YLColor(8.f, 169.f, 255.f);
-    [self.navigationController.navigationBar addSubview:statusBarView];
+//    // 创建一个假状态栏
+//    UIView *statusBarView = [[UIView alloc] initWithFrame:CGRectMake(0, -20, YLScreenWidth, 20)];
+//    statusBarView.backgroundColor = YLColor(8.f, 169.f, 255.f);
+//    [self.navigationController.navigationBar addSubview:statusBarView];
+    
+    [self setNavgationBarBackgroundImage];
 }
+
+- (void)setNavgationBarBackgroundImage {
+    CGGradientRef gradient;// 颜色的空间
+    size_t num_locations = 2;// 渐变中使用的颜色数
+    CGFloat locations[] = {0.0, 1.0}; // 指定每个颜色在渐变色中的位置，值介于0.0-1.0之间, 0.0表示最开始的位置，1.0表示渐变结束的位置
+    CGFloat colors[] = {
+        13.0/255.0, 196.f/255.f, 255.f/255, 1.0,
+        3.0/255.0, 141.f/255.f, 255.f/255, 1.0,
+    }; // 指定渐变的开始颜色，终止颜色，以及过度色（如果有的话）
+    gradient = CGGradientCreateWithColorComponents(CGColorSpaceCreateDeviceRGB(), colors, locations, num_locations);
+    CGPoint startPoint = CGPointMake(0.0, 0.0);
+    CGPoint endPoint = CGPointMake(self.view.frame.size.width, 1.0);
+    CGSize size = CGSizeMake(self.view.frame.size.width, 1.0);
+    UIGraphicsBeginImageContext(size);
+    CGContextRef ctx = UIGraphicsGetCurrentContext();
+    CGContextDrawLinearGradient(ctx, gradient, startPoint, endPoint, 0);
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    NSLog(@"%f-%f", image.size.width, image.size.height);
+    [self.navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
+}
+
+
 
 - (void)rightBarButtonItemClick {
     NSLog(@"点击了设置按钮");
@@ -205,6 +266,7 @@
 - (void)refreshTableView {
     
     NSLog(@"接受到消息");
+    [self isLoginView];
     [self loadDate];
 }
 
@@ -259,29 +321,33 @@
     
     NSArray *array = @[@"即将看车",@"我的收藏", @"浏览记录", @"我的订阅"];
     NSLog(@"点击了%@跳转%@控制器", array[index], array[index]);
-    
+    YLAccount *account = [YLAccountTool account];
     if (index == 0) {
-        NSArray *titles = @[@"在售",@"下架"];
-//        NSMutableDictionary *param = [NSMutableDictionary dictionary];
-//        [param setValue:self.account.telephone forKey:@"telephone"];
-//        [param setValue:@"1" forKey:@"status"]; // 1：待约定 2：合同签署 3：复检过户 4：交易完成
-        NSArray *params = @[@"3", @"0"];
-        YLFunctionController *fun = [[YLFunctionController alloc] init];
-        fun.title = array[index];
-        fun.titles = titles;
-        fun.params = params;
-        [self.navigationController pushViewController:fun animated:YES];
-        return;
+        if (account) {
+            NSArray *titles = @[@"在售", @"下架"];
+            YLFunctionController *fun = [[YLFunctionController alloc] init];
+            fun.title = array[index];
+            fun.titles = titles;
+            [self.navigationController pushViewController:fun animated:YES];
+            return;
+        } else {
+            NSLog(@"没有登录");
+            [self.navigationController pushViewController:self.loginVc animated:YES];
+        }
     }
     if (index == 1) {
-        NSArray *titles = @[@"在售", @"已下架"];
-        NSArray *params = @[@"3", @"0"];
-        YLCollectController *collect = [[YLCollectController alloc] init];
-        collect.title = array[index];
-        collect.titles = titles;
-        collect.params = params;
-        [self.navigationController pushViewController:collect animated:YES];
-        return;
+        if (account) {
+            NSArray *titles = @[@"在售", @"下架"];
+            YLCollectController *collect = [[YLCollectController alloc] init];
+            collect.title = array[index];
+            collect.titles = titles;
+            [self.navigationController pushViewController:collect animated:YES];
+            return;
+        } else {
+            NSLog(@"没有登录");
+            [self.navigationController pushViewController:self.loginVc animated:YES];
+        }
+        
     }
     if (index == 2) {
         YLBrowseController *browse = [[YLBrowseController alloc] init];
@@ -292,6 +358,7 @@
         [self showMessage:@"开发中,敬请期待"];
         return;
     }
+    
 }
 
 - (void)skipToLogin {
@@ -302,6 +369,8 @@
     self.loginVc.loginBlock = ^(NSString *string) {
         NSLog(@"mineVC:%@", string);
         weakSelf.isLogin = YES;
+        // 刷新界面
+        [weakSelf isLoginView];
     };
 }
 
@@ -315,19 +384,8 @@
         NSLog(@"%@",sender.titleLabel.text);
         NSInteger index = sender.tag - 100;
         NSString *title = sender.titleLabel.text;
-        NSArray *array = @[@"卖车订单", @"买车订单", @"砍价记录", @"降价提醒"];
+        NSArray *array = @[@"买车订单", @"卖车订单", @"砍价记录", @"降价提醒"];
         if (index == 0) {
-            NSLog(@"%@----卖车订单", title);
-            NSArray *titles = @[@"全部", @"待上架",@"售卖中", @"已售出",@"已下架"];
-//            NSArray *params = @[@"", @"1", @"3", @"4", @"0"];
-            YLSaleOrderController *saleOrder = [[YLSaleOrderController alloc] init];
-            saleOrder.title = array[index];
-            saleOrder.titles = titles;
-//            saleOrder.params = params;
-            [self.navigationController pushViewController:saleOrder animated:YES];
-            return;
-        }
-        if (index == 1) {
             NSLog(@"%@=----买车订单", title);
             NSArray *titles = @[@"全部", @"待复检过户",@"交易完成", @"交易取消"];
             NSArray *params = @[@"", @"3", @"5", @"20"];
@@ -336,6 +394,17 @@
             buyOrder.titles = titles;
             buyOrder.params = params;
             [self.navigationController pushViewController:buyOrder animated:YES];
+            return;
+        }
+        if (index == 1) {
+            NSLog(@"%@----卖车订单", title);
+            NSArray *titles = @[@"全部", @"待上架",@"售卖中", @"已售出",@"已下架"];
+            //            NSArray *params = @[@"", @"1", @"3", @"4", @"0"];
+            YLSaleOrderController *saleOrder = [[YLSaleOrderController alloc] init];
+            saleOrder.title = array[index];
+            saleOrder.titles = titles;
+            //            saleOrder.params = params;
+            [self.navigationController pushViewController:saleOrder animated:YES];
             return;
         }
         if (index == 2) {
@@ -413,7 +482,7 @@
     messageLabel.layer.masksToBounds = YES;
     [window addSubview:messageLabel];
     
-    [UIView animateWithDuration:1 animations:^{
+    [UIView animateWithDuration:2 animations:^{
         messageLabel.alpha = 0;
     } completion:^(BOOL finished) {
         [messageLabel removeFromSuperview];

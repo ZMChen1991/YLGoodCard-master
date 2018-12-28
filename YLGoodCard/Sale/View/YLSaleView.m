@@ -45,8 +45,9 @@
     self.numberL = numberL;
     
     UILabel *label1 = [[UILabel alloc] init];
-    label1.text = @"位车主提交了卖车申请";
+//    label1.text = @"位车主提交了卖车申请";
     label1.textColor = [UIColor blackColor];
+    label1.font = [UIFont systemFontOfSize:16];
 //    label1.backgroundColor = YLRandomColor;
     [self addSubview:label1];
     self.label1 = label1;
@@ -82,7 +83,10 @@
     telephone.layer.borderColor = YLColor(233.f, 233.f, 233.f).CGColor;
     telephone.layer.cornerRadius = 5;
     telephone.layer.masksToBounds = YES;
+    [telephone setEnabled:NO];
     telephone.backgroundColor = [UIColor whiteColor];
+    telephone.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 0)];
+    telephone.leftViewMode = UITextFieldViewModeAlways;
     [self addSubview:telephone];
     self.telephoneT = telephone;
     
@@ -110,47 +114,12 @@
 - (void)layoutSubviews {
     
     [super layoutSubviews];
-    float margin = 15;
-    float margin1 = 10;
-    float iconW = self.frame.size.width;
-    float iconH = 130;
-    self.icon.frame = CGRectMake(0, 64, iconW, iconH);
     
-    float numberX = margin;
-    float numberY = CGRectGetMaxY(self.icon.frame) + margin;
-    float numberW = 116;
-    float numberH = 36;
-    self.numberL.frame = CGRectMake(numberX, numberY, numberW, numberH);
-    
-    float label1X = CGRectGetMaxX(self.numberL.frame) + margin1;
-    float label1Y = numberY;
-    float label1W = 200;
-    float label1H = numberH;
-    self.label1.frame = CGRectMake(label1X, label1Y, label1W, label1H);
-    
-    float telephoneX = numberX;
-    float telephoneY = CGRectGetMaxY(self.numberL.frame) + margin1;
-    float telephoneW = iconW - 2 * margin;
-    float telephoneH = 40;
-    self.telephoneT.frame = CGRectMake(telephoneX, telephoneY, telephoneW, telephoneH);
-    
-    float salaBtnX = margin;
-    float salaBtnY = CGRectGetMaxY(self.telephoneT.frame) + margin1;
-    float salaBtnW = iconW - 2 * margin;
-    float salaBtnH = 40;
-    self.saleBtn.frame = CGRectMake(salaBtnX, salaBtnY, salaBtnW, salaBtnH);
-    
-    float consultBtnX = margin;
-    float consultBtnY = CGRectGetMaxY(self.saleBtn.frame) + margin1;
-    float consultBtnW = (iconW - 2 * margin - margin1) / 2;
-    float consultBtnH = salaBtnH;
-    self.consultBtn.frame = CGRectMake(consultBtnX, consultBtnY, consultBtnW, consultBtnH);
-    
-    float appraiseBtnX = CGRectGetMaxX(self.consultBtn.frame) + margin1;
-    float appraiseBtnY = consultBtnY;
-    float appraiseBtnW = consultBtnW;
-    float appraiseBtnH = consultBtnH;
-    self.appraiseBtn.frame = CGRectMake(appraiseBtnX, appraiseBtnY, appraiseBtnW, appraiseBtnH);
+//    float appraiseBtnX = CGRectGetMaxX(self.consultBtn.frame) + margin1;
+//    float appraiseBtnY = consultBtnY;
+//    float appraiseBtnW = consultBtnW;
+//    float appraiseBtnH = consultBtnH;
+//    self.appraiseBtn.frame = CGRectMake(appraiseBtnX, appraiseBtnY, appraiseBtnW, appraiseBtnH);
     
 }
 
@@ -201,7 +170,48 @@
 
 - (void)setSalerNum:(NSString *)salerNum {
     _salerNum = salerNum;
+    
+    
+    CGFloat margin = 15;
+    CGFloat margin1 = 10;
+    CGFloat iconW = YLScreenWidth;
+    CGFloat iconH = 130;
+    self.icon.frame = CGRectMake(0, 64, YLScreenWidth, iconH);
+    
+    CGFloat numberX = YLLeftMargin;
+    CGFloat numberY = CGRectGetMaxY(self.icon.frame) + YLLeftMargin;
+    CGSize size = [salerNum getSizeWithFont:[UIFont systemFontOfSize:30]];
+    CGFloat numberW = size.width;
+    CGFloat numberH = 36;
     self.numberL.text = salerNum;
+    self.numberL.frame = CGRectMake(numberX, numberY, numberW, numberH);
+    
+    CGFloat label1X = CGRectGetMaxX(self.numberL.frame) + margin1;
+    CGFloat label1Y = numberY;
+    CGFloat label1H = numberH;
+    NSString *string = @"位车主提交了卖车申请";
+    CGSize size1 = [string getSizeWithFont:[UIFont systemFontOfSize:30]];
+    CGFloat label1W = size1.width;
+    self.label1.text = string;
+    self.label1.frame = CGRectMake(label1X, label1Y, label1W, label1H);
+    
+    CGFloat telephoneX = numberX;
+    CGFloat telephoneY = CGRectGetMaxY(self.numberL.frame) + margin1;
+    CGFloat telephoneW = YLScreenWidth - 2 * margin;
+    CGFloat telephoneH = 40;
+    self.telephoneT.frame = CGRectMake(telephoneX, telephoneY, telephoneW, telephoneH);
+    
+    CGFloat salaBtnX = margin;
+    CGFloat salaBtnY = CGRectGetMaxY(self.telephoneT.frame) + margin1;
+    CGFloat salaBtnW = iconW - 2 * margin;
+    CGFloat salaBtnH = 40;
+    self.saleBtn.frame = CGRectMake(salaBtnX, salaBtnY, salaBtnW, salaBtnH);
+    
+    CGFloat consultBtnX = margin;
+    CGFloat consultBtnY = CGRectGetMaxY(self.saleBtn.frame) + margin1;
+    CGFloat consultBtnW = iconW - 2 * margin;
+    CGFloat consultBtnH = salaBtnH;
+    self.consultBtn.frame = CGRectMake(consultBtnX, consultBtnY, consultBtnW, consultBtnH);
 }
 
 @end

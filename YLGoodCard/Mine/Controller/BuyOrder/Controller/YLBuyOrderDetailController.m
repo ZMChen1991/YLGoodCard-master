@@ -41,7 +41,7 @@
 
 - (void)createUI {
     
-    YLBuyOrderCommand *command = [[YLBuyOrderCommand alloc] initWithFrame:CGRectMake(0, 64, YLScreenWidth, 110)];
+    YLBuyOrderCommand *command = [[YLBuyOrderCommand alloc] initWithFrame:CGRectMake(0, 0, YLScreenWidth, 110)];
     command.model = self.model;
     __weak typeof(self) weakSelf = self;
     command.buyOrderCommandBlock = ^(YLTableViewModel * _Nonnull model) {
@@ -60,7 +60,12 @@
     YLContactView *contactView = [[YLContactView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(stepView.frame), YLScreenWidth, 110)];
     contactView.hidden = YES;
     contactView.contactBlock = ^{
-        
+        NSString *callPhone = [NSString stringWithFormat:@"telprompt://%@", @"4008301282"];
+        if (@available(iOS 10.0, *)) {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:callPhone] options:@{} completionHandler:nil];
+        } else {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:callPhone]];
+        }
     };
     [self.view addSubview:contactView];
     self.contactView = contactView;
@@ -85,8 +90,6 @@
     
     [self createUI];
 
-    model.status = @"4";
-    
     if ([model.status isEqualToString:@"3"]) { // 已签合同
         self.stepView.stepIndex = 0;
         self.contactView.hidden = NO;

@@ -39,9 +39,9 @@
 #import "YLBarView.h"
 #import "YLTableViewCellFrame.h"
 
-#define YLMainPath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"main.text"]
-#define YLBannerPath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"banner.text"]
-#define YLNotablePath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"notable.text"]
+#define YLMainPath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"main.txt"]
+#define YLBannerPath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"banner.txt"]
+#define YLNotablePath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"notable.txt"]
 
 @interface YLMainController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -59,6 +59,7 @@
 @property (nonatomic, strong) YLHotCarView *hotCar;
 
 @property (nonatomic, strong) NSMutableDictionary *datas;// 存放数据的字典
+//@property (nonatomic, strong) YLDetailController *detail;
 
 @end
 
@@ -68,10 +69,10 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     self.automaticallyAdjustsScrollViewInsets = NO; // 不自动调节滚动区域
-
     
     [self setNav];
     [self createTableView];
+    NSLog(@"%f-%f %f-%f--%f %f",self.tableView.frame.origin.x,self.tableView.frame.origin.y, self.tableView.frame.size.width, self.tableView.frame.size.height, self.tableView.contentOffset.x, self.tableView.contentOffset.y);
     
     [self getLocationData];
     [self loadData];
@@ -79,7 +80,7 @@
 
 - (void)createTableView {
     
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, YLScreenWidth, YLScreenHeight)];
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, YLScreenWidth, YLScreenHeight - 64)];
     [self.view addSubview:self.tableView];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
@@ -188,7 +189,7 @@
 - (void)keyedArchiverObject:(id)obj toFile:(NSString *)filePath {
     BOOL success = [NSKeyedArchiver archiveRootObject:obj toFile:filePath];
     if (success) {
-        NSLog(@"保存成功");
+        NSLog(@"首页数据保存成功");
     } else {
         NSLog(@"保存失败");
     }
@@ -198,13 +199,14 @@
     
     // 获取轮播图
     NSString *bannerStr = @"http://ucarjava.bceapp.com/home?method=slide";
+    __weak typeof(self) weakSelf = self;
     [YLRequest GET:bannerStr parameters:nil success:^(id  _Nonnull responseObject) {
         if ([responseObject[@"code"] isEqualToNumber:[NSNumber numberWithInt:400]]) {
             NSLog(@"bannerStr%@", responseObject[@"message"]);
         } else {
             
-            [self keyedArchiverObject:responseObject toFile:YLBannerPath];
-            [self getLocationData];
+            [weakSelf keyedArchiverObject:responseObject toFile:YLBannerPath];
+            [weakSelf getLocationData];
             
 //            [self.images removeAllObjects];
 //            NSArray *banners = [YLBannerModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"]];
@@ -226,8 +228,8 @@
             NSLog(@"notableStr%@", responseObject[@"message"]);
         } else {
             
-            [self keyedArchiverObject:responseObject toFile:YLNotablePath];
-            [self getLocationData];
+            [weakSelf keyedArchiverObject:responseObject toFile:YLNotablePath];
+            [weakSelf getLocationData];
             
 //            [self.notableTitles removeAllObjects];
 //            NSArray *notables = [YLNotableModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"]];
@@ -250,8 +252,8 @@
             NSLog(@"recommendStr%@", responseObject[@"message"]);
         } else {
             
-            [self keyedArchiverObject:responseObject toFile:YLMainPath];
-            [self getLocationData];
+            [weakSelf keyedArchiverObject:responseObject toFile:YLMainPath];
+            [weakSelf getLocationData];
             
 //            [self.recommends removeAllObjects];
 //            NSArray *recomments = [YLTableViewModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"]];
@@ -383,27 +385,19 @@
     UIBarButtonItem *leftBtn = [[UIBarButtonItem alloc] initWithCustomView:barButton];
     self.navigationItem.leftBarButtonItem = leftBtn;
     
-    [self.navigationController.navigationBar setBackgroundColor:YLColor(8.f, 169.f, 255.f)];
-    // 设置导航栏背景为空
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
-    // 设置导航栏底部线条为空
-    [self.navigationController.navigationBar setShadowImage:[UIImage new]];
-//    // 修改导航标题
+//    [self.navigationController.navigationBar setBackgroundColor:YLColor(8.f, 169.f, 255.f)];
+//    // 设置导航栏背景为空
+//    [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
+//        // 设置导航栏底部线条为空
+//    [self.navigationController.navigationBar setShadowImage:[UIImage new]];
+//    //    // 修改导航标题
 //    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIFont systemFontOfSize:18], NSForegroundColorAttributeName:[UIColor whiteColor]}];
-//    // 修改导航栏按钮字体颜色
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-    // 创建一个假状态栏
-    UIView *statusBarView = [[UIView alloc] initWithFrame:CGRectMake(0, -20, YLScreenWidth, 20)];
-    statusBarView.backgroundColor = YLColor(8.f, 169.f, 255.f);
-    [self.navigationController.navigationBar addSubview:statusBarView];
-    
-    // 设置导航栏搜索框按钮
-//    YLTitleBar *titleBtn = [[YLTitleBar alloc] initWithFrame:CGRectMake(0, 0, 260, 36)];
-//    [titleBtn setTitle:@"搜索您想要的车" forState:UIControlStateNormal];
-//    titleBtn.titleLabel.textAlignment = NSTextAlignmentCenter;
-//    titleBtn.backgroundColor = YLColor(239.f, 242.f, 247.f);
-//    [titleBtn addTarget:self action:@selector(titleClick) forControlEvents:UIControlEventTouchUpInside];
-//    self.navigationItem.titleView = titleBtn;
+//    //    // 修改导航栏按钮字体颜色
+//    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+//    // 创建一个假状态栏
+//    UIView *statusBarView = [[UIView alloc] initWithFrame:CGRectMake(0, -20, YLScreenWidth, 20)];
+//    statusBarView.backgroundColor = YLColor(8.f, 169.f, 255.f);
+//    [self.navigationController.navigationBar addSubview:statusBarView];
     
     YLBarView *barView = [[YLBarView alloc] initWithFrame:CGRectMake(0, (44 - 36) / 2, 290, 36)];
     barView.layer.cornerRadius = 5.f;
@@ -424,6 +418,29 @@
         }];
     };
     self.navigationItem.titleView = barView;
+    
+    [self setNavgationBarBackgroundImage];
+}
+
+- (void)setNavgationBarBackgroundImage {
+    CGGradientRef gradient;// 颜色的空间
+    size_t num_locations = 2;// 渐变中使用的颜色数
+    CGFloat locations[] = {0.0, 1.0}; // 指定每个颜色在渐变色中的位置，值介于0.0-1.0之间, 0.0表示最开始的位置，1.0表示渐变结束的位置
+    CGFloat colors[] = {
+        13.0/255.0, 196.f/255.f, 255.f/255, 1.0,
+        3.0/255.0, 141.f/255.f, 255.f/255, 1.0,
+    }; // 指定渐变的开始颜色，终止颜色，以及过度色（如果有的话）
+    gradient = CGGradientCreateWithColorComponents(CGColorSpaceCreateDeviceRGB(), colors, locations, num_locations);
+    CGPoint startPoint = CGPointMake(0.0, 0.0);
+    CGPoint endPoint = CGPointMake(self.view.frame.size.width, 1.0);
+    CGSize size = CGSizeMake(self.view.frame.size.width, 1.0);
+    UIGraphicsBeginImageContext(size);
+    CGContextRef ctx = UIGraphicsGetCurrentContext();
+    CGContextDrawLinearGradient(ctx, gradient, startPoint, endPoint, 0);
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    NSLog(@"%f-%f", image.size.width, image.size.height);
+    [self.navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
 }
 
 //- (void)titleClick {
@@ -465,7 +482,7 @@
     messageLabel.layer.cornerRadius = 5.0f;
     messageLabel.layer.masksToBounds = YES;
     [window addSubview:messageLabel];
-    [UIView animateWithDuration:1 animations:^{
+    [UIView animateWithDuration:2 animations:^{
         messageLabel.alpha = 0;
     } completion:^(BOOL finished) {
         [messageLabel removeFromSuperview];

@@ -17,6 +17,7 @@
 #import "YLBargainDetailCellFrame.h"
 #import "YLDetailController.h"
 
+#define YLBargainHistoryDetailPath(carID) [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:[NSString stringWithFormat:@"BargainHistoryDetail-%@", carID]]
 
 @interface YLBargainHistoryDetailController () <UITableViewDelegate, UITableViewDataSource>
 
@@ -42,12 +43,12 @@
     self.title = @"砍价记录详情";
     
     [self creatTableView];
+    [self getLocalData];
     [self loadData];
 }
 
 - (void)loadData {
     
-    [self.dickers removeAllObjects];
     YLAccount *account = [YLAccountTool account];
     NSString *urlString;
     if (self.isBuyer) {
@@ -61,16 +62,44 @@
     NSMutableDictionary *param = [NSMutableDictionary dictionary];
     [param setValue:self.model.detailId forKey:@"detailId"];
     [param setValue:account.telephone forKey:@"telephone"];
+    __weak typeof(self) weakSelf = self;
     [YLRequest GET:urlString parameters:param success:^(id  _Nonnull responseObject) {
-        NSArray *array = [YLBargainDetailModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"]];
-        for (YLBargainDetailModel *model in array) {
-            model.isBuyer = self.isBuyer;
-            YLBargainDetailCellFrame *cellFrame = [[YLBargainDetailCellFrame alloc] init];
-            cellFrame.model = model;
-            [self.dickers addObject:cellFrame];
+        if ([responseObject[@"code"] isEqualToNumber:[NSNumber numberWithInteger:200]]) {
+            [weakSelf keyedArchiverObject:responseObject toFile:YLBargainHistoryDetailPath(weakSelf.model.detailId)];
+            [weakSelf getLocalData];
         }
-        [self.tableView reloadData];
+//        NSArray *array = [YLBargainDetailModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"]];
+//        for (YLBargainDetailModel *model in array) {
+//            model.isBuyer = self.isBuyer;
+//            YLBargainDetailCellFrame *cellFrame = [[YLBargainDetailCellFrame alloc] init];
+//            cellFrame.model = model;
+//            [self.dickers addObject:cellFrame];
+//        }
+//        [self.tableView reloadData];
     } failed:nil];
+}
+
+- (void)getLocalData {
+    
+    [self.dickers removeAllObjects];
+    NSDictionary *dict = [NSKeyedUnarchiver unarchiveObjectWithFile:YLBargainHistoryDetailPath(self.model.detailId)];
+    NSArray *models = [YLBargainDetailModel mj_objectArrayWithKeyValuesArray:dict[@"data"]];
+    for (YLBargainDetailModel *model in models) {
+        model.isBuyer = self.isBuyer;
+        YLBargainDetailCellFrame *cellFrame = [[YLBargainDetailCellFrame alloc] init];
+        cellFrame.model = model;
+        [self.dickers addObject:cellFrame];
+    }
+    [self.tableView reloadData];
+}
+
+- (void)keyedArchiverObject:(id)obj toFile:(NSString *)filePath {
+    BOOL success = [NSKeyedArchiver archiveRootObject:obj toFile:filePath];
+    if (success) {
+        NSLog(@"即将看车下架数据保存成功");
+    } else {
+        NSLog(@"保存失败");
+    }
 }
 
 - (void)creatTableView {
@@ -85,7 +114,7 @@
     };
     self.header = header;
     
-    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 64, YLScreenWidth, YLScreenHeight - 110 + 44)];
+    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, YLScreenWidth, YLScreenHeight - 110 + 44)];
     tableView.delegate = self;
     tableView.dataSource = self;
     tableView.tableFooterView = [[UIView alloc] init];
@@ -129,30 +158,9 @@
         weakSelf.buyer = cellFrame1.model.buyer;
         weakSelf.seller = cellFrame1.model.seller;
         weakSelf.bargainPriceView.isBuyer = weakSelf.isBuyer;
-        
-//        NSString *urlString = @"http://ucarjava.bceapp.com/bargain?method=dicker";
-//        NSMutableDictionary *param = [NSMutableDictionary dictionary];
-//        [param setValue:cellFrame1.model.detailId forKey:@"detailId"];
-//        [param setValue:cellFrame1.model.seller forKey:@"seller"];
-//        [param setValue:cellFrame1.model.buyer forKey:@"buyer"];
-//        [param setValue:weakSelf.price forKey:@"price"];
-//        [param setValue:weakSelf.mark forKey:@"mark"];
-//        [YLRequest GET:urlString parameters:param success:^(id  _Nonnull responseObject) {
-//            NSLog(@"%@", responseObject);
-//            if ([responseObject[@"code"] isEqualToNumber:[NSNumber numberWithInteger:200]]) {
-//                NSLog(@"请求成功");
-//                [weakSelf loadData];
-//            } else {
-//                NSLog(@"请求失败");
-//            }
-//        } failed:nil];
-//        if (weakSelf.bargainDetailBlock) {
-//            weakSelf.bargainDetailBlock();
-//        }
     };
     
     cell.accepBlock = ^{ // 点击接受
-        
         NSString *urlString = @"http://ucarjava.bceapp.com/bargain?method=accept";
         NSMutableDictionary *param = [NSMutableDictionary dictionary];
         [param setValue:cellFrame1.model.detailId forKey:@"detailId"];
@@ -171,17 +179,10 @@
             }
         } failed:nil];
         
-        
         if (weakSelf.bargainDetailBlock) {
             weakSelf.bargainDetailBlock();
         }
     };
-    
-    
-    
-//    CGPoint point = cell.dickerBtn.center;
-//    point = [self.tableView convertPoint:point fromView:cell.dickerBtn.superview];
-//    NSIndexPath *indexPath1 = [self.tableView indexPathForRowAtPoint:point];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
@@ -190,7 +191,6 @@
     YLBargainDetailCellFrame *cellFrame = self.dickers[indexPath.row];
     return cellFrame.cellHeight;
 }
-
 
 - (UIView *)cover {
     if (!_cover) {

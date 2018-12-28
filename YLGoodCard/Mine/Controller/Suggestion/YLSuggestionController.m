@@ -28,7 +28,7 @@
     YLAccount *account = [YLAccountTool account];
     
     NSInteger width = YLScreenWidth - 2 * YLLeftMargin;
-    UITextView *suggestion = [[UITextView alloc] initWithFrame:CGRectMake(YLLeftMargin, YLLeftMargin + 64, width, 130)];
+    UITextView *suggestion = [[UITextView alloc] initWithFrame:CGRectMake(YLLeftMargin, YLLeftMargin , width, 130)];
     suggestion.layer.cornerRadius = 5;
     suggestion.layer.borderWidth = 0.6;
     suggestion.layer.borderColor = YLColor(233.f, 233.f, 233.f).CGColor;
@@ -44,12 +44,14 @@
     telephone.layer.borderColor = YLColor(233.f, 233.f, 233.f).CGColor;
     telephone.layer.masksToBounds = YES;
     telephone.font = [UIFont systemFontOfSize:14];
+    telephone.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 0)];
+    telephone.leftViewMode = UITextFieldViewModeAlways;
     [self.view addSubview:telephone];
     self.telephone = telephone;
     if (account) {
         telephone.text = account.telephone;
     } else {
-        telephone.placeholder = @"  联系方式（选填）";
+        telephone.placeholder = @"联系方式（选填）";
     }
     
     YLCondition *commitBtn = [[YLCondition alloc] initWithFrame:CGRectMake(YLLeftMargin, CGRectGetMaxY(telephone.frame) + YLTopMargin, width, 40)];
@@ -99,7 +101,7 @@
     messageLabel.layer.masksToBounds = YES;
     [window addSubview:messageLabel];
     
-    [UIView animateWithDuration:1 animations:^{
+    [UIView animateWithDuration:2 animations:^{
         messageLabel.alpha = 0;
     } completion:^(BOOL finished) {
         [messageLabel removeFromSuperview];

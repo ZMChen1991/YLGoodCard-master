@@ -51,7 +51,7 @@
 
 - (void)setupUI {
     
-    NSArray *array = @[@"表显里程", @"上牌时间", @"车牌所在地", @"看车地点", @"排放量", @"环保标准", @"变速箱", @"登记证为准", @"年检到期", @"商业险到期", @"交强险到期"];
+//    NSArray *array = @[@"表显里程", @"上牌时间", @"车牌所在地", @"看车地点", @"排放量", @"环保标准", @"变速箱", @"登记证为准", @"年检到期", @"商业险到期", @"交强险到期", @""];
     
     CGFloat width = (YLScreenWidth - 2 * YLLeftMargin) / 2;
     CGFloat height = 30;
@@ -265,6 +265,11 @@
     [view3 addSubview:annualInspection];
     self.annualInspectionL = annualInspection;
     [self addSubview:view3];
+    
+    UIView *view12 = [[UIView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(view3.frame), CGRectGetMaxY(view2.frame), width, height)];
+    view12.layer.borderWidth = 0.5;
+    view12.layer.borderColor = YLColor(233.f, 233.f, 233.f).CGColor;
+    [self addSubview:view12];
 }
 
 //- (UIView *)labelView {

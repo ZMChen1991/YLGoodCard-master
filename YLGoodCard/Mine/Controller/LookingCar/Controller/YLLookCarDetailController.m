@@ -34,7 +34,7 @@
 
 - (void)setUI {
     
-    YLLookCarDetailView *command = [[YLLookCarDetailView alloc] initWithFrame:CGRectMake(0, 64, YLScreenWidth, 110)];
+    YLLookCarDetailView *command = [[YLLookCarDetailView alloc] initWithFrame:CGRectMake(0, 0, YLScreenWidth, 110)];
     command.model = self.model;
     __weak typeof(self) weakSelf = self;
     command.lookCarDetailBlock = ^(YLTableViewModel * _Nonnull model) {

@@ -72,6 +72,7 @@
     // 设置最小值最大值
     slider.minimumValue = 0;
     slider.maximumValue = 1; // 获取卖家价格
+    slider.value = 1;
     slider.continuous = YES;
     [slider addTarget:self action:@selector(changeBuy:) forControlEvents:UIControlEventValueChanged];
     [self addSubview:slider];
@@ -118,6 +119,7 @@
 - (void)setSalePrice:(NSString *)salePrice {
     _salePrice = salePrice;
     self.saler.text = [self stringWithValue:salePrice];
+    self.buye.text = [self stringWithValue:salePrice];
 }
 
 - (NSString *)stringWithValue:(NSString *)price {

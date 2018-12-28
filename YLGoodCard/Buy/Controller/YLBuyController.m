@@ -37,7 +37,7 @@
 #define screenH self.view.frame.size.height
 #define YLTITLEHEIGHT 50
 
-@interface YLBuyController () <UITableViewDelegate, UITableViewDataSource, YLLinkageViewDelegate, UIGestureRecognizerDelegate, YLCustomPriceDelegate>
+@interface YLBuyController () <UITableViewDelegate, UITableViewDataSource, YLLinkageViewDelegate, UIGestureRecognizerDelegate, YLCustomPriceDelegate, UIGestureRecognizerDelegate>
 
 @property (nonatomic, strong) YLLinkageView *linkageView;// 标题视图
 @property (nonatomic, strong) YLTitleLinkageView *linkage;
@@ -80,18 +80,22 @@
     [self getParamArrayForParam];
     [self getLocationData];
     [self loadData];
+//    NSLog(@"%@", self.navigationController.navigationBar);
+//    NSLog(@"%f-%f %f-%f",self.linkage.frame.origin.x,self.linkage.frame.origin.y, self.linkage.frame.size.width, self.linkage.frame.size.height);
+//    NSLog(@"frame:%f-%f %f-%f",self.tableView.frame.origin.x,self.tableView.frame.origin.y, self.tableView.frame.size.width, self.tableView.frame.size.height);
+//    NSLog(@"offset:%f-%f",self.tableView.contentOffset.x,self.tableView.contentOffset.y);
 }
 
 - (void)config {
     // 添加标题
     [self.view addSubview:self.linkage];
     [self.view addSubview:self.tableView];
+    [self.view addSubview:self.noneView];
     // 添加蒙版
     [self.view addSubview:self.coverView];
     [self.coverView addSubview:self.sortView];
     [self.coverView addSubview:self.customPrice];
     [self.coverView addSubview:self.selectView];
-    [self.view addSubview:self.noneView];
     
     self.coverView.hidden = YES;
     self.sortView.hidden = YES;
@@ -106,13 +110,20 @@
 }
 
 - (void)addParamView {
-    YLConditionParamView *conditionParamView = [[YLConditionParamView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.linkage.frame), YLScreenWidth, 30)];
+    CGFloat conditionH = 50;
+    YLConditionParamView *conditionParamView = [[YLConditionParamView alloc] initWithFrame:CGRectMake(-YLScreenWidth, CGRectGetMaxY(self.linkage.frame), YLScreenWidth, conditionH)];
+//    conditionParamView.backgroundColor = [UIColor redColor];
     __weak typeof(self) weakSelf = self;
     conditionParamView.conditionParamBlock = ^{
-        weakSelf.conditionParamView.hidden = YES;
-        CGRect rect = weakSelf.tableView.frame;
-        rect.origin.y = rect.origin.y - 30;
-        weakSelf.tableView.frame = rect;
+//        weakSelf.conditionParamView.hidden = YES;
+//        CGRect rect = weakSelf.tableView.frame;
+//        rect.origin.y = rect.origin.y - 30;
+//        weakSelf.tableView.frame = rect;
+        // 将conditionParam控件移到边缘，tableView上移
+        CGRect conditionParamRect = CGRectMake(-YLScreenWidth, 50, YLScreenWidth, conditionH);
+        self.conditionParamView.frame = conditionParamRect;
+        CGRect rect = CGRectMake(0, 50, YLScreenWidth, YLScreenHeight - 64 - 50);
+        self.tableView.frame = rect;
         // 清空所有的参数，重新请求数据
         [weakSelf.selectParam removeAllObjects];
         [weakSelf.params removeAllObjects];
@@ -142,24 +153,13 @@
     self.noneView.hidden = YES;
     
     NSString *urlString = @"http://ucarjava.bceapp.com/detail?method=search";
+    __weak typeof(self) weakSelf = self;
     [YLRequest GET:urlString parameters:self.selectParam success:^(id  _Nonnull responseObject) {
         if ([responseObject[@"code"] isEqualToNumber:[NSNumber numberWithInt:400]]) {
             NSLog(@"buyCar:%@", responseObject[@"message"]);
         } else {
-//            NSLog(@"%@", responseObject);
-            [self keyedArchiverObject:responseObject toFile:YLBuyPath];
-            [self getLocationData];
-            
-//            [self.recommends removeAllObjects];
-//            self.modelArray = [YLTableViewModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"]];
-//            for (YLTableViewModel *model in self.modelArray) {
-//                YLBuyCellFrame *cellFrame = [[YLBuyCellFrame alloc] init];
-//                cellFrame.model = model;
-//                cellFrame.isLargeImage = self.isLarge;
-//                [self.recommends addObject:cellFrame];
-//            }
-//            [self noneToSearchResult];
-//            [self.tableView reloadData];
+            [weakSelf keyedArchiverObject:responseObject toFile:YLBuyPath];
+            [weakSelf getLocationData];
         }
     } failed:nil];
     
@@ -183,7 +183,7 @@
 - (void)keyedArchiverObject:(id)obj toFile:(NSString *)filePath {
     BOOL success = [NSKeyedArchiver archiveRootObject:obj toFile:filePath];
     if (success) {
-        NSLog(@"保存成功");
+        NSLog(@"买车数据保存成功");
     } else {
         NSLog(@"保存失败");
     }
@@ -193,14 +193,20 @@
 - (void)getParamArrayForParam {
     
     NSArray *tempArray = [self.params allValues];
+    CGFloat conditionH = 50;
     if (tempArray.count > 0) {
         self.conditionParamView.params = tempArray;
-        self.conditionParamView.hidden = NO;
-        CGRect rect = CGRectMake(0, 64 + 50 + 30, YLScreenWidth, YLScreenHeight - 64 - 50 - 30);
+//        self.conditionParamView.hidden = NO;
+        CGRect conditionParamRect = CGRectMake(0, 50, YLScreenWidth, conditionH);
+        self.conditionParamView.frame = conditionParamRect;
+        CGRect rect = CGRectMake(0, 50 + conditionH, YLScreenWidth, YLScreenHeight - 64 - 50 - conditionH);
         self.tableView.frame = rect;
     } else {
-        self.conditionParamView.hidden = NO;
-        CGRect rect = CGRectMake(0, 64 + 50, YLScreenWidth, YLScreenHeight - 64 - 50);
+//        self.conditionParamView.hidden = NO;
+        
+        CGRect conditionParamRect = CGRectMake(-YLScreenWidth, 50, YLScreenWidth, conditionH);
+        self.conditionParamView.frame = conditionParamRect;
+        CGRect rect = CGRectMake(0, 50, YLScreenWidth, YLScreenHeight - 64 - 50);
         self.tableView.frame = rect;
     }
 }
@@ -222,17 +228,18 @@
     self.navigationItem.leftBarButtonItem = leftBtn;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:nil style:UIBarButtonItemStylePlain target:self action:@selector(rightBarButtonItemClick)];
     [self.navigationItem.rightBarButtonItem setImage:[[UIImage imageNamed:@"看图模式"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
-    [self.navigationController.navigationBar setBackgroundColor:YLColor(8.f, 169.f, 255.f)];
-    // 设置导航栏背景为空
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
-    // 设置导航栏底部线条为空
-    [self.navigationController.navigationBar setShadowImage:[UIImage new]];
-    // 修改导航标题
-    [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:18], NSForegroundColorAttributeName:[UIColor whiteColor]}];
-    // 创建一个假状态栏
-    UIView *statusBarView = [[UIView alloc] initWithFrame:CGRectMake(0, -20, YLScreenWidth, 20)];
-    statusBarView.backgroundColor = YLColor(8.f, 169.f, 255.f);
-    [self.navigationController.navigationBar addSubview:statusBarView];
+    
+//    [self.navigationController.navigationBar setBackgroundColor:YLColor(8.f, 169.f, 255.f)];
+//    // 设置导航栏背景为空
+//    [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
+//    // 设置导航栏底部线条为空
+//    [self.navigationController.navigationBar setShadowImage:[UIImage new]];
+//    // 修改导航标题
+//    [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:18], NSForegroundColorAttributeName:[UIColor whiteColor]}];
+//    // 创建一个假状态栏
+//    UIView *statusBarView = [[UIView alloc] initWithFrame:CGRectMake(0, -20, YLScreenWidth, 20)];
+//    statusBarView.backgroundColor = YLColor(8.f, 169.f, 255.f);
+//    [self.navigationController.navigationBar addSubview:statusBarView];
     
     YLBarView *barView = [[YLBarView alloc] initWithFrame:CGRectMake(0, (44 - 36) / 2, 265, 36)];
     barView.layer.cornerRadius = 5.f;
@@ -254,6 +261,29 @@
     };
     self.navigationItem.titleView = barView;
 //    self.navigationItem.titleView = self.titleBar;
+    
+    [self setNavgationBarBackgroundImage];
+}
+
+- (void)setNavgationBarBackgroundImage {
+    CGGradientRef gradient;// 颜色的空间
+    size_t num_locations = 2;// 渐变中使用的颜色数
+    CGFloat locations[] = {0.0, 1.0}; // 指定每个颜色在渐变色中的位置，值介于0.0-1.0之间, 0.0表示最开始的位置，1.0表示渐变结束的位置
+    CGFloat colors[] = {
+        13.0/255.0, 196.f/255.f, 255.f/255, 1.0,
+        3.0/255.0, 141.f/255.f, 255.f/255, 1.0,
+    }; // 指定渐变的开始颜色，终止颜色，以及过度色（如果有的话）
+    gradient = CGGradientCreateWithColorComponents(CGColorSpaceCreateDeviceRGB(), colors, locations, num_locations);
+    CGPoint startPoint = CGPointMake(0.0, 0.0);
+    CGPoint endPoint = CGPointMake(self.view.frame.size.width, 1.0);
+    CGSize size = CGSizeMake(self.view.frame.size.width, 1.0);
+    UIGraphicsBeginImageContext(size);
+    CGContextRef ctx = UIGraphicsGetCurrentContext();
+    CGContextDrawLinearGradient(ctx, gradient, startPoint, endPoint, 0);
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    NSLog(@"%f-%f", image.size.width, image.size.height);
+    [self.navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
 }
 
 - (void)leftBarButtonItemClick {
@@ -355,75 +385,22 @@
     messageLabel.layer.masksToBounds = YES;
     [window addSubview:messageLabel];
     
-    [UIView animateWithDuration:1 animations:^{
+    [UIView animateWithDuration:2 animations:^{
         messageLabel.alpha = 0;
     } completion:^(BOOL finished) {
         [messageLabel removeFromSuperview];
     }];
 }
 
-#pragma mark 代理
-// 标题按钮点击的代理
-//- (void)pushCoverView:(UIButton *)sender {
-//
-//    self.isSelect = !self.isSelect;
-//    if (self.isSelect) {
-//        if (sender.tag == 100) {
-//            NSLog(@"排序");
-//            self.coverView.hidden = NO;
-//            self.sortView.hidden = NO;
-//            self.customPrice.hidden = YES;
-//            self.selectView.hidden = YES;
-//        } else if (sender.tag == 101) {
-//            NSLog(@"品牌");
-//
-//            self.coverView.hidden = YES;
-//            self.sortView.hidden = YES;
-//            self.customPrice.hidden = YES;
-//            self.selectView.hidden = YES;
-//            self.isSelect = NO;
-//
-//            __weak typeof(self) weakSelf = self;
-//            YLBrandController *brand = [[YLBrandController alloc] init];
-//            brand.buyBrandBlock = ^(NSString *brand, NSString *series) {
-//                NSLog(@"%@-%@", brand, series);
-//                [weakSelf.selectParam setValue:brand forKey:@"brand"];
-//                [weakSelf.selectParam setValue:series forKey:@"series"];
-//                NSLog(@"selectParam:%@", weakSelf.selectParam);
-//                [weakSelf getParamArrayForParam];
-//                [weakSelf loadData];
-//            };
-//            [self.navigationController pushViewController:brand animated:YES];
-//
-//        }else if (sender.tag == 102) {
-//            NSLog(@"价格");
-//            self.coverView.hidden = NO;
-//            self.sortView.hidden = YES;
-//            self.customPrice.hidden = NO;
-//            self.selectView.hidden = YES;
-//        }else {
-//            NSLog(@"筛选");
-//            [self showMessage:@"此功能以后再开放"];
-//            self.isSelect = NO;
-////            self.coverView.hidden = NO;
-////            self.sortView.hidden = YES;
-////            self.customPrice.hidden = YES;
-////            self.selectView.hidden = NO;
-//        }
-//
-//    } else {
-//        self.coverView.hidden = YES;
-//        self.sortView.hidden = YES;
-//        self.customPrice.hidden = YES;
-//        self.selectView.hidden = YES;
-//    }
-//}
 #pragma mark 价格代理
 // 价格视图里面的高价和低价代理
 - (void)pushLowPrice:(NSString *)lowPrice highPrice:(NSString *)highPrice {
 
     self.coverView.hidden = YES;
+    self.customPrice.hidden = YES;
     self.isSelect = NO;
+    self.linkage.isChange = NO;
+    self.linkage.isRest = YES;
     // 根据价格视图传过来的低价和高价，重新加载数据，刷新列表
     NSLog(@"%@--%@", lowPrice, highPrice);
     NSString *tempStr = [NSString stringWithFormat:@"%.ffgf%.f", [lowPrice floatValue] * 10000, [highPrice floatValue] * 10000];
@@ -502,14 +479,15 @@
 
 - (YLTitleLinkageView *)linkage {
     if (!_linkage) {
-        _linkage = [[YLTitleLinkageView alloc] initWithFrame:CGRectMake(0, 64, YLScreenWidth, 50)];
+        _linkage = [[YLTitleLinkageView alloc] initWithFrame:CGRectMake(0, 0, YLScreenWidth, 50)];
         __weak typeof(self) weakSelf = self;
         _linkage.linkageBlock = ^(NSInteger index) {
             weakSelf.isSelect = !weakSelf.isSelect;
             NSLog(@" weakSelf.isSelect:%d", weakSelf.isSelect);
             if (weakSelf.isSelect) {
-                
-                weakSelf.linkage.isSelect = weakSelf.isSelect; // 表示可更改颜色
+                weakSelf.linkage.isChange = YES;
+                weakSelf.linkage.isRest = NO;
+//                weakSelf.linkage.isSelect = weakSelf.isSelect; // 表示可更改颜色
                 if (index == 0) {
                     NSLog(@"排序");
                     weakSelf.coverView.hidden = NO;
@@ -551,7 +529,9 @@
                 }
 
             } else {
-                weakSelf.linkage.isSelect = weakSelf.isSelect; // 表示不可更改颜色
+                weakSelf.linkage.isChange = NO;
+                weakSelf.linkage.isRest = YES;
+//                weakSelf.linkage.isSelect = weakSelf.isSelect; // 表示不可更改颜色
                 weakSelf.coverView.hidden = YES;
                 weakSelf.sortView.hidden = YES;
                 weakSelf.customPrice.hidden = YES;
@@ -565,7 +545,7 @@
 - (YLSortView *)sortView {
     
     if (!_sortView) {
-        _sortView = [[YLSortView alloc] initWithFrame:CGRectMake(0, 0, YLScreenWidth, YLScreenHeight)];
+        _sortView = [[YLSortView alloc] initWithFrame:CGRectMake(0, 0, YLScreenWidth, 44 * 5)];
         __weak typeof(self) weakSelf = self;
         _sortView.sortViewBlock = ^(NSInteger index, NSString *title) {
             NSString *sort = [NSString stringWithFormat:@"%ld", index + 1];
@@ -575,18 +555,42 @@
             NSLog(@"selectParam:%@\nparams:%@", weakSelf.selectParam, weakSelf.params);
             [weakSelf getParamArrayForParam];
             [weakSelf loadData];
+            
             weakSelf.coverView.hidden = YES;
+            weakSelf.sortView.hidden = YES;
             weakSelf.isSelect = NO;
+            weakSelf.linkage.isChange = NO;
+            weakSelf.linkage.isRest = YES;
         };
 //        _sortView.delegate = self;
     }
     return _sortView;
 }
 
+- (void)tap {
+    
+    self.coverView.hidden = YES;
+    self.sortView.hidden = YES;
+    self.customPrice.hidden = YES;
+    self.selectView.hidden = YES;
+}
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+    if ([touch.view isDescendantOfView:self.sortView] || [touch.view isDescendantOfView:self.customPrice] || [touch.view isDescendantOfView:self.selectView]) {
+        return NO;
+    }
+    return YES;
+}
+
 - (UIView *)coverView {
     if (!_coverView) {
-        _coverView = [[UIView alloc] initWithFrame:CGRectMake(0, YLTITLEHEIGHT+65, YLScreenWidth, YLScreenHeight)];
+        _coverView = [[UIView alloc] initWithFrame:CGRectMake(0, YLTITLEHEIGHT, YLScreenWidth, YLScreenHeight)];
         _coverView.backgroundColor = [UIColor colorWithWhite:0.f alpha:0.5];
+        _coverView.hidden = YES;
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap)];
+        tap.delegate = self;
+        [_coverView addGestureRecognizer:tap];
+        [_coverView setUserInteractionEnabled:YES];
     }
     return _coverView;
 }
@@ -601,6 +605,9 @@
             NSLog(@"价格视图中的价格按钮被点击点击了%@", sender.titleLabel.text);
             weakSelf.coverView.hidden = YES;
             weakSelf.isSelect = NO;
+            
+            weakSelf.linkage.isChange = NO;
+            weakSelf.linkage.isRest = YES;
             // 重新加载数据，刷新表格
             NSInteger tag = sender.tag - 100;
             NSArray *array = @[@"不限", @"三万以下", @"3-5万", @"5-7万", @"7-9万", @"9-12万", @"12-16万", @"16-20万", @"20万以上"];
@@ -687,7 +694,7 @@
 
 - (UITableView *)tableView {
     if (!_tableView) {
-        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 64 + 50, YLScreenWidth, YLScreenHeight-100)];
+        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 50, YLScreenWidth, YLScreenHeight - 64 - 50)];
         _tableView.delegate = self;
         _tableView.dataSource = self;
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;

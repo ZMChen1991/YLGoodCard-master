@@ -16,6 +16,9 @@ typedef void(^LinkageBlock)(NSInteger index);
 @property (nonatomic, copy) LinkageBlock linkageBlock;
 @property (nonatomic, assign) BOOL isSelect;
 
+@property (nonatomic, assign) BOOL isRest;
+@property (nonatomic, assign) BOOL isChange;
+
 @end
 
 NS_ASSUME_NONNULL_END

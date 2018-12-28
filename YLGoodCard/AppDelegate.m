@@ -34,7 +34,7 @@
     [self.window makeKeyAndVisible];
     
     NSString *const Appkey = @"5befae30b465f5b3de0001d4";
-    [UMConfigure setLogEnabled:NO];// 测试日志：console打印,上线必须设置为NO
+    [UMConfigure setLogEnabled:YES];// 测试日志：console打印,上线必须设置为NO
     [UMConfigure setEncryptEnabled:YES]; // 打开加密传输
     [UMConfigure initWithAppkey:Appkey channel:@"App Store"]; // 初始化友盟所有组件
 //    [UMCommonLogManager setUpUMCommonLogManager]; // 设置日志

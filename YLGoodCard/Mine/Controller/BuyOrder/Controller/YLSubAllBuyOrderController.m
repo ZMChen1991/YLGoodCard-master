@@ -17,6 +17,8 @@
 #import "YLBuyOrderModel.h"
 #import "YLBuyOrderCellFrame.h"
 
+#define YLAllBuyOrderPath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"AllBuyOrder.txt"]
+
 @interface YLSubAllBuyOrderController ()
 @property (nonatomic, strong) NSMutableArray *buyOrders;
 @end
@@ -32,6 +34,7 @@
         [self loadData];
         [self.tableView.mj_header endRefreshing];
     }];
+    [self getLocalData];
     [self loadData];
 }
 
@@ -46,16 +49,41 @@
     [YLRequest GET:urlString parameters:param success:^(id  _Nonnull responseObject) {
         NSLog(@"param :%@ respronseObject:%@",param, responseObject);
         if ([responseObject[@"code"] isEqualToNumber:[NSNumber numberWithInteger:200]]) {
-            NSArray *buyOrderModels = [YLBuyOrderModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"]];
-            for (YLBuyOrderModel *model in buyOrderModels) {
-                YLBuyOrderCellFrame *cellFrame = [[YLBuyOrderCellFrame alloc] init];
-                cellFrame.model = model;
-                [self.buyOrders addObject:cellFrame];
-            }
-            [self.tableView reloadData];
+            [self keyedArchiverObject:responseObject toFile:YLAllBuyOrderPath];
+            [self getLocalData];
+//            NSArray *buyOrderModels = [YLBuyOrderModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"]];
+//            for (YLBuyOrderModel *model in buyOrderModels) {
+//                YLBuyOrderCellFrame *cellFrame = [[YLBuyOrderCellFrame alloc] init];
+//                cellFrame.model = model;
+//                [self.buyOrders addObject:cellFrame];
+//            }
+//            [self.tableView reloadData];
         }
     } failed:nil];
 }
+
+- (void)getLocalData {
+    
+    [self.buyOrders removeAllObjects];
+    NSDictionary *dict = [NSKeyedUnarchiver unarchiveObjectWithFile:YLAllBuyOrderPath];
+    NSArray *buyOrderModels = [YLBuyOrderModel mj_objectArrayWithKeyValuesArray:dict[@"data"]];
+    for (YLBuyOrderModel *model in buyOrderModels) {
+        YLBuyOrderCellFrame *cellFrame = [[YLBuyOrderCellFrame alloc] init];
+        cellFrame.model = model;
+        [self.buyOrders addObject:cellFrame];
+    }
+    [self.tableView reloadData];
+}
+
+- (void)keyedArchiverObject:(id)obj toFile:(NSString *)filePath {
+    BOOL success = [NSKeyedArchiver archiveRootObject:obj toFile:filePath];
+    if (success) {
+        NSLog(@"即将看车下架数据保存成功");
+    } else {
+        NSLog(@"保存失败");
+    }
+}
+
 
 #pragma mark - Table view data source
 

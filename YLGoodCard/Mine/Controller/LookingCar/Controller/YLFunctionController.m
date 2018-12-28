@@ -7,9 +7,11 @@
 //
 
 #import "YLFunctionController.h"
-#import "YLSubController.h"
-#import "YLAccountTool.h"
-#import "YLAccount.h"
+#import "YLLookingCarController.h"
+#import "YLLookedCarController.h"
+//#import "YLSubController.h"
+//#import "YLAccountTool.h"
+//#import "YLAccount.h"
 
 @interface YLFunctionController ()
 
@@ -22,28 +24,34 @@
     self.view.backgroundColor = [UIColor whiteColor];
     
     self.skip.titles = self.titles;
-    YLAccount *account = [YLAccountTool account];
-    NSMutableDictionary *param = [NSMutableDictionary dictionary];
-    [param setValue:account.telephone forKey:@"telephone"];
-    NSMutableArray *ctrs = [NSMutableArray array];
-    for (NSInteger i = 0; i < self.titles.count; i++) {
-        YLSubController *ctr1 = [[YLSubController alloc] init];
-//        ctr1.cellType = YLCellTypeBargain;
-        [param setValue:self.params[i] forKey:@"status"];
-        ctr1.param = param;
-        // 传请求
-        NSLog(@"%@", ctr1.param);
-        [self addChildViewController:ctr1];
-        [ctrs addObject:ctr1];
-    }
-    self.skip.controllers = ctrs;
+    YLLookedCarController *looked = [[YLLookedCarController alloc] init];
+    YLLookingCarController *looking = [[YLLookingCarController alloc] init];
+    
+    [self addChildViewController:looked];
+    [self addChildViewController:looking];
+    
+//    YLAccount *account = [YLAccountTool account];
+//    NSMutableDictionary *param = [NSMutableDictionary dictionary];
+//    [param setValue:account.telephone forKey:@"telephone"];
+//    NSMutableArray *ctrs = [NSMutableArray array];
+//    for (NSInteger i = 0; i < self.titles.count; i++) {
+//        YLSubController *ctr1 = [[YLSubController alloc] init];
+////        ctr1.cellType = YLCellTypeBargain;
+//        [param setValue:self.params[i] forKey:@"status"];
+//        ctr1.param = param;
+//        // 传请求
+//        NSLog(@"%@", ctr1.param);
+//        [self addChildViewController:ctr1];
+//        [ctrs addObject:ctr1];
+//    }
+    self.skip.controllers = [NSMutableArray arrayWithObjects:looking, looked, nil];
     [self.view addSubview:_skip];
 }
 
 - (YLSkipView *)skip {
     
     if (!_skip) {
-        _skip = [[YLSkipView alloc] initWithFrame:CGRectMake(0, 64, self.view.frame.size.width, self.view.frame.size.height-64)];
+        _skip = [[YLSkipView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-64)];
     }
     return _skip;
 }

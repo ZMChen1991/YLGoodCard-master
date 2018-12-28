@@ -54,13 +54,13 @@
     self.isSelect4 = NO;
     
     UILabel *choiceCenter = [[UILabel alloc] init];
-    choiceCenter.frame = CGRectMake(YLLeftMargin, 12 + 64, 112, 20);
+    choiceCenter.frame = CGRectMake(YLLeftMargin, 12, 112, 20);
     choiceCenter.font = [UIFont systemFontOfSize:14];
     choiceCenter.text = @"选择检测中心";
     [self.view addSubview:choiceCenter];
     
     UIButton *choiceBtn = [[UIButton alloc] init];
-    choiceBtn.frame = CGRectMake(YLScreenWidth - YLLeftMargin - 100, 12 + 64, 100, 20);
+    choiceBtn.frame = CGRectMake(YLScreenWidth - YLLeftMargin - 100, 12, 100, 20);
     choiceBtn.titleLabel.font = [UIFont systemFontOfSize:12];
     [choiceBtn setTitle:@"请选择" forState:UIControlStateNormal];
     [choiceBtn setTitleColor:YLColor(155.f, 155.f, 155.f) forState:UIControlStateNormal];
@@ -178,29 +178,29 @@
     [self.view addSubview:text];
     self.text = text;
     
-    UILabel *imageLabel = [[UILabel alloc] init];
-    imageLabel.frame = CGRectMake(YLLeftMargin, CGRectGetMaxY(text.frame) + YLLeftMargin, 112, 20);
-    imageLabel.font = [UIFont systemFontOfSize:14];
-    imageLabel.text = @"图片(选填)";
-    [self.view addSubview:imageLabel];
-    
-    CGFloat btnX = 0;
-    CGFloat btnY = CGRectGetMaxY(imageLabel.frame) + 5;
-    CGFloat btnW = 110;
-    CGFloat btnH = 80;
-    for (NSInteger i = 0; i < 3; i++) {
-        UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
-        btn.frame = CGRectMake(btnX * i + YLLeftMargin, btnY, btnW, btnH);
-        btn.backgroundColor = YLColor(233.f, 233.f, 233.f);
-        btn.tag = 100 + i;
-        [btn addTarget:self action:@selector(imageBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-        [self.view addSubview:btn];
-        btnX = btnW + 8;
-        [self.imageViews addObject:btn];
-    }
+//    UILabel *imageLabel = [[UILabel alloc] init];
+//    imageLabel.frame = CGRectMake(YLLeftMargin, CGRectGetMaxY(text.frame) + YLLeftMargin, 112, 20);
+//    imageLabel.font = [UIFont systemFontOfSize:14];
+//    imageLabel.text = @"图片(选填)";
+//    [self.view addSubview:imageLabel];
+//
+//    CGFloat btnX = 0;
+//    CGFloat btnY = CGRectGetMaxY(imageLabel.frame) + 5;
+//    CGFloat btnW = 110;
+//    CGFloat btnH = 80;
+//    for (NSInteger i = 0; i < 3; i++) {
+//        UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+//        btn.frame = CGRectMake(btnX * i + YLLeftMargin, btnY, btnW, btnH);
+//        btn.backgroundColor = YLColor(233.f, 233.f, 233.f);
+//        btn.tag = 100 + i;
+//        [btn addTarget:self action:@selector(imageBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+//        [self.view addSubview:btn];
+//        btnX = btnW + 8;
+//        [self.imageViews addObject:btn];
+//    }
     
     UIButton *btn5 = [UIButton buttonWithType:UIButtonTypeCustom];
-    btn5.frame = CGRectMake(YLLeftMargin, CGRectGetMaxY(imageLabel.frame) + 140, 18, 18);
+    btn5.frame = CGRectMake(YLLeftMargin, CGRectGetMaxY(text.frame) + YLLeftMargin, 18, 18);
 //    btn5.type = YLConditionTypeWhite;
     btn5.layer.borderWidth = 1.f;
     btn5.layer.borderColor = YLColor(233.f, 233.f, 233.f).CGColor;
@@ -211,7 +211,7 @@
     self.niming = btn5;
     
     UILabel *niming = [[UILabel alloc] init];
-    niming.frame = CGRectMake(CGRectGetMaxX(btn5.frame) + 5, CGRectGetMaxY(imageLabel.frame) + 140, 112, 18);
+    niming.frame = CGRectMake(CGRectGetMaxX(btn5.frame) + 5, CGRectGetMaxY(text.frame) + YLLeftMargin, 112, 18);
     niming.font = [UIFont systemFontOfSize:14];
     niming.text = @"匿名提交";
     [self.view addSubview:niming];
@@ -361,7 +361,7 @@
     messageLabel.layer.masksToBounds = YES;
     [window addSubview:messageLabel];
     
-    [UIView animateWithDuration:1 animations:^{
+    [UIView animateWithDuration:2 animations:^{
         messageLabel.alpha = 0;
     } completion:^(BOOL finished) {
         [messageLabel removeFromSuperview];

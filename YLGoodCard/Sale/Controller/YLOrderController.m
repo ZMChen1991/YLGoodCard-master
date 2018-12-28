@@ -232,7 +232,7 @@
     messageLabel.layer.masksToBounds = YES;
     [window addSubview:messageLabel];
     
-    [UIView animateWithDuration:1 animations:^{
+    [UIView animateWithDuration:2 animations:^{
         messageLabel.alpha = 0;
     } completion:^(BOOL finished) {
         [messageLabel removeFromSuperview];
@@ -250,7 +250,7 @@
 - (UIView *)cover {
     
     if (!_cover) {
-        _cover = [[UIView alloc] initWithFrame:CGRectMake(0, 64, YLScreenWidth, YLScreenHeight)];
+        _cover = [[UIView alloc] initWithFrame:CGRectMake(0, 0, YLScreenWidth, YLScreenHeight)];
         _cover.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.5];
         _cover.hidden = YES;
     }
@@ -330,7 +330,7 @@
 
 - (YLCityView *)cityView {
     if (!_cityView) {
-        _cityView = [[YLCityView alloc] initWithFrame:CGRectMake(0, YLScreenHeight - 150 - 64, YLScreenWidth, 150)];
+        _cityView = [[YLCityView alloc] initWithFrame:CGRectMake(0, YLScreenHeight - 150 - 64 - 45, YLScreenWidth, 150)];
         _cityView.hidden = YES;
         __weak typeof(self) weakSelf = self;
         _cityView.cancelBlock = ^{

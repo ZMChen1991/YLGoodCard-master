@@ -50,7 +50,7 @@
 
 - (void)setupUI {
     
-    NSArray *titles = @[@"智能排序", @"品牌", @"价格", @"筛选"];
+    NSArray *titles = @[@"排序", @"品牌", @"价格", @"筛选"];
     NSArray *images = @[@"下拉", @"下拉", @"下拉", @"筛选"];
     [self viewWithTitles:titles images:images];
 }
@@ -96,66 +96,48 @@
     if (self.linkageBlock) {
         self.linkageBlock(index);
     }
-    
-//    NSLog(@"点击了第%ld个按钮", index);
-    /**思路:
-     1.点击按钮，修改字体颜色和旋转图片
-     2.如果点击是同一个按钮，还原
-     3.如果点击的是另一个按钮，还原原来的按钮，修改选中的按钮
-     */
-//    self.isSelectView = !self.isSelectView;
-//    if (index == 0 || index == 2) { // 智能排序、价格
-//        if (self.selectLabel == self.labels[index]) {// 如果是同一个按钮
-//            if (self.isSelectView) {
-//                NSLog(@"上拉");
-//                self.selectLabel.textColor = YLColor(8.f, 169.f, 255.f);
-//                [self.selectBtn setImage:[UIImage imageNamed:@"上拉"] forState:UIControlStateNormal];
-//                //                CGAffineTransform transform = CGAffineTransformMakeRotation(M_PI);
-//                //                self.selectBtn.transform = transform;
-//            } else {
-//                // 之前选中的按钮还原
-//                NSLog(@"还原");
-//                self.selectLabel.textColor = [UIColor blackColor];
-//                [self.selectBtn setImage:[UIImage imageNamed:@"下拉"] forState:UIControlStateNormal];
-//                //            self.selectBtn.transform = CGAffineTransformIdentity;
-//            }
-//        } else {
-//            // 之前选中的按钮还原
-//            self.selectLabel.textColor = [UIColor blackColor];
-//            [self.selectBtn setImage:[UIImage imageNamed:@"下拉"] forState:UIControlStateNormal];
-//            //        self.selectBtn.transform = CGAffineTransformIdentity;
-//
-//            self.selectLabel = self.labels[index];
-//            self.selectBtn = self.btns[index];
-//            // 重新修改按钮
-//            self.selectLabel.textColor = YLColor(8.f, 169.f, 255.f);
-//            [self.selectBtn setImage:[UIImage imageNamed:@"上拉"] forState:UIControlStateNormal];
-//            //        CGAffineTransform transform = CGAffineTransformMakeRotation(M_PI);
-//            //        self.selectBtn.transform = transform;
-//        }
-//    }
-//    else {
-//        self.selectLabel.textColor = [UIColor blackColor];
-//        [self.selectBtn setImage:[UIImage imageNamed:@"下拉"] forState:UIControlStateNormal];
-//    }
 }
 
-- (void)setIsSelect:(BOOL)isSelect {
-    _isSelect = isSelect;
-    if (isSelect) {
-        if (self.index == 0 || self.index == 2) {
+- (void)setIsRest:(BOOL)isRest {
+    _isRest = isRest;
+    if (isRest) {
+        for (NSInteger i = 0; i < self.labels.count; i++) {
+            self.selectLabel = self.labels[i];
+            self.selectBtn = self.btns[i];
             self.selectLabel.textColor = [UIColor blackColor];
             [self.selectBtn setImage:[UIImage imageNamed:@"下拉"] forState:UIControlStateNormal];
+        }
+    }
+}
+
+- (void)setIsChange:(BOOL)isChange {
+    _isChange = isChange;
+    if (isChange) {
+        if (self.index == 0 || self.index == 2) {
             self.selectLabel = self.labels[self.index];
             self.selectBtn = self.btns[self.index];
             self.selectLabel.textColor = YLColor(8.f, 169.f, 255.f);
             [self.selectBtn setImage:[UIImage imageNamed:@"上拉"] forState:UIControlStateNormal];
         }
-    } else {
-        self.selectLabel.textColor = [UIColor blackColor];
-        [self.selectBtn setImage:[UIImage imageNamed:@"下拉"] forState:UIControlStateNormal];
     }
 }
+
+//- (void)setIsSelect:(BOOL)isSelect {
+//    _isSelect = isSelect;
+//    if (isSelect) {
+//        if (self.index == 0 || self.index == 2) {
+//            self.selectLabel.textColor = [UIColor blackColor];
+//            [self.selectBtn setImage:[UIImage imageNamed:@"下拉"] forState:UIControlStateNormal];
+//            self.selectLabel = self.labels[self.index];
+//            self.selectBtn = self.btns[self.index];
+//            self.selectLabel.textColor = YLColor(8.f, 169.f, 255.f);
+//            [self.selectBtn setImage:[UIImage imageNamed:@"上拉"] forState:UIControlStateNormal];
+//        }
+//    } else {
+//        self.selectLabel.textColor = [UIColor blackColor];
+//        [self.selectBtn setImage:[UIImage imageNamed:@"下拉"] forState:UIControlStateNormal];
+//    }
+//}
 
 - (NSMutableArray *)labels {
     if (!_labels) {

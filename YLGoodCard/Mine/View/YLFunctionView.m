@@ -33,8 +33,8 @@
     
     NSArray *array = @[@"即将看车", @"我的收藏", @"浏览记录", @"我的订阅"];
     
-    NSArray *btnArray = @[@"卖车订单", @"买车订单", @"砍价记录", @"降价提醒"];
-    NSArray *images = @[@"卖车订单", @"买车订单", @"砍价记录", @"降价提醒"];
+    NSArray *btnArray = @[@"买车订单", @"卖车订单", @"砍价记录", @"降价提醒"];
+    NSArray *images = @[@"买车订单", @"卖车订单", @"砍价记录", @"降价提醒"];
  
     for (NSInteger i = 0; i < array.count; i++) {
         CGFloat width = self.frame.size.width / 4;
@@ -115,8 +115,12 @@
     }
     return _function2;
 }
-- (void)setNumbers:(NSMutableArray *)numbers {
+- (void)setNumbers:(NSArray *)numbers {
     _numbers = numbers;
+    NSLog(@"%@", numbers);
+    if (!numbers) {
+        return;
+    }
     NSInteger count = self.function2.count;
     for (NSInteger i = 0; i < count; i++) {
         YLNumberView *numberView = self.function2[i];
@@ -127,7 +131,13 @@
 - (void)setDepreciateNumber:(NSString *)depreciateNumber {
     _depreciateNumber = depreciateNumber;
     YLCustomButton *btn = self.function1[3];
-    btn.numbers = self.depreciateNumber;
+    btn.numbers = depreciateNumber;
+}
+
+- (void)setBargainNumber:(NSString *)bargainNumber {
+    _bargainNumber = bargainNumber;
+    YLCustomButton *btn = self.function1[2];
+    btn.numbers = bargainNumber;
 }
 
 @end

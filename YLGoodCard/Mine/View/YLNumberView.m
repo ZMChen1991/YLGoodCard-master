@@ -72,6 +72,7 @@
 
 - (void)setNumber:(NSString *)number {
     _number = number;
+    NSLog(@"number：%@", number);
     self.numberL.text = [NSString stringWithFormat:@"%@", number];
 }
 

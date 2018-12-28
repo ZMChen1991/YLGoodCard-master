@@ -23,7 +23,7 @@
     NSLog(@"%.f-%.f", image.size.width, image.size.height);
     CGFloat imageH = YLScreenWidth / image.size.width * image.size.height;
     UIScrollView *scroll = [[UIScrollView alloc] init];
-    scroll.frame = CGRectMake(0, 64, YLScreenWidth, YLScreenHeight - 64);
+    scroll.frame = CGRectMake(0, 0, YLScreenWidth, YLScreenHeight - 64);
     scroll.contentSize = CGSizeMake(YLScreenWidth, imageH);
     scroll.bounces = NO;
     scroll.showsHorizontalScrollIndicator = NO;

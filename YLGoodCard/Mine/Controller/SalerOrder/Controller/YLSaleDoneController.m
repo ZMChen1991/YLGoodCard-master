@@ -15,6 +15,8 @@
 #import "YLRequest.h"
 #import "YLSaleDetailController.h"
 
+#define YLSaleDonePath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"SaleDone.txt"]
+
 @interface YLSaleDoneController ()
 
 @property (nonatomic, strong) NSMutableArray *saleOrders;
@@ -32,6 +34,7 @@
         [self.tableView.mj_header endRefreshing];
     }];
     
+    [self getLocalData];
     [self loadData];
 }
 
@@ -44,18 +47,38 @@
     [param setValue:account.telephone forKey:@"telephone"];
     [param setValue:@"4" forKey:@"status"];
 //    NSLog(@"param:%@", param);
+    __weak typeof(self) weakSelf = self;
     [YLRequest GET:urlString parameters:param success:^(id  _Nonnull responseObject) {
-        NSLog(@"param:%@ responseObject%@", param, responseObject);
-        NSArray *modelArray = [YLSaleOrderModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"]];
-        for (YLSaleOrderModel *model in modelArray) {
-            YLSaleOrderCellFrame *cellFrame = [[YLSaleOrderCellFrame alloc] init];
-            cellFrame.model = model;
-            [self.saleOrders addObject:cellFrame];
+        if ([responseObject[@"code"] isEqualToNumber:[NSNumber numberWithInteger:200]]) {
+            [weakSelf keyedArchiverObject:responseObject toFile:YLSaleDonePath];
+            [weakSelf getLocalData];
         }
-        [self.tableView reloadData];
     } failed:nil];
     
 }
+
+- (void)getLocalData {
+    
+    [self.saleOrders removeAllObjects];
+    NSDictionary *dict = [NSKeyedUnarchiver unarchiveObjectWithFile:YLSaleDonePath];
+    NSArray *modelArray = [YLSaleOrderModel mj_objectArrayWithKeyValuesArray:dict[@"data"]];
+    for (YLSaleOrderModel *model in modelArray) {
+        YLSaleOrderCellFrame *cellFrame = [[YLSaleOrderCellFrame alloc] init];
+        cellFrame.model = model;
+        [self.saleOrders addObject:cellFrame];
+    }
+    [self.tableView reloadData];
+}
+
+- (void)keyedArchiverObject:(id)obj toFile:(NSString *)filePath {
+    BOOL success = [NSKeyedArchiver archiveRootObject:obj toFile:filePath];
+    if (success) {
+        NSLog(@"即将看车下架数据保存成功");
+    } else {
+        NSLog(@"保存失败");
+    }
+}
+
 
 #pragma mark - Table view data source
 

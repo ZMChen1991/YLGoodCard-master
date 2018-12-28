@@ -50,6 +50,9 @@
 
 - (void)setTureNumber:(NSString *)tureNumber {
     _tureNumber = tureNumber;
+    if (!tureNumber) {
+        tureNumber = @"0";
+    }
     NSString *string = [NSString stringWithFormat:@"预约看车(次):%@", tureNumber];
     NSAttributedString *str = [string changeString:tureNumber color:[UIColor redColor]];
     self.tureNumberL.attributedText = str;
@@ -57,6 +60,9 @@
 
 - (void)setBrowseNumber:(NSString *)browseNumber {
     _browseNumber = browseNumber;
+    if (!browseNumber) {
+        browseNumber = @"0";
+    }
     NSString *string = [NSString stringWithFormat:@"浏览次数(次):%@", browseNumber];
     NSAttributedString *str = [string changeString:browseNumber color:[UIColor redColor]];
     self.browseNumberL.attributedText = str;

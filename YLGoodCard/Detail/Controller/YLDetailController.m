@@ -37,12 +37,13 @@
 
 // 进入详情页，保存当前汽车的ID
 // 详情页数据
-#define YLDetailPath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"detail.txt"]
+#define YLDetailPath(carID) [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:carID]
+//#define YLDetailPath(carID) [NSTemporaryDirectory() stringByAppendingPathComponent:carID]
 
-@interface YLDetailController () <UITableViewDelegate, UITableViewDataSource>
+@interface YLDetailController () <UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate>
 
-@property (nonatomic, strong) UIImageView *bg;
-@property (nonatomic, strong) UIView *labelView;
+//@property (nonatomic, strong) UIImageView *bg;
+//@property (nonatomic, strong) UIView *labelView;
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) YLDetailHeaderView *header;
 @property (nonatomic, strong) YLDetailFooterView *footer;
@@ -59,6 +60,10 @@
 
 @property (nonatomic, strong) NSMutableArray *cars;// 细节图片数组
 @property (nonatomic, strong) NSMutableArray *xiaci;// 瑕疵
+@property (nonatomic, strong) NSString *isCollect; // 是否收藏
+@property (nonatomic, strong) NSString *isBook;// 是否预约看车
+@property (nonatomic, strong) YLAccount *account;
+
 
 @end
 
@@ -68,14 +73,18 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     self.carInformations = @[@"正侧",@"正前",@"前排",@"后排",@"中控",@"发动机舱",@"瑕疵"];
-    [self getLocationData];
-    [self loadData];
+    
     [self setupNav];
     [self addTableView];
     [self saveBrowseHistory:self.model];
+    [self getLocationData];
+    [self loadData];
 }
 
 - (void)loadData {
+    
+//    NSString *tempStr = NSTemporaryDirectory();
+//    NSLog(@"tempStr:%@", tempStr);
     
     YLAccount *account = [YLAccountTool account];
     NSMutableDictionary *param = [NSMutableDictionary dictionary];
@@ -84,32 +93,18 @@
     __weak typeof(self) weakSelf = self;
     NSString *urlString = @"http://ucarjava.bceapp.com/detail?method=id";
     [YLRequest GET:urlString parameters:param success:^(id  _Nonnull responseObject) {
-        NSLog(@"%@", responseObject);
-        NSLog(@"%@", responseObject[@"data"]);
-        
-        [self keyedArchiverObject:responseObject toFile:YLDetailPath];
-        [self getLocationData];
-        
-//        self.detailModel = [YLDetailModel mj_objectWithKeyValues:responseObject[@"data"][@"detail"]];
-//        NSArray *vehicles = [YLVehicleModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"][@"image"][@"vehicle"]];
-//        for (YLVehicleModel *model in vehicles) {
-//            [self.vehicle addObject:model.img];
-//            [self.cars addObject:model.img];
-//        }
-//        NSArray *blemishs = [YLBlemishModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"][@"image"][@"blemish"]];
-//        for (YLBlemishModel *model in blemishs) {
-//            [self.blemish addObject:model];
-//            [self.xiaci addObject:[NSString stringWithFormat:@"%@", model.img]];
-//        }
-//        YLDetailHeaderModel *headerModel = [YLDetailHeaderModel mj_objectWithKeyValues:self.detailModel];
-//        self.header.vehicle = self.vehicle;
-//        self.header.model = headerModel;
-//        self.footer.model = self.detailModel;
-//        self.detailBargain.salePrice = self.detailModel.price;
-//
-//        [self.tableView reloadData];
+        if ([responseObject[@"code"] isEqualToNumber:[NSNumber numberWithInteger:200]]) {
+            NSLog(@" 请求成功:%@", YLDetailPath(weakSelf.model.carID));
+            [weakSelf keyedArchiverObject:responseObject toFile:YLDetailPath(weakSelf.model.carID)];
+            [weakSelf getLocationData];
+        }
     } failed:nil];
 }
+
+//- (void)dealloc {
+//
+//    NSLog(@"------dealloc-------");
+//}
 
 - (void)getLocationData {
     
@@ -117,32 +112,76 @@
     [self.cars removeAllObjects];
     [self.blemish removeAllObjects];
     [self.xiaci removeAllObjects];
-    
-    NSDictionary *dict = [NSKeyedUnarchiver unarchiveObjectWithFile:YLDetailPath];
+
+    NSDictionary *dict = [NSKeyedUnarchiver unarchiveObjectWithFile:YLDetailPath(self.model.carID)];
     self.detailModel = [YLDetailModel mj_objectWithKeyValues:dict[@"data"][@"detail"]];
+    self.isBook = dict[@"data"][@"isBook"];
+    self.isCollect = dict[@"data"][@"isCollect"];
     NSArray *vehicles = [YLVehicleModel mj_objectArrayWithKeyValuesArray:dict[@"data"][@"image"][@"vehicle"]];
+    NSMutableArray *array = [NSMutableArray array];
     for (YLVehicleModel *model in vehicles) {
         [self.vehicle addObject:model.img];
-        [self.cars addObject:model.img];
+        [array addObject:model.img];
     }
+    if (array.count > 0) {
+        [self.cars addObject:array[0]];// 正侧
+    }
+    if (array.count > 1) {
+        [self.cars addObject:array[1]];// 正前
+    }
+    if (array.count > 19) {
+        [self.cars addObject:array[19]];// 前排
+    }
+    if (array.count > 20) {
+        [self.cars addObject:array[20]];// 后排
+    }
+    if (array.count > 11) {
+        [self.cars addObject:array[11]];// 中控
+    }
+    if (array.count > 23) {
+        [self.cars addObject:array[23]];// 发动机舱
+    }
+//    [self.cars addObject:array[0]];// 正侧
+//    [self.cars addObject:array[1]];// 正前
+//    [self.cars addObject:array[19]];// 前排
+//    [self.cars addObject:array[20]];// 后排
+//    [self.cars addObject:array[11]];// 中控
+//    [self.cars addObject:array[23]];// 发动机舱
+    
+//    for (NSInteger i = 0; i < vehicles.count; i++) {
+//        YLVehicleModel *model = vehicles[i];
+//        [self.vehicle addObject:model.img];
+//        if (i == 0 || i == 1 || i == 11 || i == 19 || i == 20 || i == 23) {
+//            [self.cars addObject:model.img];
+//        }
+//    }
+    
     NSArray *blemishs = [YLBlemishModel mj_objectArrayWithKeyValuesArray:dict[@"data"][@"image"][@"blemish"]];
     for (YLBlemishModel *model in blemishs) {
         [self.blemish addObject:model];
         [self.xiaci addObject:[NSString stringWithFormat:@"%@", model.img]];
     }
+    
     YLDetailHeaderModel *headerModel = [YLDetailHeaderModel mj_objectWithKeyValues:self.detailModel];
     self.header.vehicle = self.vehicle;
     self.header.model = headerModel;
+    self.header.detailModel = self.detailModel;
     self.footer.model = self.detailModel;
+    self.footer.isCollect = self.isCollect;
+    self.footer.isBook = self.isBook;
     self.detailBargain.salePrice = self.detailModel.price;
     
     [self.tableView reloadData];
+//    [self.vehicle removeAllObjects];
+//    [self.cars removeAllObjects];
+//    [self.blemish removeAllObjects];
+//    [self.xiaci removeAllObjects];
 }
 
 - (void)keyedArchiverObject:(id)obj toFile:(NSString *)filePath {
     BOOL success = [NSKeyedArchiver archiveRootObject:obj toFile:filePath];
     if (success) {
-        NSLog(@"保存成功");
+        NSLog(@"详情数据保存成功");
     } else {
         NSLog(@"保存失败");
     }
@@ -188,6 +227,9 @@
 //        YLVehicleModel *model = self.vehicle[indexPath.row];
 //        cell.image = model.img;
 //        cell.title = self.carInformations[indexPath.row];
+        for (YLBlemishModel *model in self.blemish) {
+            NSLog(@"%@", model.remarks);
+        }
         
         cell.images = self.cars;
         cell.blemishs = self.xiaci;
@@ -201,7 +243,7 @@
     NSArray *titles = @[@"服务保障",@"基本信息",@"检测报告",@"车辆图文"];
     NSArray *images = @[@"服务保障", @"基本信息", @"检测报告", @"车辆图文"];
     NSArray *details = @[@"", @"", @"", @""];
-    YLTableGroupHeader *header = [[YLTableGroupHeader alloc] initWithFrame:headerRect image:images[section] title:titles[section] detailTitle:details[section] arrowImage:@"更多"];
+    YLTableGroupHeader *header = [[YLTableGroupHeader alloc] initWithFrame:headerRect image:images[section] title:titles[section] detailTitle:details[section] arrowImage:@""];
 //    header.labelBlock = ^() {
 //            [self showMessage:@"正在开发中，敬请期待"];
 //    };
@@ -226,56 +268,64 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     if (indexPath.section == 0) {
-        return 140 + YLLeftMargin;
+        return 120 + YLLeftMargin;
     }
     if (indexPath.section == 1) {
         return 211;
     }
     if (indexPath.section == 2) {
-        return 473 + 1;
+        return 433 + 1;
     } else {
-        return 1610;
+        return 1625;
     }
 }
 
 #pragma mark 添加视图
 - (void)addTableView {
     
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, YLScreenWidth, YLScreenHeight - 60) style:UITableViewStyleGrouped];
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, YLScreenWidth, YLScreenHeight - 60 - 64) style:UITableViewStyleGrouped];
+    self.tableView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.tableView];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
+    __weak typeof(self) weakSelf = self;
     YLDetailHeaderView *header = [[YLDetailHeaderView alloc] initWithFrame:CGRectMake(0, 0, YLScreenWidth, 365)];
     header.detailHeaderBargainBlock = ^{
         NSLog(@"点击了砍价,弹出砍价视图");
-        [self bargainClick];
+        [weakSelf bargainClick];
     };
     self.header = header;
     self.tableView.tableHeaderView = header;
     self.tableView.tableFooterView = [[UIView alloc] init];
     
-    YLAccount *account = [YLAccountTool account];
-    __weak typeof(self) weakSelf = self;
-    YLDetailFooterView *footer = [[YLDetailFooterView alloc] initWithFrame:CGRectMake(0, YLScreenHeight - 60, YLScreenWidth, 60)];
-    footer.collectBlock = ^(BOOL isCollect) {
-        if (account) {
-            if (isCollect) {
+    self.account = [YLAccountTool account];
+    
+    YLDetailFooterView *footer = [[YLDetailFooterView alloc] initWithFrame:CGRectMake(0, YLScreenHeight - 60 - 64, YLScreenWidth, 60)];
+    footer.backgroundColor = [UIColor whiteColor];
+    footer.collectBlock = ^(NSString *isCollect) {
+        if (weakSelf.account) {
+            if ([isCollect isEqualToString:@"1"]) {
                 // 点击收藏，向后台发送收藏请求
                 NSMutableDictionary *param = [NSMutableDictionary dictionary];
                 [param setValue:@"1" forKey:@"status"];
                 [param setValue:weakSelf.model.carID forKey:@"detailId"];
-                [param setValue:account.telephone forKey:@"telephone"];
-                [YLDetailTool favoriteWithParam:param success:^(NSDictionary *result) {
-                    NSLog(@"点击了收藏按钮:%@", result);
-                    [[NSNotificationCenter defaultCenter] postNotificationName:@"REFRESHTABLEVIEW" object:nil];
-                } failure:nil];
+                [param setValue:weakSelf.account.telephone forKey:@"telephone"];
+                NSString *urlString = @"http://ucarjava.bceapp.com/collection?method=upd";
+                [YLRequest GET:urlString parameters:param success:^(id  _Nonnull responseObject) {
+                    if ([responseObject[@"code"] isEqualToNumber:[NSNumber numberWithInteger:200]]) {
+                        NSLog(@"收藏成功:%@", responseObject);
+//                        [weakSelf loadData];
+                    } else {
+                        NSLog(@"收藏失败:%@", responseObject[@"message"]);
+                    }
+                } failed:nil];
             } else {
                 NSMutableDictionary *param = [NSMutableDictionary dictionary];
                 [param setValue:@"0" forKey:@"status"];
-                [param setValue:self.model.carID forKey:@"detailId"];
-                [param setValue:account.telephone forKey:@"telephone"];
+                [param setValue:weakSelf.model.carID forKey:@"detailId"];
+                [param setValue:weakSelf.account.telephone forKey:@"telephone"];
                 [YLDetailTool favoriteWithParam:param success:^(NSDictionary *result) {
                     NSLog(@"点击了取消收藏按钮:%@", result);
                     [[NSNotificationCenter defaultCenter] postNotificationName:@"REFRESHTABLEVIEW" object:nil];
@@ -283,6 +333,9 @@
             }
         } else {
             YLLoginController *login = [[YLLoginController alloc] init];
+            login.loginBlock = ^(NSString *string) {
+                weakSelf.account = [YLAccountTool account];
+            };
             [weakSelf.navigationController pushViewController:login animated:YES];
         }
     };
@@ -306,9 +359,9 @@
 #pragma mark 砍价
 - (void)bargainClick {
 
-    YLAccount *account = [YLAccountTool account];
+    self.account = [YLAccountTool account];
     // 判断用户是否登录
-    if (account) {
+    if (self.account) {
         NSLog(@"点击了砍价,弹出砍价视图");
         self.cover.hidden = NO;
         self.detailBargain.hidden = NO;
@@ -316,6 +369,10 @@
     } else {
         // 没有登录，跳转登录界面
         YLLoginController *login = [[YLLoginController alloc] init];
+        __weak typeof(self) weakSelf = self;
+        login.loginBlock = ^(NSString *string) {
+            weakSelf.account = [YLAccountTool account];
+        };
         [self.navigationController pushViewController:login animated:YES];
     }
 }
@@ -323,9 +380,9 @@
 #pragma mark 预约看车
 - (void)orderCarClick {
     NSLog(@"点击了预约看车，弹出预约看车视图");
-    YLAccount *account = [YLAccountTool account];
+    self.account = [YLAccountTool account];
     // 判断用户是否登录
-    if (account) {
+    if (self.account) {
         NSLog(@"点击了预约看车，弹出预约看车视图");
         self.cover.hidden = NO;
         self.detailOrderTime.hidden = NO;
@@ -333,6 +390,10 @@
     } else {
         // 没有登录，跳转登录界面
         YLLoginController *login = [[YLLoginController alloc] init];
+        __weak typeof(self) weakSelf = self;
+        login.loginBlock = ^(NSString *string) {
+            weakSelf.account = [YLAccountTool account];
+        };
         [self.navigationController pushViewController:login animated:YES];
     }
 }
@@ -343,7 +404,7 @@
     UIWindow *window = [UIApplication sharedApplication].keyWindow;
     
     UILabel *messageLabel = [[UILabel alloc] init];
-    CGSize messageSize = CGSizeMake([message getSizeWithFont:[UIFont systemFontOfSize:12]].width + 30, 30);
+    CGSize messageSize = CGSizeMake([message getSizeWithFont:[UIFont systemFontOfSize:12]].width + 50, 50);
     messageLabel.frame = CGRectMake((YLScreenWidth - messageSize.width) / 2, YLScreenHeight/2, messageSize.width, messageSize.height);
     messageLabel.text = message;
     messageLabel.font = [UIFont systemFontOfSize:12];
@@ -354,7 +415,7 @@
     messageLabel.layer.masksToBounds = YES;
     [window addSubview:messageLabel];
     
-    [UIView animateWithDuration:1 animations:^{
+    [UIView animateWithDuration:2 animations:^{
         messageLabel.alpha = 0;
     } completion:^(BOOL finished) {
         [messageLabel removeFromSuperview];
@@ -391,12 +452,34 @@
     }
 }
 
+- (void)tap {
+//    NSLog(@"tap");
+    self.cover.hidden = YES;
+    self.detailBargain.hidden = YES;
+}
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+    if ([touch.view isDescendantOfView:self.detailBargain]) {
+//        NSLog(@"detailBargain");
+        return NO;
+    }
+    return YES;
+}
+
 #pragma mark 懒加载
+- (void)setModel:(YLTableViewModel *)model {
+    _model = model;
+}
+
 - (UIView *)cover {
     if (!_cover) {
         _cover = [[UIView alloc] initWithFrame:CGRectMake(0, 0, YLScreenWidth, YLScreenHeight)];
         _cover.backgroundColor = [UIColor colorWithRed:0.f green:0.f blue:0.f alpha:0.5];
         _cover.hidden = YES;
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap)];
+        tap.delegate = self;
+        [_cover addGestureRecognizer:tap];
+        [_cover setUserInteractionEnabled:YES];
     }
     return _cover;
 }
@@ -404,7 +487,7 @@
 - (NSMutableArray *)browsingHistory {
     
     if (!_browsingHistory) {
-        NSLog(@"%@", YLBrowsingHistoryPath);
+//        NSLog(@"%@", YLBrowsingHistoryPath);
         _browsingHistory = [NSKeyedUnarchiver unarchiveObjectWithFile:YLBrowsingHistoryPath];
         if (!_browsingHistory) {
             _browsingHistory = [NSMutableArray array];
@@ -415,7 +498,7 @@
 
 - (YLDetailBargainView *)detailBargain {
     if (!_detailBargain) {
-        _detailBargain = [[YLDetailBargainView alloc] initWithFrame:CGRectMake(0, YLScreenHeight - 213, YLScreenWidth, 213)];
+        _detailBargain = [[YLDetailBargainView alloc] initWithFrame:CGRectMake(0, YLScreenHeight - 213 - 64, YLScreenWidth, 213)];
         _detailBargain.hidden = YES;
         __weak typeof(self) weakSelf = self;
         _detailBargain.cancelBlock = ^{
@@ -455,7 +538,7 @@
 
 - (YLDetailOrderTimeView *)detailOrderTime {
     if (!_detailOrderTime) {
-        _detailOrderTime = [[YLDetailOrderTimeView alloc] initWithFrame:CGRectMake(0, YLScreenHeight - 213, YLScreenWidth, 213)];
+        _detailOrderTime = [[YLDetailOrderTimeView alloc] initWithFrame:CGRectMake(0, YLScreenHeight - 213 - 64, YLScreenWidth, 213)];
         _detailOrderTime.hidden = YES;
         
         __weak typeof(self) weakSelf = self;
@@ -532,5 +615,4 @@
     }
     return _xiaci;
 }
-
 @end

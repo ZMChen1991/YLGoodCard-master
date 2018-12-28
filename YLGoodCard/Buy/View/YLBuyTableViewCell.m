@@ -127,7 +127,7 @@
     
     [self.icon sd_setImageWithURL:[NSURL URLWithString:cellFrame.model.displayImg] placeholderImage:nil];
     self.title.text = cellFrame.model.title;
-    NSString *course = [NSString stringWithFormat:@"%@年/万公里",cellFrame.model.course];
+    NSString *course = [NSString stringWithFormat:@"%@年 / %@万公里",[cellFrame.model.licenseTime substringToIndex:4],cellFrame.model.course];
     self.course.text = course;
     self.price.text = [self stringToNumber:cellFrame.model.price];
     NSString *originalPrice =[self stringToNumber:cellFrame.model.originalPrice];
