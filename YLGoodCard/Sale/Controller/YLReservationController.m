@@ -22,7 +22,7 @@
     self.view.backgroundColor = [UIColor whiteColor];
     self.navigationItem.title = @"我要卖车";
     
-    YLReservationView *reservationView = [[YLReservationView alloc] initWithFrame:CGRectMake(0, 64, YLScreenWidth, YLScreenHeight)];
+    YLReservationView *reservationView = [[YLReservationView alloc] initWithFrame:CGRectMake(0, 0, YLScreenWidth, YLScreenHeight)];
     reservationView.model = self.detectCenterModel;
     reservationView.checkOut = self.checkOut;
     reservationView.reserVationBlock = ^{

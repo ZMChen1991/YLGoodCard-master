@@ -13,6 +13,9 @@
 #import "YLBuyTool.h"
 #import "YLBrandModel.h"
 
+#define YLBrandPath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"brand.txt"]
+#define YLGroupPath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"group.txt"]
+
 @interface YLDetectBrandController ()
 
 @property (nonatomic, strong) NSMutableArray *brands;// 汽车品牌
@@ -28,7 +31,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = @"选择品牌";
-    
+    [self getLocationData];
     [self loadData];
 }
 
@@ -36,6 +39,7 @@
     
     // 思路：一组装字母，再以字母x筛选出品牌装进数组，然后用另一数组存该数组
     NSMutableDictionary *param = [NSMutableDictionary dictionary];
+    __weak typeof(self) weakSelf = self;
     [YLBuyTool brandWithParam:param success:^(NSArray<YLBrandModel *> * _Nonnull result) {
         NSMutableArray *group = [NSMutableArray array];
         // 取出首字母
@@ -44,11 +48,13 @@
             [group addObject:zimu];
         }
         NSSet *set = [NSSet setWithArray:group];
-        self.groups = [NSMutableArray arrayWithArray:[set allObjects]];
+        NSMutableArray *groups = [NSMutableArray arrayWithArray:[set allObjects]];
+        [weakSelf keyedArchiverObject:groups toFile:YLGroupPath];
         
         // 根据首字母取出汽车品牌存放在数组里
-        for (NSInteger i = 0; i < self.groups.count; i++) {
-            NSString *str = self.groups[i];
+        NSMutableArray *brands = [NSMutableArray array];
+        for (NSInteger i = 0; i < groups.count; i++) {
+            NSString *str = groups[i];
             NSMutableArray *array = [NSMutableArray array];
             for (YLBrandModel *model in result) {
                 if ([str isEqualToString:model.initialLetter]) {
@@ -56,13 +62,32 @@
                 }
             }
             // 将首字母的c汽车品牌数组存放在数组里
-            [self.brands addObject:array];
+            [brands addObject:array];
         }
+        [weakSelf keyedArchiverObject:brands toFile:YLBrandPath];
+        [weakSelf getLocationData];
         [self.tableView reloadData];
     } failure:^(NSError * error) {
         
     }];
 }
+
+- (void)getLocationData {
+    
+    self.groups = [NSKeyedUnarchiver unarchiveObjectWithFile:YLGroupPath];
+    self.brands = [NSKeyedUnarchiver unarchiveObjectWithFile:YLBrandPath];
+    [self.tableView reloadData];
+}
+
+- (void)keyedArchiverObject:(id)obj toFile:(NSString *)filePath {
+    BOOL success = [NSKeyedArchiver archiveRootObject:obj toFile:filePath];
+    if (success) {
+        NSLog(@"保存成功");
+    } else {
+        NSLog(@"保存失败");
+    }
+}
+
 
 #pragma mark - Table view data source
 
@@ -88,6 +113,7 @@
     
     YLBrandModel *model = self.brands[indexPath.section][indexPath.row];
     cell.textLabel.text = model.brand;
+    cell.textLabel.font = [UIFont systemFontOfSize:14];
     return cell;
 }
 

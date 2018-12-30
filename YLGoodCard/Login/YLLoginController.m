@@ -38,6 +38,7 @@
     UITextField *tel = [[UITextField alloc] initWithFrame:CGRectMake(YLLeftMargin, CGRectGetMaxY(attention.frame) + 5, width, 40)];
     tel.font = [UIFont systemFontOfSize:14];
     tel.placeholder = @"请输入您的手机号码";
+    tel.keyboardType = UIKeyboardTypeNumberPad;
     tel.layer.cornerRadius = 5;
     tel.layer.borderWidth = 0.6;
     tel.layer.borderColor = [UIColor grayColor].CGColor;
@@ -61,6 +62,7 @@
     UITextField *message = [[UITextField alloc] initWithFrame:CGRectMake(YLLeftMargin, CGRectGetMaxY(tel.frame) + YLTopMargin, width, 40)];
     message.font = [UIFont systemFontOfSize:14];
     message.placeholder = @"请输入您的短信验证码";
+    message.keyboardType = UIKeyboardTypeNumberPad;
     message.layer.cornerRadius = 5;
     message.layer.borderWidth = 0.6;
     message.layer.borderColor = [UIColor grayColor].CGColor;

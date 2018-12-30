@@ -46,9 +46,12 @@
 
 - (void)setupUI {
     
-    CGFloat height = 100;
+    CGFloat height = 85;
+    CGFloat pickW = 60;
+    CGFloat labelW = 30;
+    CGFloat pickX = (YLScreenWidth - 2 * pickW - 2 * labelW) / 2 ;
     
-    UIPickerView *picker = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 0, YLPICKERWIDTH, height)];
+    UIPickerView *picker = [[UIPickerView alloc] initWithFrame:CGRectMake(pickX, 0, pickW, height)];
     picker.delegate = self;
     picker.dataSource = self;
     [self addSubview:picker];
@@ -56,12 +59,12 @@
     NSInteger yearRow = self.years.count - 1;
     [self.yearPicker selectRow:yearRow inComponent:0 animated:YES];
 
-    UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(picker.frame), 0, YLPICKERWIDTH, height)];
+    UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(picker.frame), 0, labelW, height)];
     label1.text = @"年";
     label1.textAlignment = NSTextAlignmentCenter;
     [self addSubview:label1];
 
-    UIPickerView *picker1 = [[UIPickerView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(label1.frame), 0, YLPICKERWIDTH, height)];
+    UIPickerView *picker1 = [[UIPickerView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(label1.frame), 0, pickW, height)];
     picker1.delegate = self;
     picker1.dataSource = self;
     [self addSubview:picker1];
@@ -69,7 +72,7 @@
     NSInteger monthRow = [self currentMonth] - 1;
     [self.monthPicker selectRow:monthRow inComponent:0 animated:YES];
     
-    UILabel *label2 = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(picker1.frame), 0, YLPICKERWIDTH, height)];
+    UILabel *label2 = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(picker1.frame), 0, labelW, height)];
     label2.text = @"月";
     label2.textAlignment = NSTextAlignmentCenter;
     [self addSubview:label2];
@@ -79,6 +82,7 @@
     cancelBtn.frame = CGRectMake(YLLeftMargin, height + YLLeftMargin, btnW, 40);
     cancelBtn.type = YLConditionTypeWhite;
     [cancelBtn setTitle:@"取消" forState:UIControlStateNormal];
+    cancelBtn.titleLabel.font = [UIFont systemFontOfSize:14];
     [cancelBtn addTarget:self action:@selector(cancelClick) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:cancelBtn];
     
@@ -86,6 +90,7 @@
     sureBtn.frame = CGRectMake(CGRectGetMaxX(cancelBtn.frame) + 10, height + YLLeftMargin, btnW, 40);
     sureBtn.type = YLConditionTypeBlue;
     [sureBtn setTitle:@"确定" forState:UIControlStateNormal];
+    sureBtn.titleLabel.font = [UIFont systemFontOfSize:14];
     [sureBtn addTarget:self action:@selector(sureClick) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:sureBtn];
     

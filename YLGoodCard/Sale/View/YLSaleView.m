@@ -31,24 +31,20 @@
 - (void)setupOriginal {
     
     UIImageView *icon = [[UIImageView alloc] init];
-//    icon.backgroundColor = YLRandomColor;
     icon.image = [UIImage imageNamed:@"卖车页面"];
     [self addSubview:icon];
     self.icon = icon;
     
     UILabel *numberL = [[UILabel alloc] init];
     numberL.textColor = YLColor(8.f, 169.f, 255.f);
-//    numberL.text = @"123456";
     numberL.textAlignment = NSTextAlignmentCenter;
     numberL.font = [UIFont systemFontOfSize:30];
     [self addSubview:numberL];
     self.numberL = numberL;
     
     UILabel *label1 = [[UILabel alloc] init];
-//    label1.text = @"位车主提交了卖车申请";
     label1.textColor = [UIColor blackColor];
     label1.font = [UIFont systemFontOfSize:16];
-//    label1.backgroundColor = YLRandomColor;
     [self addSubview:label1];
     self.label1 = label1;
     
@@ -131,9 +127,9 @@
     if (self.appraiseBtn.delegate && [self.appraiseBtn.delegate respondsToSelector:@selector(pushController:)]) {
         [self.appraiseBtn.delegate pushController:sender];
     }
-    if (self.appraiseBlock) {
-        self.appraiseBlock();
-    }
+//    if (self.appraiseBlock) {
+//        self.appraiseBlock();
+//    }
 }
 // 咨询
 - (void)consult:(UIButton *)sender {
@@ -152,9 +148,9 @@
     if (self.saleBtn.delegate && [self.saleBtn.delegate respondsToSelector:@selector(pushController:)]) {
         [self.saleBtn.delegate pushController:sender];
     }
-    if (self.saleTelBlock) {
-        self.saleTelBlock();
-    }
+//    if (self.saleTelBlock) {
+//        self.saleTelBlock();
+//    }
 }
 
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
@@ -170,7 +166,6 @@
 
 - (void)setSalerNum:(NSString *)salerNum {
     _salerNum = salerNum;
-    
     
     CGFloat margin = 15;
     CGFloat margin1 = 10;

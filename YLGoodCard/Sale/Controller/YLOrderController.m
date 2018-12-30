@@ -19,7 +19,7 @@
 
 #import "YLRequest.h"
 
-@interface YLOrderController () <UITableViewDelegate, UITableViewDataSource>
+@interface YLOrderController () <UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) UIView *cover; // 蒙板
@@ -59,7 +59,20 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     [self setupUI];
+    [self addNotification];
+}
+
+- (void)dealloc {
+    NSLog(@"____dealloc____");
+}
+
+- (void)addNotification {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(transformView:) name:@"UIKeyboardWillChangeFrameNotification" object:nil];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    NSLog(@"viewWillDisappear");
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"UIKeyboardWillChangeFrameNotification" object:nil];
 }
 
 - (void)setupUI {
@@ -67,38 +80,41 @@
     UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, YLScreenWidth, YLScreenHeight)];
     tableView.delegate = self;
     tableView.dataSource = self;
+    tableView.bounces = NO;
+    tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:tableView];
     self.tableView = tableView;
     
+    __weak typeof(self) weakSelf = self;
     YLOrderView *orderView = [[YLOrderView alloc] initWithFrame:CGRectMake(0, 0, YLScreenWidth, 130)];
     orderView.orderSaleBlock = ^{
         NSLog(@"确认预约卖车");
-        if ([self isFullMessage]) {
-            YLReservationController *reservationVc = [[YLReservationController alloc] init];
-            // 这里传需要的参数，可以使用数组或字典存放相关的参数
-            reservationVc.detectCenterModel = self.detectCenterModel;
-            reservationVc.checkOut = self.checkOut;
-            
+        if ([weakSelf isFullMessage]) {
             // 提交卖车信息到后台
             NSString *urlString = @"http://ucarjava.bceapp.com/sell?method=order";
-            [YLRequest GET:urlString parameters:self.param success:^(id  _Nonnull responseObject) {
+            [YLRequest GET:urlString parameters:weakSelf.param success:^(id  _Nonnull responseObject) {
                 NSLog(@"%@", responseObject);
                 if ([responseObject[@"code"] isEqualToNumber:[NSNumber numberWithInt:200]]) {
                     NSLog(@"预约卖车成功");
+                    YLReservationController *reservationVc = [[YLReservationController alloc] init];
+                    // 这里传需要的参数，可以使用数组或字典存放相关的参数
+                    reservationVc.detectCenterModel = weakSelf.detectCenterModel;
+                    reservationVc.checkOut = weakSelf.checkOut;
+                    [weakSelf.navigationController pushViewController:reservationVc animated:YES];
                 } else {
                     NSLog(@"预约卖车失败：%@", responseObject[@"message"]);
+                    [weakSelf showMessage:@"请输入完整信息"];
                 }
-                
             } failed:nil];
-            [self.navigationController pushViewController:reservationVc animated:YES];
+            
         } else {
-            [self showMessage:@"请输入完整信息"];
+            [weakSelf showMessage:@"请输入完整信息"];
         }
     };
     
-    orderView.consultBlock = ^{
-        
-    };
+//    orderView.consultBlock = ^{
+//
+//    };
     self.tableView.tableFooterView = orderView;
     self.orderView = orderView;
     
@@ -124,6 +140,7 @@
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"ID"];
     }
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.textLabel.text = self.titles[indexPath.row];
     cell.textLabel.font = [UIFont systemFontOfSize:14];
     cell.detailTextLabel.text = self.detailArray[indexPath.row];
@@ -206,6 +223,9 @@
     BOOL isFull = YES;
     for (NSInteger i = 0; i < count; i++) {
         NSString *str = self.detailArray[i];
+        if ([NSString isBlankString:str]) {
+            isFull = NO;
+        }
         if ([str isEqualToString:@"请输入"] || [str isEqualToString:@"请输入(单位:万公里)"] || [str isEqualToString:@"请选择"]) {
             isFull = NO;
             break;
@@ -239,6 +259,23 @@
     }];
 }
 
+- (void)tap {
+    //    NSLog(@"tap");
+    self.cover.hidden = YES;
+    self.cityView.hidden = YES;
+    self.checkTimeView.hidden = YES;
+    self.courseView.hidden = YES;
+    self.licenseTimeView.hidden = YES;
+}
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+    if ([touch.view isDescendantOfView:self.cityView] || [touch.view isDescendantOfView:self.checkTimeView] || [touch.view isDescendantOfView:self.courseView] || [touch.view isDescendantOfView:self.licenseTimeView]) {
+
+        return NO;
+    }
+    return YES;
+}
+
 #pragma mark 懒加载
 - (void)setTelephone:(NSString *)telephone {
     _telephone = telephone;
@@ -253,6 +290,10 @@
         _cover = [[UIView alloc] initWithFrame:CGRectMake(0, 0, YLScreenWidth, YLScreenHeight)];
         _cover.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.5];
         _cover.hidden = YES;
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap)];
+        tap.delegate = self;
+        [_cover addGestureRecognizer:tap];
+        [_cover setUserInteractionEnabled:YES];
     }
     return _cover;
 }
@@ -272,7 +313,11 @@
         _courseView.sureBlock = ^(NSString * _Nonnull course) {
             NSLog(@"%@", course);
             [weakSelf.param setValue:course forKey:@"course"];
-            [weakSelf.detailArray replaceObjectAtIndex:5 withObject:course];
+            if ([NSString isBlankString:course]) {
+                [weakSelf.detailArray replaceObjectAtIndex:5 withObject:@"请输入"];
+            } else {
+                [weakSelf.detailArray replaceObjectAtIndex:5 withObject:course];
+            }
             [weakSelf.tableView reloadData];
             weakSelf.cover.hidden = YES;
             weakSelf.courseView.hidden = YES;
@@ -283,7 +328,7 @@
 
 - (YLAllTimePicker *)checkTimeView {
     if (!_checkTimeView) {
-        _checkTimeView = [[YLAllTimePicker alloc] initWithFrame:CGRectMake(0, 200, YLScreenWidth, 215)];
+        _checkTimeView = [[YLAllTimePicker alloc] initWithFrame:CGRectMake(0, 200, YLScreenWidth, 140)];
         _checkTimeView.hidden = YES;
         __weak typeof(self) weakSelf = self;
         _checkTimeView.cancelBlock = ^{
@@ -330,19 +375,23 @@
 
 - (YLCityView *)cityView {
     if (!_cityView) {
-        _cityView = [[YLCityView alloc] initWithFrame:CGRectMake(0, YLScreenHeight - 150 - 64 - 45, YLScreenWidth, 150)];
+        _cityView = [[YLCityView alloc] initWithFrame:CGRectMake(0, YLScreenHeight - 150 - 15 - 45, YLScreenWidth, 150)];
         _cityView.hidden = YES;
         __weak typeof(self) weakSelf = self;
         _cityView.cancelBlock = ^{
             weakSelf.cover.hidden = YES;
             weakSelf.cityView.hidden = YES;
-            [weakSelf.detailArray replaceObjectAtIndex:3 withObject:@"请输入(单位:万公里)"];
+            [weakSelf.detailArray replaceObjectAtIndex:3 withObject:@"请输入"];
             [weakSelf.tableView reloadData];
         };
         _cityView.sureBlock = ^(NSString * _Nonnull location) {
             NSLog(@"%@", location);
+            if ([NSString isBlankString:location]) {
+                [weakSelf.detailArray replaceObjectAtIndex:3 withObject:@"请输入"];
+            } else {
+                [weakSelf.detailArray replaceObjectAtIndex:3 withObject:location];
+            }
             [weakSelf.param setValue:location forKey:@"location"];
-            [weakSelf.detailArray replaceObjectAtIndex:3 withObject:location];
             [weakSelf.tableView reloadData];
             weakSelf.cover.hidden = YES;
             weakSelf.cityView.hidden = YES;

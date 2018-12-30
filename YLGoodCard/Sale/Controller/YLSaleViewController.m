@@ -19,9 +19,16 @@
 #import "YLLoginController.h"
 #import "YLRequest.h"
 
+#define YLApplyNumberPath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"ApplyNumber.txt"]
+
 @interface YLSaleViewController () <YLConditionDelegate>
 
 @property (nonatomic, strong) YLSaleView *saleView;
+
+@property (nonatomic, strong) UIImageView *icon;
+@property (nonatomic, strong) UILabel *numberL;
+@property (nonatomic, strong) UITextField *telephoneT;
+@property (nonatomic, strong) UILabel *label1; // 位车主提交卖车申请
 
 @end
 
@@ -30,29 +37,45 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    
-    [self setupNav];
     [self.view addSubview:self.saleView];
+    [self setupNav];
+    [self getLocationData];
     [self loadData];
     [self addNotification];
-    YLAccount *account = [YLAccountTool account];
-    if (account) {
-        self.saleView.telephone = account.telephone;
-    }
 }
 
 - (void)loadData {
     
-    __weak typeof(self) weakSelf = self;
     NSString *urlString = @"http://ucarjava.bceapp.com/home?method=apply";
     NSMutableDictionary *param = [NSMutableDictionary dictionary];
+    __weak typeof(self) weakSelf = self;
     [YLRequest GET:urlString parameters:param success:^(id  _Nonnull responseObject) {
         NSLog(@"apply:%@", responseObject);
         if ([responseObject[@"code"] isEqualToNumber:[NSNumber numberWithInteger:200]]) {
-            NSLog(@"请求成功:%@", responseObject[@"data"]);
-            weakSelf.saleView.salerNum = [NSString stringWithFormat:@"%@", [responseObject[@"data"] valueForKey:@"apply"]];
+            [weakSelf keyedArchiverObject:responseObject toFile:YLApplyNumberPath];
+            [weakSelf getLocationData];
+//            NSLog(@"请求成功:%@", responseObject[@"data"]);
+//            weakSelf.saleView.salerNum = [NSString stringWithFormat:@"%@", [responseObject[@"data"] valueForKey:@"apply"]];
         }
     } failed:nil];
+}
+
+- (void)getLocationData {
+    YLAccount *account = [YLAccountTool account];
+    if (account) {
+        self.saleView.telephone = account.telephone;
+    }
+    NSDictionary *dict = [NSKeyedUnarchiver unarchiveObjectWithFile:YLApplyNumberPath];
+    self.saleView.salerNum = [NSString stringWithFormat:@"%@", [dict[@"data"] valueForKey:@"apply"]];
+}
+
+- (void)keyedArchiverObject:(id)obj toFile:(NSString *)filePath {
+    BOOL success = [NSKeyedArchiver archiveRootObject:obj toFile:filePath];
+    if (success) {
+        NSLog(@"首页数据保存成功");
+    } else {
+        NSLog(@"保存失败");
+    }
 }
 
 - (void)addNotification {
@@ -67,22 +90,11 @@
 
 - (void)setupNav {
     
-//    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"卖车进度" style:UIBarButtonItemStylePlain target:self action:@selector(rightBarButtonItemClick)];
-    
-//    [self.navigationController.navigationBar setBackgroundColor:YLColor(8.f, 169.f, 255.f)];
-//    // 设置导航栏背景为空
-//    [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
     // 设置导航栏底部线条为空
     [self.navigationController.navigationBar setShadowImage:[UIImage new]];
     // 修改导航标题
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:18], NSForegroundColorAttributeName:[UIColor whiteColor]}];
-//    // 创建一个假状态栏
-//    UIView *statusBarView = [[UIView alloc] initWithFrame:CGRectMake(0, -20, YLScreenWidth, 20)];
-//    statusBarView.backgroundColor = YLColor(8.f, 169.f, 255.f);
-//    [self.navigationController.navigationBar addSubview:statusBarView];
-    
     [self setNavgationBarBackgroundImage];
-    
 }
 
 - (void)setNavgationBarBackgroundImage {
@@ -194,5 +206,24 @@
     }
     return _saleView;
 }
+
+
+//- (UIImageView *)icon {
+//    if (!_icon) {
+//        _icon = [[UIImageView alloc] init];
+//        _icon.image = [UIImage imageNamed:@"卖车页面"];
+//    }
+//    return _icon;
+//}
+//
+//- (UILabel *)numberL {
+//    if (!_numberL) {
+//        _numberL = [[UILabel alloc] init];
+//        _numberL.textColor = YLColor(8.f, 169.f, 255.f);
+//        _numberL.textAlignment = NSTextAlignmentCenter;
+//        _numberL.font = [UIFont systemFontOfSize:30];
+//    }
+//    return _numberL;
+//}
 
 @end

@@ -99,6 +99,7 @@
     time.font = [UIFont systemFontOfSize:14];
     time.frame = CGRectMake(YLLeftMargin, CGRectGetMaxY(tel.frame) + 5, 70, 20);
     [view addSubview:time];
+    
     UILabel *checkOut = [[UILabel alloc] init];
     checkOut.font = [UIFont systemFontOfSize:14];
     checkOut.textAlignment = NSTextAlignmentLeft;

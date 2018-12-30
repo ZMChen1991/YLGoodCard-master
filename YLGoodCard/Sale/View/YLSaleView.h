@@ -20,8 +20,8 @@ typedef void(^AppraiseBlock)(void);
 @property (nonatomic, strong) YLCondition *consultBtn; // 免费咨询
 @property (nonatomic, strong) YLCondition *appraiseBtn;// 爱车估价
 
-@property (nonatomic, copy) saleTelBlock saleTelBlock;
-@property (nonatomic, copy) AppraiseBlock appraiseBlock;
+//@property (nonatomic, copy) saleTelBlock saleTelBlock;
+//@property (nonatomic, copy) AppraiseBlock appraiseBlock;
 
 @property (nonatomic, strong) NSString *telephone;// 预约卖车电话
 @property (nonatomic, strong) NSString *salerNum;// 卖车数

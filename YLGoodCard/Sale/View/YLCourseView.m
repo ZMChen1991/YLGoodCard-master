@@ -31,13 +31,16 @@
 
 - (void)setupUI {
     
-    UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(YLLeftMargin, YLLeftMargin, self.frame.size.width-YLLeftMargin * 2, self.frame.size.height-70)];
+    UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(YLLeftMargin, YLLeftMargin, self.frame.size.width-YLLeftMargin * 2, self.frame.size.height-85)];
     textField.placeholder = @"请输入里程(单位:万公里)";
     [textField setValue:[UIFont boldSystemFontOfSize:12] forKeyPath:@"_placeholderLabel.font"];
     textField.layer.borderWidth = 0.5;
     textField.layer.borderColor = [UIColor grayColor].CGColor;
-    textField.clearsOnBeginEditing = YES;
+//    textField.clearsOnBeginEditing = YES;
+    textField.keyboardType = UIKeyboardTypeNumberPad;
     textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+    textField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 0)];
+    textField.leftViewMode = UITextFieldViewModeAlways;
     [self addSubview:textField];
     self.textField = textField;
     
@@ -47,6 +50,7 @@
     cancelBtn.frame = CGRectMake(YLLeftMargin, CGRectGetMaxY(textField.frame)+YLLeftMargin, btnW, 40);
     cancelBtn.type = YLConditionTypeWhite;
     [cancelBtn setTitle:@"取消" forState:UIControlStateNormal];
+    cancelBtn.titleLabel.font = [UIFont systemFontOfSize:14];
     [cancelBtn addTarget:self action:@selector(cancelClick) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:cancelBtn];
     
@@ -54,6 +58,7 @@
     sureBtn.frame = CGRectMake(CGRectGetMaxX(cancelBtn.frame) + 10, CGRectGetMaxY(textField.frame)+YLLeftMargin, btnW, 40);
     sureBtn.type = YLConditionTypeBlue;
     [sureBtn setTitle:@"确定" forState:UIControlStateNormal];
+    sureBtn.titleLabel.font = [UIFont systemFontOfSize:14];
     [sureBtn addTarget:self action:@selector(sureClick) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:sureBtn];
 }

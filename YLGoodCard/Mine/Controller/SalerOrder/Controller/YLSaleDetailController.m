@@ -117,8 +117,49 @@
     self.saleOrderModel = [YLSaleOrderModel mj_objectWithKeyValues:dict[@"data"]];
     NSLog(@"self.saleOrderModel%@", self.saleOrderModel.examineTime);
     self.command.model = self.saleOrderModel;
-    // 根据车辆状态修改显示修改价格、下架和重新上架的按钮还有进度条的位置
-    if ([self.saleOrderModel.detail.status isEqualToString:@"3"]) { // 车辆在售状态、显示修改价格、下架
+//    // 根据车辆状态修改显示修改价格、下架和重新上架的按钮还有进度条的位置
+//    if ([self.saleOrderModel.detail.status isEqualToString:@"3"]) { // 车辆在售状态、显示修改价格、下架
+//        self.changePrice.hidden = NO;
+//        self.soldOut.hidden = NO;
+//        self.stepView.hidden = NO;
+//        self.repeatOn.hidden = YES;
+//        CGRect frame = CGRectMake(0, CGRectGetMaxY(self.changePrice.frame) + 20, YLScreenWidth, 100);
+//        [self.stepView setFrame:frame];
+//        self.numberView.frame = CGRectMake(0, CGRectGetMaxY(self.stepView.frame), YLScreenWidth, 30);
+//    } else if ([self.saleOrderModel.detail.status isEqualToString:@"0"]) { // 车辆下架状态，显示重新上架按钮
+//        self.changePrice.hidden = YES;
+//        self.soldOut.hidden = YES;
+//        self.stepView.hidden = YES;
+//        self.repeatOn.hidden = NO;
+////        CGRect frame = CGRectMake(0, CGRectGetMaxY(self.repeatOn.frame) + 20, YLScreenWidth, 100);
+////        [self.stepView setFrame:frame];
+//        self.numberView.frame = CGRectMake(0, CGRectGetMaxY(self.repeatOn.frame) + YLLeftMargin, YLScreenWidth, 30);
+//    } else {// d车辆未上架：待验车、待约定状态，不显示修改价格、上架、重新上架的按钮
+//        self.changePrice.hidden = YES;
+//        self.soldOut.hidden = YES;
+//        self.repeatOn.hidden = YES;
+//        self.stepView.hidden = NO;
+//        CGRect frame = CGRectMake(0, CGRectGetMaxY(self.command.frame) + 20, YLScreenWidth, 100);
+//        [self.stepView setFrame:frame];
+//        self.numberView.frame = CGRectMake(0, CGRectGetMaxY(self.stepView.frame), YLScreenWidth, 30);
+//    }
+    
+    if ([self.saleOrderModel.detail.status isEqualToString:@"0"]) { // 车辆取消状态，显示重新上架按钮
+        self.changePrice.hidden = YES;
+        self.soldOut.hidden = YES;
+        self.stepView.hidden = YES;
+        self.repeatOn.hidden = NO;
+        self.numberView.frame = CGRectMake(0, CGRectGetMaxY(self.repeatOn.frame) + YLLeftMargin, YLScreenWidth, 30);
+    } else if ([self.saleOrderModel.detail.status isEqualToString:@"1"] || [self.saleOrderModel.detail.status isEqualToString:@"2"]) {
+        self.changePrice.hidden = YES;
+        self.soldOut.hidden = YES;
+        self.stepView.hidden = NO;
+        self.repeatOn.hidden = YES;
+        CGRect frame = CGRectMake(0, CGRectGetMaxY(self.command.frame) + 20, YLScreenWidth, 100);
+        [self.stepView setFrame:frame];
+        self.numberView.frame = CGRectMake(0, CGRectGetMaxY(self.stepView.frame), YLScreenWidth, 30);
+        self.stepView.stepIndex = 0;
+    } else if ([self.saleOrderModel.detail.status isEqualToString:@"3"] ) {
         self.changePrice.hidden = NO;
         self.soldOut.hidden = NO;
         self.stepView.hidden = NO;
@@ -126,15 +167,15 @@
         CGRect frame = CGRectMake(0, CGRectGetMaxY(self.changePrice.frame) + 20, YLScreenWidth, 100);
         [self.stepView setFrame:frame];
         self.numberView.frame = CGRectMake(0, CGRectGetMaxY(self.stepView.frame), YLScreenWidth, 30);
-    } else if ([self.saleOrderModel.detail.status isEqualToString:@"0"]) { // 车辆下架状态，显示重新上架按钮
+        self.stepView.stepIndex = 1;
+    } else if ([self.saleOrderModel.detail.status isEqualToString:@"4"] ) {
         self.changePrice.hidden = YES;
         self.soldOut.hidden = YES;
         self.stepView.hidden = YES;
         self.repeatOn.hidden = NO;
-        //                CGRect frame = CGRectMake(0, CGRectGetMaxY(self.repeatOn.frame) + 20, YLScreenWidth, 100);
-        //                [self.stepView setFrame:frame];
-        self.numberView.frame = CGRectMake(0, CGRectGetMaxY(self.repeatOn.frame) + YLLeftMargin, YLScreenWidth, 30);
-    } else {// d车辆未上架：待验车、待约定状态，不显示修改价格、上架、重新上架的按钮
+        self.numberView.frame = CGRectMake(0, CGRectGetMaxY(self.repeatOn.frame), YLScreenWidth, 30);
+        self.stepView.stepIndex = 0;
+    } else if ([self.saleOrderModel.detail.status isEqualToString:@"5"] ) {
         self.changePrice.hidden = YES;
         self.soldOut.hidden = YES;
         self.repeatOn.hidden = YES;
@@ -142,22 +183,32 @@
         CGRect frame = CGRectMake(0, CGRectGetMaxY(self.command.frame) + 20, YLScreenWidth, 100);
         [self.stepView setFrame:frame];
         self.numberView.frame = CGRectMake(0, CGRectGetMaxY(self.stepView.frame), YLScreenWidth, 30);
+        self.stepView.stepIndex = 2;
+    } else if ([self.saleOrderModel.detail.status isEqualToString:@"6"] ) {
+        self.changePrice.hidden = YES;
+        self.soldOut.hidden = YES;
+        self.repeatOn.hidden = YES;
+        self.stepView.hidden = NO;
+        CGRect frame = CGRectMake(0, CGRectGetMaxY(self.command.frame) + 20, YLScreenWidth, 100);
+        [self.stepView setFrame:frame];
+        self.numberView.frame = CGRectMake(0, CGRectGetMaxY(self.stepView.frame), YLScreenWidth, 30);
+        self.stepView.stepIndex = 3;
     }
     
-    if ([self.saleOrderModel.detail.status isEqualToString:@"0"]) { // 车辆下架状态，显示重新上架按钮
-        self.stepView.stepIndex = 0;
-    } else {
-        // 根据订单状态修改进度条
-        if ([self.saleOrderModel.status isEqualToString:@"1"]) {
-            self.stepView.stepIndex = 0;
-        } else if ([self.saleOrderModel.status isEqualToString:@"2"]) {
-            self.stepView.stepIndex = 1;
-        } else if ([self.saleOrderModel.status isEqualToString:@"3"]) {
-            self.stepView.stepIndex = 2;
-        } else {
-            self.stepView.stepIndex = 3;
-        }
-    }
+//    if ([self.saleOrderModel.detail.status isEqualToString:@"0"]) { // 车辆下架状态，显示重新上架按钮
+//        self.stepView.stepIndex = 0;
+//    } else {
+//        // 根据订单状态修改进度条
+//        if ([self.saleOrderModel.status isEqualToString:@"1"]) {
+//            self.stepView.stepIndex = 0;
+//        } else if ([self.saleOrderModel.status isEqualToString:@"2"]) {
+//            self.stepView.stepIndex = 1;
+//        } else if ([self.saleOrderModel.status isEqualToString:@"3"]) {
+//            self.stepView.stepIndex = 2;
+//        } else {
+//            self.stepView.stepIndex = 3;
+//        }
+//    }
     
     self.numberView.tureNumber = self.saleOrderModel.detail.lookSum;
     self.numberView.browseNumber = self.saleOrderModel.detail.clickSum;
@@ -213,7 +264,7 @@
     [self.view addSubview:repeatOn];
     self.repeatOn = repeatOn;
 
-    NSArray *titles = @[@"待约定", @"待检测", @"售卖中", @"已完成"];// 根据订单状态而定
+    NSArray *titles = @[@"待检测", @"售卖中", @"已签合同", @"已完成"];// 根据订单状态而定
     CGRect frame = CGRectMake(0, CGRectGetMaxY(changePirce.frame) + 20, YLScreenWidth, 100);
     YLStepView *stepView = [[YLStepView alloc] initWithFrame:frame titles:titles];
 //    stepView.stepIndex = 0;

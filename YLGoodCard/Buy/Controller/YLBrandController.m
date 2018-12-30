@@ -50,8 +50,8 @@
 
         // 根据首字母取出汽车品牌存放在数组里
         NSMutableArray *brands = [NSMutableArray array];
-        for (NSInteger i = 0; i < weakSelf.groups.count; i++) {
-            NSString *str = weakSelf.groups[i];
+        for (NSInteger i = 0; i < groups.count; i++) {
+            NSString *str = groups[i];
             NSMutableArray *array = [NSMutableArray array];
             for (YLBrandModel *model in result) {
                 if ([str isEqualToString:model.initialLetter]) {

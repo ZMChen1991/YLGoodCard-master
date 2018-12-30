@@ -83,12 +83,14 @@
     YLCondition *cancel = [[YLCondition alloc] initWithFrame:CGRectMake(YLLeftMargin, CGRectGetMaxY(slider.frame) + 2 * YLLeftMargin, btnW, 40)];
     cancel.type = YLConditionTypeWhite;
     [cancel setTitle:@"取消" forState:UIControlStateNormal];
+    cancel.titleLabel.font = [UIFont systemFontOfSize:14];
     [cancel addTarget:self action:@selector(cancelClick) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:cancel];
     
     YLCondition *bargain = [[YLCondition alloc] initWithFrame:CGRectMake(CGRectGetMaxX(cancel.frame) + 10, CGRectGetMaxY(slider.frame) + 2 * YLLeftMargin, btnW, 40)];
     bargain.type = YLConditionTypeBlue;
     [bargain setTitle:@"砍价" forState:UIControlStateNormal];
+    bargain.titleLabel.font = [UIFont systemFontOfSize:14];
     [bargain addTarget:self action:@selector(bargain) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:bargain];
 }

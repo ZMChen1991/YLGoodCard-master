@@ -10,6 +10,8 @@
 #import "YLDetectCenterCell.h"
 #import "YLRequest.h"
 
+#define YLDetectCenterPath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"DetectCenter.txt"]
+
 @interface YLDetectCenterController () <UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) UITableView *tableView;
@@ -25,6 +27,7 @@
     self.title = @"检测中心";
     
     [self createTableView];
+    [self getLocationData];
     [self loadData];
 }
 
@@ -38,10 +41,28 @@
         NSLog(@"%@", responseObject);
         if ([responseObject[@"code"] isEqualToNumber:[NSNumber numberWithInt:200]]) {
             NSLog(@"获取检测中心数据成功");
-            self.detectCenters = [YLDetectCenterModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"]];
-            [self.tableView reloadData];
+            [self keyedArchiverObject:responseObject toFile:YLDetectCenterPath];
+            [self getLocationData];
+//            self.detectCenters = [YLDetectCenterModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"]];
+//            [self.tableView reloadData];
         }
     } failed:nil];
+}
+
+- (void)getLocationData {
+    
+    NSDictionary *dict = [NSKeyedUnarchiver unarchiveObjectWithFile:YLDetectCenterPath];
+    self.detectCenters = [YLDetectCenterModel mj_objectArrayWithKeyValuesArray:dict[@"data"]];
+    [self.tableView reloadData];
+}
+
+- (void)keyedArchiverObject:(id)obj toFile:(NSString *)filePath {
+    BOOL success = [NSKeyedArchiver archiveRootObject:obj toFile:filePath];
+    if (success) {
+        NSLog(@"首页数据保存成功");
+    } else {
+        NSLog(@"保存失败");
+    }
 }
 
 - (void)createTableView {

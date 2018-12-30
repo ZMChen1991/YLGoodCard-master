@@ -459,10 +459,11 @@
 //    NSLog(@"tap");
     self.cover.hidden = YES;
     self.detailBargain.hidden = YES;
+    self.detailOrderTime.hidden = YES;
 }
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
-    if ([touch.view isDescendantOfView:self.detailBargain]) {
+    if ([touch.view isDescendantOfView:self.detailBargain] || [touch.view isDescendantOfView:self.detailOrderTime]) {
 //        NSLog(@"detailBargain");
         return NO;
     }

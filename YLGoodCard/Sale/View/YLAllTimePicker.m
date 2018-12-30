@@ -66,58 +66,59 @@
 
 - (void)setupUI {
     
-    CGFloat height = 200 - 40;
-    UIPickerView *picker = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 0, YLPICKERWIDTH, height)];
+    CGFloat height = 70;
+    CGFloat pickY = 10;
+    UIPickerView *picker = [[UIPickerView alloc] initWithFrame:CGRectMake(0, pickY, YLPICKERWIDTH, height)];
     picker.delegate = self;
     picker.dataSource = self;
     [self addSubview:picker];
     self.yearPickerView = picker;
     
-    UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(picker.frame), 0, YLLABELWIDTH, height)];
+    UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(picker.frame), pickY, YLLABELWIDTH, height)];
     label1.text = @"年";
     label1.textAlignment = NSTextAlignmentCenter;
     [self addSubview:label1];
     
-    UIPickerView *picker1 = [[UIPickerView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(label1.frame), 0, YLPICKERWIDTH, height)];
+    UIPickerView *picker1 = [[UIPickerView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(label1.frame), pickY, YLPICKERWIDTH, height)];
     picker1.delegate = self;
     picker1.dataSource = self;
     [self addSubview:picker1];
     self.monthPickerView = picker1;
     
-    UILabel *label2 = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(picker1.frame), 0, YLLABELWIDTH, height)];
+    UILabel *label2 = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(picker1.frame), pickY, YLLABELWIDTH, height)];
     label2.text = @"月";
     label2.textAlignment = NSTextAlignmentCenter;
     [self addSubview:label2];
     
-    UIPickerView *picker2 = [[UIPickerView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(label2.frame), 0, YLPICKERWIDTH, height)];
+    UIPickerView *picker2 = [[UIPickerView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(label2.frame), pickY, YLPICKERWIDTH, height)];
     picker2.delegate = self;
     picker2.dataSource = self;
     [self addSubview:picker2];
     self.dayPickerView = picker2;
     
-    UILabel *label3 = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(picker2.frame), 0, YLLABELWIDTH, height)];
+    UILabel *label3 = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(picker2.frame), pickY, YLLABELWIDTH, height)];
     label3.text = @"日";
     label3.textAlignment = NSTextAlignmentCenter;
     [self addSubview:label3];
     
-    UIPickerView *picker3 = [[UIPickerView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(label3.frame), 0, YLPICKERWIDTH, height)];
+    UIPickerView *picker3 = [[UIPickerView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(label3.frame), pickY, YLPICKERWIDTH, height)];
     picker3.delegate = self;
     picker3.dataSource = self;
     [self addSubview:picker3];
     self.hourPicker = picker3;
     
-    UILabel *label4 = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(picker3.frame), 0, YLLABELWIDTH, height)];
+    UILabel *label4 = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(picker3.frame), pickY, YLLABELWIDTH, height)];
     label4.text = @"时";
     label4.textAlignment = NSTextAlignmentCenter;
     [self addSubview:label4];
     
-    UIPickerView *picker4 = [[UIPickerView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(label4.frame), 0, YLPICKERWIDTH, height)];
+    UIPickerView *picker4 = [[UIPickerView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(label4.frame), pickY, YLPICKERWIDTH, height)];
     picker4.delegate = self;
     picker4.dataSource = self;
     [self addSubview:picker4];
     self.minutePicker = picker4;
     
-    UILabel *label5 = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(picker4.frame), 0, YLLABELWIDTH, height)];
+    UILabel *label5 = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(picker4.frame), pickY, YLLABELWIDTH, height)];
     label5.text = @"分";
     label5.textAlignment = NSTextAlignmentCenter;
     [self addSubview:label5];
@@ -127,6 +128,7 @@
     cancelBtn.frame = CGRectMake(YLLeftMargin, height + YLLeftMargin, btnW, 40);
     cancelBtn.type = YLConditionTypeWhite;
     [cancelBtn setTitle:@"取消" forState:UIControlStateNormal];
+    cancelBtn.titleLabel.font = [UIFont systemFontOfSize:14];
     [cancelBtn addTarget:self action:@selector(cancelClick) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:cancelBtn];
     
@@ -134,6 +136,7 @@
     sureBtn.frame = CGRectMake(CGRectGetMaxX(cancelBtn.frame) + 10, height + YLLeftMargin, btnW, 40);
     sureBtn.type = YLConditionTypeBlue;
     [sureBtn setTitle:@"确定" forState:UIControlStateNormal];
+    sureBtn.titleLabel.font = [UIFont systemFontOfSize:14];
     [sureBtn addTarget:self action:@selector(sureClick) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:sureBtn];
 }

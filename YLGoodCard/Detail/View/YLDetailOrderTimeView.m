@@ -59,6 +59,7 @@
     YLCondition *cancel = [[YLCondition alloc] initWithFrame:CGRectMake(YLLeftMargin, CGRectGetMaxY(warning.frame) + 20, btnW, 40)];
     cancel.type = YLConditionTypeWhite;
     [cancel setTitle:@"取消看车" forState:UIControlStateNormal];
+    cancel.titleLabel.font = [UIFont systemFontOfSize:14];
     [cancel addTarget:self action:@selector(cancel) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:cancel];
     
@@ -66,6 +67,7 @@
     YLCondition *orderCar = [[YLCondition alloc] initWithFrame:CGRectMake(CGRectGetMaxX(cancel.frame) + 10,  CGRectGetMaxY(warning.frame) + 20, btnW, 40)];
     orderCar.type = YLConditionTypeBlue;
     [orderCar setTitle:@"预约看车" forState:UIControlStateNormal];
+    orderCar.titleLabel.font = [UIFont systemFontOfSize:14];
     [orderCar addTarget:self action:@selector(orderCar) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:orderCar];
     

@@ -99,7 +99,7 @@
     CGFloat labelH = self.scroll.frame.size.height;
     for (NSInteger i = 0; i < self.titles.count; i++) {
         CGSize size = [self getSizeWithString:self.titles[i] font:[UIFont systemFontOfSize:14]];
-        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(labelX, 7, size.width + 30, labelH - 14)];
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(labelX, 9, size.width + 30, labelH - 18)];
         label.text = self.titles[i];
         label.textColor = YLColor(51.f, 51.f, 51.f);
         label.font = [UIFont systemFontOfSize:12];

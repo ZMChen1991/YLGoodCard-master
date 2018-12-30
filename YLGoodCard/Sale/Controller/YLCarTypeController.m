@@ -67,6 +67,7 @@
     }
     YLCarTypeModel *model = self.carTypes[indexPath.row];
     cell.textLabel.text = model.typeName;
+    cell.textLabel.font = [UIFont systemFontOfSize:14];
     return cell;
 }
 
