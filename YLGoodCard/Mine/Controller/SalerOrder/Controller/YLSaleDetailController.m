@@ -238,7 +238,7 @@
     // 两个按钮根据状态而显示，如果没有上架，不显示，反之则显示
     CGFloat width = (YLScreenWidth - 2 * YLLeftMargin - 5) / 2;
     YLCondition *changePirce = [YLCondition buttonWithType:UIButtonTypeCustom];
-    changePirce.frame = CGRectMake(YLLeftMargin, CGRectGetMaxY(command.frame) + 5, width, 40);
+    changePirce.frame = CGRectMake(YLLeftMargin, CGRectGetMaxY(command.frame) + YLLeftMargin, width, 40);
     [changePirce setTitle:@"修改价格" forState:UIControlStateNormal];
     changePirce.titleLabel.font = [UIFont systemFontOfSize:14];
     changePirce.type = YLConditionTypeWhite;
@@ -247,7 +247,7 @@
     self.changePrice = changePirce;
     
     YLCondition *soldOut = [YLCondition buttonWithType:UIButtonTypeCustom];
-    soldOut.frame = CGRectMake(CGRectGetMaxX(changePirce.frame) + 5, CGRectGetMaxY(command.frame) + 5, width, 40);
+    soldOut.frame = CGRectMake(CGRectGetMaxX(changePirce.frame) + 5, CGRectGetMaxY(command.frame) + YLLeftMargin, width, 40);
     [soldOut setTitle:@"下架" forState:UIControlStateNormal];
     soldOut.titleLabel.font = [UIFont systemFontOfSize:14];
     soldOut.type = YLConditionTypeWhite;
@@ -256,7 +256,7 @@
     self.soldOut = soldOut;
     
     YLCondition *repeatOn = [YLCondition buttonWithType:UIButtonTypeCustom];
-    repeatOn.frame = CGRectMake(YLLeftMargin, CGRectGetMaxY(command.frame) + 5, (YLScreenWidth - 2 * YLLeftMargin), 40);
+    repeatOn.frame = CGRectMake(YLLeftMargin, CGRectGetMaxY(command.frame) + YLLeftMargin, (YLScreenWidth - 2 * YLLeftMargin), 40);
     [repeatOn setTitle:@"重新上架" forState:UIControlStateNormal];
     repeatOn.titleLabel.font = [UIFont systemFontOfSize:14];
     repeatOn.type = YLConditionTypeBlue;

@@ -41,8 +41,10 @@
         // 设置左边的返回按钮
         
         UIButton *leftBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        leftBtn.frame = CGRectMake(0, 0, 40, 20);
-        leftBtn.contentEdgeInsets = UIEdgeInsetsMake(0, -20, 0, 0);
+//        leftBtn.backgroundColor = [UIColor redColor];
+        leftBtn.frame = CGRectMake(0, 0, 50, 30);
+        leftBtn.contentEdgeInsets = UIEdgeInsetsMake(0, -40, 0, 0);
+//        [leftBtn setEnlargeEdgeWithTop:0 right:10 bottom:10 left:50];
         [leftBtn setImage:[UIImage imageNamed:@"返回"] forState:UIControlStateNormal];
         [leftBtn setImage:[UIImage imageNamed:@"返回"] forState:UIControlStateHighlighted];
         [leftBtn addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];

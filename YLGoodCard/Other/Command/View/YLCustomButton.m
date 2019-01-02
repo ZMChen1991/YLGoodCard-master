@@ -62,7 +62,7 @@
 
 - (void)setNumbers:(NSString *)numbers {
     _numbers = numbers;
-    NSLog(@"numbers:%@", numbers);
+//    NSLog(@"numbers:%@", numbers);
     if ([numbers isEqualToString:@"0"]) {
         self.numberL.hidden = YES;
     } else {

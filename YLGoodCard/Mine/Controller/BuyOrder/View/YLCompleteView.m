@@ -36,6 +36,7 @@
     [self addSubview:label];
     
     YLCondition *contact = [YLCondition buttonWithType:UIButtonTypeCustom];
+    contact.titleLabel.font = [UIFont systemFontOfSize:14];
     contact.type = YLConditionTypeBlue;
     contact.frame = CGRectMake(YLLeftMargin, CGRectGetMaxY(label.frame) + 20, YLScreenWidth - 2 * YLLeftMargin, 40);
     [contact setTitle:@"联系客服" forState:UIControlStateNormal];

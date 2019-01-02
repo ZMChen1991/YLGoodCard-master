@@ -167,6 +167,7 @@
     self.course.frame = cellFrame.courseF;
     self.price.frame = cellFrame.priceF;
     self.originalPrice.frame = cellFrame.originalPriceF;
+    self.line.frame = cellFrame.lineF;
     
     [self.icon sd_setImageWithURL:[NSURL URLWithString:cellFrame.model.displayImg] placeholderImage:nil];
     self.title.text = cellFrame.model.title;

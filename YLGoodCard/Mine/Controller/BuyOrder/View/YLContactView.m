@@ -36,11 +36,17 @@
     self.label = label;
     
     YLCondition *contact = [YLCondition buttonWithType:UIButtonTypeCustom];
+    contact.titleLabel.font = [UIFont systemFontOfSize:14];
     contact.frame = CGRectMake(YLLeftMargin, CGRectGetMaxY(label.frame) + 20, YLScreenWidth - 2 *YLLeftMargin, 40);
     [contact setTitle:@"联系检测中心" forState:UIControlStateNormal];
     contact.type = YLConditionTypeBlue;
     [contact addTarget:self action:@selector(contact) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:contact];
+    
+    UILabel *line = [[UILabel alloc] init];
+    line.frame = CGRectMake(0, 0, YLScreenWidth, 1);
+    line.backgroundColor = YLColor(233.f, 233.f, 233.f);
+    [self addSubview:line];
 }
 
 - (void)contact {

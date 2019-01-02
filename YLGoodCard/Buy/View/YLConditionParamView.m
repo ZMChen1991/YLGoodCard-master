@@ -99,12 +99,14 @@
     CGFloat labelH = self.scroll.frame.size.height;
     for (NSInteger i = 0; i < self.titles.count; i++) {
         CGSize size = [self getSizeWithString:self.titles[i] font:[UIFont systemFontOfSize:14]];
-        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(labelX, 9, size.width + 30, labelH - 18)];
+        // 如果label背景出现一条竖线，可能是宽度没有取整导致的，使用ceil函数去精
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(labelX, 9, ceilf(size.width + 30), labelH - 18)];
         label.text = self.titles[i];
         label.textColor = YLColor(51.f, 51.f, 51.f);
         label.font = [UIFont systemFontOfSize:12];
         label.textAlignment = NSTextAlignmentCenter;
-        label.backgroundColor = YLColor(247.f, 247.f, 247.f);
+        label.backgroundColor = YLColor(245.f, 245.f, 245.f);
+//        label.clipsToBounds = NO;
 //        label.layer.masksToBounds = YES;
 //        label.layer.cornerRadius = 10.f;
         label.tag = 100 + i;

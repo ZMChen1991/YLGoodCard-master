@@ -17,6 +17,7 @@
 @property (nonatomic, strong) UILabel *course; // 年/万公里
 @property (nonatomic, strong) UILabel *price; // 销售价格
 @property (nonatomic, strong) UILabel *originalPrice; // 新车价
+@property (nonatomic, strong) UILabel *line;
 
 @property (nonatomic, strong) YLTableViewModel *tableViewModel;
 
@@ -78,26 +79,41 @@
     price.font = [UIFont systemFontOfSize:18];
     [self addSubview:price];
     self.price = price;
+    
+    UILabel *line = [[UILabel alloc] init];
+    line.backgroundColor = YLColor(233.f, 233.f, 233.f);
+    [self addSubview:line];
+    self.line = line;
 }
 
 - (void)layoutSubviews {
     
     [super layoutSubviews];
     
-    self.icon.frame = CGRectMake(YLLeftMargin, YLTopSpace, 120, 86);
-    float titleX = CGRectGetMaxX(self.icon.frame) + YLLeftMargin;
-    float titleW = YLScreenWidth - 120 - 2 * YLLeftMargin - YLTopSpace;
-    self.title.frame = CGRectMake(titleX, YLTopSpace, titleW, 34);
-    self.course.frame = CGRectMake(titleX, CGRectGetMaxY(self.title.frame) + 5, titleW, 17);
-    self.price.frame = CGRectMake(titleX, CGRectGetMaxY(self.course.frame) + 5, titleW/2, 25);
-    self.originalPrice.frame = CGRectMake(CGRectGetMaxX(self.price.frame), CGRectGetMaxY(self.course.frame) + 9, YLScreenWidth - CGRectGetMaxX(self.price.frame) - YLTopSpace, 17);
+//    self.icon.frame = CGRectMake(YLLeftMargin, YLTopSpace, 120, 86);
+//    float titleX = CGRectGetMaxX(self.icon.frame) + YLLeftMargin;
+//    float titleW = YLScreenWidth - 120 - 2 * YLLeftMargin - YLTopSpace;
+//    self.title.frame = CGRectMake(titleX, YLTopSpace, titleW, 34);
+//    self.course.frame = CGRectMake(titleX, CGRectGetMaxY(self.title.frame) + 5, titleW, 17);
+//    self.price.frame = CGRectMake(titleX, CGRectGetMaxY(self.course.frame) + 5, titleW/2, 25);
+//    self.originalPrice.frame = CGRectMake(CGRectGetMaxX(self.price.frame), CGRectGetMaxY(self.course.frame) + 9, YLScreenWidth - CGRectGetMaxX(self.price.frame) - YLTopSpace, 17);
 }
 
 - (void)setModel:(YLSaleOrderModel *)model {
     _model = model;
     
     self.tableViewModel = [YLTableViewModel mj_objectWithKeyValues:model.detail];
-    NSLog(@"%@", self.tableViewModel);
+//    NSLog(@"%@", self.tableViewModel);
+    
+    self.icon.frame = CGRectMake(YLLeftMargin, YLTopSpace, 120, 86);
+    CGFloat titleX = CGRectGetMaxX(self.icon.frame) + YLLeftMargin;
+    CGFloat titleW = YLScreenWidth - 120 - 2 * YLLeftMargin - YLTopSpace;
+    self.title.frame = CGRectMake(titleX, YLTopSpace, titleW, 34);
+    self.course.frame = CGRectMake(titleX, CGRectGetMaxY(self.title.frame) + 5, titleW, 17);
+    CGSize size = [[self stringToNumber:model.detail.price] getSizeWithFont:[UIFont systemFontOfSize:18]];
+    self.price.frame = CGRectMake(titleX, CGRectGetMaxY(self.course.frame) + 5, size.width + 10, 25);
+    self.originalPrice.frame = CGRectMake(CGRectGetMaxX(self.price.frame), CGRectGetMaxY(self.course.frame) + 9, YLScreenWidth - CGRectGetMaxX(self.price.frame) - YLTopSpace, 17);
+    self.line.frame = CGRectMake(0, CGRectGetMaxY(self.icon.frame) + YLLeftMargin, YLScreenWidth, 1);
     
     [self.icon sd_setImageWithURL:[NSURL URLWithString:model.detail.displayImg] placeholderImage:nil];
     self.title.text = model.detail.title;
@@ -112,7 +128,7 @@
 
 - (NSString *)stringToNumber:(NSString *)number {
     
-    float count = [number floatValue] / 10000;
+    CGFloat count = [number floatValue] / 10000;
     return [NSString stringWithFormat:@"%.2f万",count];
 }
 

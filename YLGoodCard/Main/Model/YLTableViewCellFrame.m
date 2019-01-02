@@ -26,7 +26,7 @@
     self.courseF = CGRectMake(titleX, CGRectGetMaxY(self.titleF) + 5, courseW, 17);
     self.priceF = CGRectMake(titleX, CGRectGetMaxY(self.courseF) + 5, priceW, 25);
     self.originalPriceF = CGRectMake(CGRectGetMaxX(self.priceF), CGRectGetMaxY(self.courseF) + 5, YLScreenWidth - CGRectGetMaxX(self.priceF) - 15 , 25);
-    
+    self.lineF = CGRectMake(0, CGRectGetMaxY(self.displayImgF) + YLTopMargin, YLScreenWidth, 1);
 }
 
 - (NSString *)stringToNumber:(NSString *)number {
