@@ -194,7 +194,7 @@
 
 - (UIView *)cover {
     if (!_cover) {
-        _cover = [[UIView alloc] initWithFrame:CGRectMake(0, 64, YLScreenWidth, YLScreenHeight - 64)];
+        _cover = [[UIView alloc] initWithFrame:CGRectMake(0, 0, YLScreenWidth, YLScreenHeight - 64)];
         _cover.hidden = YES;
         _cover.backgroundColor = [UIColor colorWithRed:0.f green:0.f blue:0.f alpha:0.5];
     }

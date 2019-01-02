@@ -398,8 +398,8 @@
 //    UIView *statusBarView = [[UIView alloc] initWithFrame:CGRectMake(0, -20, YLScreenWidth, 20)];
 //    statusBarView.backgroundColor = YLColor(8.f, 169.f, 255.f);
 //    [self.navigationController.navigationBar addSubview:statusBarView];
-    
-    YLBarView *barView = [[YLBarView alloc] initWithFrame:CGRectMake(0, (44 - 36) / 2, 255, 36)];
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 255, 44)];
+    YLBarView *barView = [[YLBarView alloc] initWithFrame:CGRectMake(10, (44 - 36) / 2, 255, 36)];
     barView.layer.cornerRadius = 5.f;
     barView.layer.masksToBounds = YES;
     barView.backgroundColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:0.3];
@@ -417,8 +417,9 @@
         } failure:^(NSError * _Nonnull error) {
         }];
     };
+    [view addSubview:barView];
 //    [barView sizeThatFits:CGSizeMake(250, 36)];
-    self.navigationItem.titleView = barView;
+    self.navigationItem.titleView = view;
     
     [self setNavgationBarBackgroundImage];
 }

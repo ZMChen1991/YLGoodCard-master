@@ -228,20 +228,11 @@
     self.navigationItem.leftBarButtonItem = leftBtn;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:nil style:UIBarButtonItemStylePlain target:self action:@selector(rightBarButtonItemClick)];
     [self.navigationItem.rightBarButtonItem setImage:[[UIImage imageNamed:@"看图模式"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+    // 修改导航标题
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:18], NSForegroundColorAttributeName:[UIColor whiteColor]}];
     
-//    [self.navigationController.navigationBar setBackgroundColor:YLColor(8.f, 169.f, 255.f)];
-//    // 设置导航栏背景为空
-//    [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
-//    // 设置导航栏底部线条为空
-//    [self.navigationController.navigationBar setShadowImage:[UIImage new]];
-//    // 修改导航标题
-//    [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:18], NSForegroundColorAttributeName:[UIColor whiteColor]}];
-//    // 创建一个假状态栏
-//    UIView *statusBarView = [[UIView alloc] initWithFrame:CGRectMake(0, -20, YLScreenWidth, 20)];
-//    statusBarView.backgroundColor = YLColor(8.f, 169.f, 255.f);
-//    [self.navigationController.navigationBar addSubview:statusBarView];
-    
-    YLBarView *barView = [[YLBarView alloc] initWithFrame:CGRectMake(0, (44 - 36) / 2, 265, 36)];
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 255, 44)];
+    YLBarView *barView = [[YLBarView alloc] initWithFrame:CGRectMake(10, (44 - 36) / 2, 235, 36)];
     barView.layer.cornerRadius = 5.f;
     barView.layer.masksToBounds = YES;
     barView.backgroundColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:0.3];
@@ -259,8 +250,8 @@
         } failure:^(NSError * _Nonnull error) {
         }];
     };
-    self.navigationItem.titleView = barView;
-//    self.navigationItem.titleView = self.titleBar;
+    [view addSubview:barView];
+    self.navigationItem.titleView = view;
     
     [self setNavgationBarBackgroundImage];
 }
@@ -524,7 +515,7 @@
                     weakSelf.selectView.hidden = YES;
                 }else {
                     NSLog(@"筛选");
-                    [weakSelf showMessage:@"此功能以后再开放"];
+                    [weakSelf showMessage:@"开发中,敬请期待"];
                     weakSelf.isSelect = NO;
                 }
 
@@ -569,6 +560,8 @@
 
 - (void)tap {
     
+    self.linkage.isRest = YES;
+    self.linkage.isChange = NO;
     self.coverView.hidden = YES;
     self.sortView.hidden = YES;
     self.customPrice.hidden = YES;

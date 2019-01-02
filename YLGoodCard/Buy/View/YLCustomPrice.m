@@ -62,24 +62,28 @@
     lowPrice.placeholder = @"最低价";
     lowPrice.textAlignment = NSTextAlignmentCenter;
     lowPrice.font = [UIFont systemFontOfSize:15];
+    lowPrice.layer.borderWidth = 1.f;
+    lowPrice.layer.borderColor = YLColor(233.f, 233.f, 233.f).CGColor;
     lowPrice.delegate = self;
     [self addSubview:lowPrice];
     self.lowPrice = lowPrice;
 
-    UIView *line1 = [[UIView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(lowPrice.frame) + YLMargin, CGRectGetMaxY(customPrice.frame) + YLLeftMargin + 15, 9, 1)];
+    UIView *line1 = [[UIView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(lowPrice.frame) + YLMargin, CGRectGetMaxY(lowPrice.frame) - 15, 9, 1)];
     line1.backgroundColor = [UIColor blackColor];
     [self addSubview:line1];
     
-    UITextField *highPrice = [[UITextField alloc] initWithFrame:CGRectMake(CGRectGetMaxX(line1.frame)+YLMargin, CGRectGetMaxY(customPrice.frame)+YLTopMargin, 80, 30)];
+    UITextField *highPrice = [[UITextField alloc] initWithFrame:CGRectMake(CGRectGetMaxX(line1.frame)+YLMargin, CGRectGetMaxY(customPrice.frame)+YLMargin, 80, 30)];
     highPrice.placeholder = @"最高价";
 //    highPrice.backgroundColor = [UIColor redColor];
     highPrice.textAlignment = NSTextAlignmentCenter;
+    highPrice.layer.borderWidth = 1.f;
+    highPrice.layer.borderColor = YLColor(233.f, 233.f, 233.f).CGColor;
     highPrice.font = [UIFont systemFontOfSize:15];
     highPrice.delegate = self;
     [self addSubview:highPrice];
     self.highPrice = highPrice;
     
-    YLCondition *sureBtn = [[YLCondition alloc] initWithFrame:CGRectMake(self.frame.size.width - 80 - YLLeftMargin, CGRectGetMaxY(customPrice.frame)+YLTopMargin, 80, 30)];
+    YLCondition *sureBtn = [[YLCondition alloc] initWithFrame:CGRectMake(self.frame.size.width - 80 - YLLeftMargin, CGRectGetMaxY(customPrice.frame)+10, 80, 30)];
     sureBtn.type = YLConditionTypeBlue;
     [sureBtn setTitle:@"确定" forState:UIControlStateNormal];
     [sureBtn addTarget:self action:@selector(sureClick) forControlEvents:UIControlEventTouchUpInside];

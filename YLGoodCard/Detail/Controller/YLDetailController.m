@@ -319,9 +319,11 @@
                 [YLRequest GET:urlString parameters:param success:^(id  _Nonnull responseObject) {
                     if ([responseObject[@"code"] isEqualToNumber:[NSNumber numberWithInteger:200]]) {
                         NSLog(@"收藏成功:%@", responseObject);
+                        [weakSelf showMessage:@"收藏成功"];
 //                        [weakSelf loadData];
                     } else {
                         NSLog(@"收藏失败:%@", responseObject[@"message"]);
+                        [weakSelf showMessage:@"收藏失败，请再试一次"];
                     }
                 } failed:nil];
             } else {
@@ -329,10 +331,22 @@
                 [param setValue:@"0" forKey:@"status"];
                 [param setValue:weakSelf.model.carID forKey:@"detailId"];
                 [param setValue:weakSelf.account.telephone forKey:@"telephone"];
-                [YLDetailTool favoriteWithParam:param success:^(NSDictionary *result) {
-                    NSLog(@"点击了取消收藏按钮:%@", result);
-                    [[NSNotificationCenter defaultCenter] postNotificationName:@"REFRESHTABLEVIEW" object:nil];
-                } failure:nil];
+                NSString *urlString = @"http://ucarjava.bceapp.com/collection?method=upd";
+                [YLRequest GET:urlString parameters:param success:^(id  _Nonnull responseObject) {
+                    if ([responseObject[@"code"] isEqualToNumber:[NSNumber numberWithInteger:200]]) {
+                        NSLog(@"取消收藏:%@", responseObject);
+                        [weakSelf showMessage:@"已取消收藏"];
+                        //                        [weakSelf loadData];
+                    } else {
+                        NSLog(@"取消收藏失败:%@", responseObject[@"message"]);
+                        [weakSelf showMessage:@"取消收藏失败，请再试一次"];
+                    }
+                } failed:nil];
+//                [YLDetailTool favoriteWithParam:param success:^(NSDictionary *result) {
+//                    NSLog(@"点击了取消收藏按钮:%@", result);
+//                    [weakSelf showMessage:@"取消收藏"];
+//                    [[NSNotificationCenter defaultCenter] postNotificationName:@"REFRESHTABLEVIEW" object:nil];
+//                } failure:nil];
             }
         } else {
             YLLoginController *login = [[YLLoginController alloc] init];

@@ -42,6 +42,7 @@
         
         UIButton *leftBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         leftBtn.frame = CGRectMake(0, 0, 40, 20);
+        leftBtn.contentEdgeInsets = UIEdgeInsetsMake(0, -20, 0, 0);
         [leftBtn setImage:[UIImage imageNamed:@"返回"] forState:UIControlStateNormal];
         [leftBtn setImage:[UIImage imageNamed:@"返回"] forState:UIControlStateHighlighted];
         [leftBtn addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];

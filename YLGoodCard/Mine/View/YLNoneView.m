@@ -29,15 +29,16 @@
 - (void)setupUI {
     
     UIImageView *icon = [[UIImageView alloc] init];
-    icon.frame = CGRectMake(YLScreenWidth / 2 - 61, 60, 122, 122);
+    icon.frame = CGRectMake(YLScreenWidth / 2 - 61, 0, 122, 122);
     icon.image = [UIImage imageNamed:@"暂无收藏"];
     [self addSubview:icon];
     
     UILabel *title = [[UILabel alloc] init];
-    title.frame = CGRectMake(0, CGRectGetMaxY(icon.frame), YLScreenWidth, 22);
+    title.frame = CGRectMake(0, CGRectGetMaxY(icon.frame) + 10, YLScreenWidth, 22);
     title.text  = @"暂无收藏记录";
     title.textAlignment = NSTextAlignmentCenter;
     title.font = [UIFont systemFontOfSize:16];
+    title.textColor = YLColor(155.f, 155.f, 155.f);
     [self addSubview:title];
     self.titleL = title;
     
