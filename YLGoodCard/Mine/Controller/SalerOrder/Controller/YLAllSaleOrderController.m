@@ -72,7 +72,7 @@
 - (void)keyedArchiverObject:(id)obj toFile:(NSString *)filePath {
     BOOL success = [NSKeyedArchiver archiveRootObject:obj toFile:filePath];
     if (success) {
-        NSLog(@"即将看车下架数据保存成功");
+        NSLog(@"数据保存成功");
     } else {
         NSLog(@"保存失败");
     }

@@ -210,6 +210,7 @@
 		8AF0DB1A2196DD6D00A3A11F /* YLSortView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AF0DB192196DD6D00A3A11F /* YLSortView.m */; };
 		8AF43E512192CB83003E2D5B /* YLCondition.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AF43E502192CB83003E2D5B /* YLCondition.m */; };
 		8AF43E572192DF3F003E2D5B /* YLCustomPrice.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AF43E562192DF3F003E2D5B /* YLCustomPrice.m */; };
+		8AF6DB2F21DDAA9600C6F20B /* YLConfigHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AF6DB2E21DDAA9600C6F20B /* YLConfigHeaderView.m */; };
 		8AFC7B3721A3960B00570E83 /* YLDetailHeaderModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AFC7B3621A3960B00570E83 /* YLDetailHeaderModel.m */; };
 		8AFC7B3A21A396B700570E83 /* YLDetailInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AFC7B3921A396B700570E83 /* YLDetailInfoModel.m */; };
 		8AFC7B3D21A398DA00570E83 /* YLDetailReportModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AFC7B3C21A398DA00570E83 /* YLDetailReportModel.m */; };
@@ -614,6 +615,8 @@
 		8AF43E502192CB83003E2D5B /* YLCondition.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YLCondition.m; sourceTree = "<group>"; };
 		8AF43E552192DF3F003E2D5B /* YLCustomPrice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YLCustomPrice.h; sourceTree = "<group>"; };
 		8AF43E562192DF3F003E2D5B /* YLCustomPrice.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YLCustomPrice.m; sourceTree = "<group>"; };
+		8AF6DB2D21DDAA9600C6F20B /* YLConfigHeaderView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YLConfigHeaderView.h; sourceTree = "<group>"; };
+		8AF6DB2E21DDAA9600C6F20B /* YLConfigHeaderView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YLConfigHeaderView.m; sourceTree = "<group>"; };
 		8AFC7B3521A3960B00570E83 /* YLDetailHeaderModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YLDetailHeaderModel.h; sourceTree = "<group>"; };
 		8AFC7B3621A3960B00570E83 /* YLDetailHeaderModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YLDetailHeaderModel.m; sourceTree = "<group>"; };
 		8AFC7B3821A396B700570E83 /* YLDetailInfoModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YLDetailInfoModel.h; sourceTree = "<group>"; };
@@ -1072,6 +1075,8 @@
 				8A3E6AAA21B5136E008C5D6F /* YLDetailBargainView.m */,
 				8A3E6AAC21B515BB008C5D6F /* YLDetailOrderTimeView.h */,
 				8A3E6AAD21B515BB008C5D6F /* YLDetailOrderTimeView.m */,
+				8AF6DB2D21DDAA9600C6F20B /* YLConfigHeaderView.h */,
+				8AF6DB2E21DDAA9600C6F20B /* YLConfigHeaderView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1851,6 +1856,7 @@
 				8A37DF04218C3536003A18F0 /* YLMessageCell.m in Sources */,
 				8A25C5E021B2385600538437 /* YLSaleOrderModel.m in Sources */,
 				8AD7CEAF219FD00900E5962A /* YLSearchView.m in Sources */,
+				8AF6DB2F21DDAA9600C6F20B /* YLConfigHeaderView.m in Sources */,
 				8ADEE4EB21B0DACF00BAD2CD /* YLSubSaleOrderController.m in Sources */,
 				8A3E6A9921B4BD40008C5D6F /* YLBargainHistoryDetailCell.m in Sources */,
 				8A0E3F42218A940800275131 /* YLTabBarController.m in Sources */,
@@ -1995,7 +2001,8 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=*]" = "iPhone Distribution: Guanyi Lin (L6GHX8W6MA)";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -2053,7 +2060,8 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=*]" = "iPhone Distribution: Guanyi Lin (L6GHX8W6MA)";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -2079,10 +2087,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=*]" = "iPhone Distribution: Guanyi Lin (L6GHX8W6MA)";
+				CODE_SIGN_STYLE = Manual;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = ZRG49Y73VS;
+				DEVELOPMENT_TEAM = L6GHX8W6MA;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -2094,10 +2103,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = cn.czm.YLGoodCard;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ucar.YLGoodCard;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				PROVISIONING_PROFILE_SPECIFIER = YLGoodCard;
+				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/**";
 			};
 			name = Debug;
@@ -2108,10 +2117,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=*]" = "iPhone Distribution: Guanyi Lin (L6GHX8W6MA)";
+				CODE_SIGN_STYLE = Manual;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = ZRG49Y73VS;
+				DEVELOPMENT_TEAM = L6GHX8W6MA;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -2123,10 +2133,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = cn.czm.YLGoodCard;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ucar.YLGoodCard;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				PROVISIONING_PROFILE_SPECIFIER = YLGoodCard;
+				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/**";
 			};
 			name = Release;

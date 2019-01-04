@@ -34,13 +34,14 @@
 
 #import "YLDetailOrderTimeView.h"
 #import "YLDetailBargainView.h"
+#import "YLConfigController.h"
 
 // 进入详情页，保存当前汽车的ID
 // 详情页数据
 #define YLDetailPath(carID) [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:carID]
 //#define YLDetailPath(carID) [NSTemporaryDirectory() stringByAppendingPathComponent:carID]
 
-@interface YLDetailController () <UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate>
+@interface YLDetailController () <UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate, YLTableGroupHeaderDelegate>
 
 //@property (nonatomic, strong) UIImageView *bg;
 //@property (nonatomic, strong) UIView *labelView;
@@ -245,8 +246,12 @@
     CGRect headerRect = CGRectMake(0, 0, YLScreenWidth, 44);
     NSArray *titles = @[@"服务保障",@"基本信息",@"检测报告",@"车辆图文"];
     NSArray *images = @[@"服务保障", @"基本信息", @"检测报告", @"车辆图文"];
-    NSArray *details = @[@"", @"", @"", @""];
-    YLTableGroupHeader *header = [[YLTableGroupHeader alloc] initWithFrame:headerRect image:images[section] title:titles[section] detailTitle:details[section] arrowImage:@""];
+    NSArray *details = @[@"", @"更多配置", @"", @""];
+    NSArray *arrowImages = @[@"", @"更多", @"", @""];
+    YLTableGroupHeader *header = [[YLTableGroupHeader alloc] initWithFrame:headerRect image:images[section] title:titles[section] detailTitle:details[section] arrowImage:arrowImages[section]];
+    if (section == 1) {
+        header.delegate = self;
+    }
 //    header.labelBlock = ^() {
 //            [self showMessage:@"正在开发中，敬请期待"];
 //    };
@@ -371,6 +376,14 @@
     self.navigationItem.title = @"详情";
     // 修改导航标题
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:18], NSForegroundColorAttributeName:[UIColor whiteColor]}];
+}
+
+- (void)pushMoreControl {
+
+    NSLog(@"pushMoreControl");
+    YLConfigController *config = [[YLConfigController alloc] init];
+    config.model = self.detailModel;
+    [self.navigationController pushViewController:config animated:YES];
 }
 
 #pragma mark 砍价

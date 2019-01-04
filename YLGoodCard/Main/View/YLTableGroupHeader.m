@@ -14,6 +14,7 @@
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UILabel *detailTitleLabel;
 @property (nonatomic, strong) UIImageView *arrowIcon;
+@property (nonatomic, strong) UIView *view;
 //@property (nonatomic, strong) UIView *line;
 
 @end
@@ -37,15 +38,23 @@
         [self addSubview:titleLabel];
         self.titleLabel = titleLabel;
         
+        UIView *view = [[UIView alloc] init];
+//        view.backgroundColor = [UIColor redColor];
+        view.userInteractionEnabled = YES;
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(labelClick:)];
+        [view addGestureRecognizer:tap];
+        [self addSubview:view];
+        self.view = view;
+        
         UILabel *detailTitleLabel = [[UILabel alloc] init];
         detailTitleLabel.text = detailTitle;
         detailTitleLabel.textColor = YLColor(155.f, 155.f, 155.f);
         detailTitleLabel.textAlignment = NSTextAlignmentRight;
         detailTitleLabel.font = [UIFont systemFontOfSize:12];
-        detailTitleLabel.userInteractionEnabled = YES;
-        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(labelClick:)];
-        [detailTitleLabel addGestureRecognizer:tap];
-        [self addSubview:detailTitleLabel];
+//        detailTitleLabel.userInteractionEnabled = YES;
+//        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(labelClick:)];
+//        [detailTitleLabel addGestureRecognizer:tap];
+        [view addSubview:detailTitleLabel];
         self.detailTitleLabel = detailTitleLabel;
         
         UIImageView *arrowIcon = [[UIImageView alloc] init];
@@ -53,28 +62,20 @@
 //        UITapGestureRecognizer *tap1 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(labelClick:)];
 //        [arrowIcon addGestureRecognizer:tap];
 //        [arrowIcon setUserInteractionEnabled:YES];
-        [self addSubview:arrowIcon];
+        [view addSubview:arrowIcon];
         self.arrowIcon = arrowIcon;
         
-//        UIView *line = [[UIView alloc] init];
-//        line.backgroundColor = YLColor(233.f, 233.f, 233.f);
-//        [self addSubview:line];
-//        self.line = line;
     }
     return self;
 }
 
 - (void)labelClick:(UITapGestureRecognizer *)tap {
-    
-//    UILabel *label = (UILabel *)tap.view;
-//    if (![self isBlankString:label.text]) {
-//        self.labelBlock(label.text);
-//    }
-//    if (self.delegate && [self.delegate respondsToSelector:@selector(pushBuyControl)]) {
-//        [self.delegate pushBuyControl];
-//    }
-    if (self.labelBlock) {
-        self.labelBlock();
+
+    if (self.delegate && [self.delegate respondsToSelector:@selector(pushBuyControl)]) {
+        [self.delegate pushBuyControl];
+    }
+    if (self.delegate && [self.delegate respondsToSelector:@selector(pushMoreControl)]) {
+        [self.delegate pushMoreControl];
     }
 }
 
@@ -96,15 +97,19 @@
     
     [super layoutSubviews];
     
-    float width = self.frame.size.width;
-    float height = self.frame.size.height;
-    float iconH = height - 2 * YLTopMargin;
-    float titleW = width / 3;
+    CGFloat width = self.frame.size.width;
+    CGFloat height = self.frame.size.height;
+    CGFloat iconH = height - 2 * YLTopMargin;
+    CGFloat titleW = width / 3;
     self.icon.frame = CGRectMake(YLLeftMargin, YLTopMargin, 20, iconH);
     self.titleLabel.frame = CGRectMake(CGRectGetMaxX(self.icon.frame) + 5, YLTopMargin, titleW, iconH);
-    self.arrowIcon.frame = CGRectMake(width - YLTopMargin - 10 - 5, YLTopMargin  + 4, 10, iconH / 1.5);
-    self.detailTitleLabel.frame = CGRectMake(CGRectGetMidX(self.arrowIcon.frame) - titleW - 10, YLTopMargin + 1, titleW, iconH);
-//    self.line.frame = CGRectMake(0, CGRectGetMaxY(self.icon.frame) + YLTopMargin, width, 1);
+    
+    self.view.frame = CGRectMake(width - YLTopMargin - titleW / 2, YLTopMargin , titleW / 2, iconH);
+    self.detailTitleLabel.frame = CGRectMake(0, 0, titleW / 2 - 12, iconH);
+    self.arrowIcon.frame = CGRectMake(CGRectGetMaxX(self.detailTitleLabel.frame) + 5, 5, 7, iconH/2);
+//    self.arrowIcon.frame = CGRectMake(width - YLTopMargin - 10 - 5, YLTopMargin  + 6, 7, iconH/2);
+//    self.detailTitleLabel.frame = CGRectMake(CGRectGetMidX(self.arrowIcon.frame) - titleW - 10, YLTopMargin + 1, titleW, iconH);
+    
 }
 
 @end

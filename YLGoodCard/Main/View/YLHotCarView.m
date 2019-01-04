@@ -10,6 +10,9 @@
 #import "YLTableGroupHeader.h"
 #import "YLButtonView.h"
 
+@interface YLHotCarView () <YLTableGroupHeaderDelegate>
+
+@end
 
 @implementation YLHotCarView
 
@@ -26,11 +29,12 @@
     
     CGRect goupHeaderRect = CGRectMake(0, 0, YLScreenWidth, 44);
     YLTableGroupHeader *groupHeader = [[YLTableGroupHeader alloc] initWithFrame:goupHeaderRect image:@"热门二手车" title:@"热门二手车" detailTitle:@"查看更多" arrowImage:@"更多"];
-    groupHeader.labelBlock = ^() {
-        if (self.moreBlock) {
-            self.moreBlock();
-        }
-    };
+//    groupHeader.labelBlock = ^() {
+//        if (self.moreBlock) {
+//            self.moreBlock();
+//        }
+//    };
+    groupHeader.delegate = self;
     [self addSubview:groupHeader];
     
     UILabel *line1 = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(groupHeader.frame), YLScreenWidth, 0.5)];
@@ -57,5 +61,11 @@
     
     [super layoutSubviews];
     
+}
+
+- (void)pushBuyControl {
+    if (self.moreBlock) {
+        self.moreBlock();
+    }
 }
 @end

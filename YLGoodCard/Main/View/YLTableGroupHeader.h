@@ -16,6 +16,7 @@ typedef void(^labelBlock)(void);
 @protocol YLTableGroupHeaderDelegate <NSObject>
 @optional
 - (void)pushBuyControl;
+- (void)pushMoreControl;
 @end
 
 @interface YLTableGroupHeader : UIView

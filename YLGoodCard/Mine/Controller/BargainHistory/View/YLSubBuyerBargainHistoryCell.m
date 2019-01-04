@@ -167,7 +167,7 @@
             if ([cellFrame.model.status isEqualToString:@"1"]) {
                 self.message.text = [NSString stringWithFormat:@"卖家还价:%@,等待您的处理", [self stringToNumber:cellFrame.model.price]];
             } else if ([cellFrame.model.status isEqualToString:@"2"]) {
-                self.message.text = [NSString stringWithFormat:@"您已接收卖家报价:%@", [self stringToNumber:cellFrame.model.price]];
+                self.message.text = [NSString stringWithFormat:@"您已接受卖家报价:%@", [self stringToNumber:cellFrame.model.price]];
             } else {
                 self.message.text = [NSString stringWithFormat:@"卖家还价:%@", [self stringToNumber:cellFrame.model.price]];
             }
