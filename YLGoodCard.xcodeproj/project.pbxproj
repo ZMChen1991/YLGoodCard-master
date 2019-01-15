@@ -10,7 +10,6 @@
 		8A0E3F2C218A926F00275131 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A0E3F2B218A926F00275131 /* AppDelegate.m */; };
 		8A0E3F32218A926F00275131 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8A0E3F30218A926F00275131 /* Main.storyboard */; };
 		8A0E3F34218A927100275131 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8A0E3F33218A927100275131 /* Assets.xcassets */; };
-		8A0E3F37218A927100275131 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8A0E3F35218A927100275131 /* LaunchScreen.storyboard */; };
 		8A0E3F3A218A927100275131 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A0E3F39218A927100275131 /* main.m */; };
 		8A0E3F42218A940800275131 /* YLTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A0E3F41218A940800275131 /* YLTabBarController.m */; };
 		8A0E3F45218A942D00275131 /* YLNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A0E3F44218A942D00275131 /* YLNavigationController.m */; };
@@ -77,6 +76,8 @@
 		8A69139E218FCF86003B0EE2 /* pic_4.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 8A69139A218FCF86003B0EE2 /* pic_4.jpeg */; };
 		8A69139F218FCF86003B0EE2 /* pic_1.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 8A69139B218FCF86003B0EE2 /* pic_1.jpeg */; };
 		8A6913A521903492003B0EE2 /* YLLinkageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A6913A421903491003B0EE2 /* YLLinkageView.m */; };
+		8A7E396C21ED81DA00A82715 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8A7E396B21ED81DA00A82715 /* Launch Screen.storyboard */; };
+		8A7E397121ED840B00A82715 /* 启动页1.png in Resources */ = {isa = PBXBuildFile; fileRef = 8A7E397021ED840B00A82715 /* 启动页1.png */; };
 		8A90399521A2595C0099BC98 /* YLReservationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A90399421A2595C0099BC98 /* YLReservationView.m */; };
 		8A90399821A264FA0099BC98 /* YLNoneView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A90399721A264FA0099BC98 /* YLNoneView.m */; };
 		8A90399B21A285140099BC98 /* YLDetectCenterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A90399A21A285140099BC98 /* YLDetectCenterView.m */; };
@@ -229,7 +230,6 @@
 		8A0E3F2B218A926F00275131 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		8A0E3F31218A926F00275131 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		8A0E3F33218A927100275131 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		8A0E3F36218A927100275131 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8A0E3F38218A927100275131 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8A0E3F39218A927100275131 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		8A0E3F40218A940800275131 /* YLTabBarController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YLTabBarController.h; sourceTree = "<group>"; };
@@ -360,6 +360,8 @@
 		8A69139B218FCF86003B0EE2 /* pic_1.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = pic_1.jpeg; sourceTree = "<group>"; };
 		8A6913A321903491003B0EE2 /* YLLinkageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YLLinkageView.h; sourceTree = "<group>"; };
 		8A6913A421903491003B0EE2 /* YLLinkageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YLLinkageView.m; sourceTree = "<group>"; };
+		8A7E396B21ED81DA00A82715 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
+		8A7E397021ED840B00A82715 /* 启动页1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "启动页1.png"; sourceTree = "<group>"; };
 		8A90399321A2595C0099BC98 /* YLReservationView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YLReservationView.h; sourceTree = "<group>"; };
 		8A90399421A2595C0099BC98 /* YLReservationView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YLReservationView.m; sourceTree = "<group>"; };
 		8A90399621A264FA0099BC98 /* YLNoneView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YLNoneView.h; sourceTree = "<group>"; };
@@ -709,8 +711,8 @@
 				8A0E3F2B218A926F00275131 /* AppDelegate.m */,
 				8A0E3F30218A926F00275131 /* Main.storyboard */,
 				8A0E3F33218A927100275131 /* Assets.xcassets */,
-				8A0E3F35218A927100275131 /* LaunchScreen.storyboard */,
 				8A0E3F38218A927100275131 /* Info.plist */,
+				8A7E396B21ED81DA00A82715 /* Launch Screen.storyboard */,
 				8A0E3F39218A927100275131 /* main.m */,
 			);
 			path = YLGoodCard;
@@ -996,6 +998,7 @@
 		8A0E3F71218AE5E700275131 /* Other */ = {
 			isa = PBXGroup;
 			children = (
+				8A7E396F21ED83E200A82715 /* Resource */,
 				8A35F8D3218D2B2400BDBC9E /* Manager */,
 				8AEFA694219D4A4900C21452 /* YLTool */,
 				8A691397218FCF73003B0EE2 /* Resource */,
@@ -1195,6 +1198,15 @@
 				8A69139A218FCF86003B0EE2 /* pic_4.jpeg */,
 			);
 			path = Resource;
+			sourceTree = "<group>";
+		};
+		8A7E396F21ED83E200A82715 /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				8A7E397021ED840B00A82715 /* 启动页1.png */,
+			);
+			name = Resource;
+			path = "New Group";
 			sourceTree = "<group>";
 		};
 		8AC19BAC21BA596200A9E52A /* View */ = {
@@ -1691,11 +1703,12 @@
 				8AA8CB6F21CB37660006B972 /* UMCommonLog.bundle in Resources */,
 				8A69139D218FCF86003B0EE2 /* pic_2.jpeg in Resources */,
 				8A69139C218FCF86003B0EE2 /* pic_3.jpeg in Resources */,
-				8A0E3F37218A927100275131 /* LaunchScreen.storyboard in Resources */,
 				8A0E3F34218A927100275131 /* Assets.xcassets in Resources */,
 				8A0E3F32218A926F00275131 /* Main.storyboard in Resources */,
 				8A69139E218FCF86003B0EE2 /* pic_4.jpeg in Resources */,
+				8A7E397121ED840B00A82715 /* 启动页1.png in Resources */,
 				8ACDC9BE2193FF3B00B5EF41 /* huo.png in Resources */,
+				8A7E396C21ED81DA00A82715 /* Launch Screen.storyboard in Resources */,
 				8A69139F218FCF86003B0EE2 /* pic_1.jpeg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1958,14 +1971,6 @@
 			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
-		8A0E3F35218A927100275131 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				8A0E3F36218A927100275131 /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
@@ -2001,8 +2006,8 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=*]" = "iPhone Distribution: Guanyi Lin (L6GHX8W6MA)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -2060,8 +2065,8 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=*]" = "iPhone Distribution: Guanyi Lin (L6GHX8W6MA)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -2086,10 +2091,8 @@
 			baseConfigurationReference = B0F3A3B774A2FBDC628A3365 /* Pods-YLGoodCard.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=*]" = "iPhone Distribution: Guanyi Lin (L6GHX8W6MA)";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = L6GHX8W6MA;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2105,7 +2108,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.ucar.YLGoodCard;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = YLGoodCard;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/**";
 			};
@@ -2116,10 +2119,8 @@
 			baseConfigurationReference = B37F37E8E5F7F1E5DB0D87D4 /* Pods-YLGoodCard.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=*]" = "iPhone Distribution: Guanyi Lin (L6GHX8W6MA)";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = L6GHX8W6MA;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2135,7 +2136,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.ucar.YLGoodCard;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = YLGoodCard;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/**";
 			};

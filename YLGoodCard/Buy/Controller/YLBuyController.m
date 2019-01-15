@@ -61,7 +61,6 @@
 @property (nonatomic, strong) NSMutableArray *modelArray;// 存放数据模型的数组
 @property (nonatomic, strong) YLBuyTableViewCell *cell;
 
-//@property (nonatomic, strong) NSMutableArray *paramArray;
 @property (nonatomic, strong) NSMutableDictionary *selectParam;// 网络请求的参数
 @property (nonatomic, strong) NSMutableDictionary *params;// 网络请求的参数
 
@@ -80,10 +79,6 @@
     [self getParamArrayForParam];
     [self getLocationData];
     [self loadData];
-//    NSLog(@"%@", self.navigationController.navigationBar);
-//    NSLog(@"%f-%f %f-%f",self.linkage.frame.origin.x,self.linkage.frame.origin.y, self.linkage.frame.size.width, self.linkage.frame.size.height);
-//    NSLog(@"frame:%f-%f %f-%f",self.tableView.frame.origin.x,self.tableView.frame.origin.y, self.tableView.frame.size.width, self.tableView.frame.size.height);
-//    NSLog(@"offset:%f-%f",self.tableView.contentOffset.x,self.tableView.contentOffset.y);
 }
 
 - (void)config {
@@ -112,13 +107,8 @@
 - (void)addParamView {
     CGFloat conditionH = 50;
     YLConditionParamView *conditionParamView = [[YLConditionParamView alloc] initWithFrame:CGRectMake(-YLScreenWidth, CGRectGetMaxY(self.linkage.frame), YLScreenWidth, conditionH)];
-//    conditionParamView.backgroundColor = [UIColor redColor];
     __weak typeof(self) weakSelf = self;
     conditionParamView.conditionParamBlock = ^{
-//        weakSelf.conditionParamView.hidden = YES;
-//        CGRect rect = weakSelf.tableView.frame;
-//        rect.origin.y = rect.origin.y - 30;
-//        weakSelf.tableView.frame = rect;
         // 将conditionParam控件移到边缘，tableView上移
         CGRect conditionParamRect = CGRectMake(-YLScreenWidth, 50, YLScreenWidth, conditionH);
         self.conditionParamView.frame = conditionParamRect;
@@ -196,14 +186,11 @@
     CGFloat conditionH = 50;
     if (tempArray.count > 0) {
         self.conditionParamView.params = tempArray;
-//        self.conditionParamView.hidden = NO;
         CGRect conditionParamRect = CGRectMake(0, 50, YLScreenWidth, conditionH);
         self.conditionParamView.frame = conditionParamRect;
         CGRect rect = CGRectMake(0, 50 + conditionH, YLScreenWidth, YLScreenHeight - 64 - 50 - conditionH);
         self.tableView.frame = rect;
     } else {
-//        self.conditionParamView.hidden = NO;
-        
         CGRect conditionParamRect = CGRectMake(-YLScreenWidth, 50, YLScreenWidth, conditionH);
         self.conditionParamView.frame = conditionParamRect;
         CGRect rect = CGRectMake(0, 50, YLScreenWidth, YLScreenHeight - 64 - 50);
@@ -308,10 +295,6 @@
     }];
 }
 
-//- (void)leftBarButtonItemClick {
-//
-//    NSLog(@"leftBarButtonItem被点击了！");
-//}
 
 - (void)rightBarButtonItemClick {
     
