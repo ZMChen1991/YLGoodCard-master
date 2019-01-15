@@ -38,6 +38,8 @@
 #import "YLBarButton.h"
 #import "YLBarView.h"
 #import "YLTableViewCellFrame.h"
+#import "YLBuyConditionModel.h"
+#import "YLBannerCollectionView.h"
 
 #define YLMainPath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"main.txt"]
 #define YLBannerPath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"banner.txt"]
@@ -56,6 +58,7 @@
 
 @property (nonatomic, strong) YLNotable *notableView;// 成交记录轮播
 @property (nonatomic, strong) IXWheelV *banner;
+//@property (nonatomic, strong) YLBannerCollectionView *banner;
 @property (nonatomic, strong) YLHotCarView *hotCar;
 
 @property (nonatomic, strong) NSMutableDictionary *datas;// 存放数据的字典
@@ -98,6 +101,11 @@
     };
     [header addSubview:banner];
     self.banner = banner;
+    
+//    YLBannerCollectionView *banner = [[YLBannerCollectionView alloc] initWithFrame:CGRectMake(0, 0, YLScreenWidth, 130 + 60 + 44 + 99)];
+//    [header addSubview:banner];
+//    self.banner = banner;
+    
     // 添加成交记录轮播广告
     YLNotable *notable = [[YLNotable alloc] initWithFrame:CGRectMake(0,CGRectGetMaxY(banner.frame), YLScreenWidth, 60)];
     [header addSubview:notable];
@@ -110,38 +118,49 @@
         YLTabBarController *tab = (YLTabBarController *)[UIApplication sharedApplication].keyWindow.rootViewController;
         YLNavigationController *nav = tab.viewControllers[1];
         YLBuyController *buy = nav.viewControllers.firstObject;
-        [weakSelf.param removeAllObjects];
-        buy.param = weakSelf.param;
+        YLBuyConditionModel *model = [[YLBuyConditionModel alloc] init];
+        buy.paramModel = model;
         [buy.titleBar setTitle:@"搜索您想要的车" forState:UIControlStateNormal];
         tab.selectedIndex = 1;
     };
     hotCar.brandBlock = ^(NSString * _Nonnull brand) {// 条件搜索
         // 判断传过来的字符串，如果是金额跳转到买车搜索，如果是品牌，同样
         // 点击列表，跳转买车控制器
-        [weakSelf.param removeAllObjects];// 清空条件搜索
-        [weakSelf.tempParam removeAllObjects];// 清空条件搜索
+//        [weakSelf.param removeAllObjects];// 清空条件搜索
+//        [weakSelf.tempParam removeAllObjects];// 清空条件搜索
         YLTabBarController *tab = (YLTabBarController *)[UIApplication sharedApplication].keyWindow.rootViewController;
         YLNavigationController *nav = tab.viewControllers[1];
         YLBuyController *buy = nav.viewControllers.firstObject;
         NSString *labelStr = brand;
+        YLBuyConditionModel *model = [[YLBuyConditionModel alloc] init];
+        model.isSelect = YES;
         if ([labelStr isEqualToString:@"5万以下"]) {
-            [weakSelf.param setValue:@"0fgf50000" forKey:@"price"];
-            [weakSelf.tempParam setValue:labelStr forKey:@"price"];
+            model.title = labelStr;
+            model.detail = labelStr;
+            model.param = @"0fgf50000";
+            model.key = @"price";
         } else if ([labelStr isEqualToString:@"5-10万"]) {
-            [weakSelf.param setValue:@"50000fgf100000" forKey:@"price"];
-            [weakSelf.tempParam setValue:labelStr forKey:@"price"];
+            model.title = labelStr;
+            model.detail = labelStr;
+            model.param = @"50000fgf100000";
+            model.key = @"price";
         } else if ([labelStr isEqualToString:@"10-15万"]) {
-            [weakSelf.param setValue:@"100000fgf150000" forKey:@"price"];
-            [weakSelf.tempParam setValue:labelStr forKey:@"price"];
+            model.title = labelStr;
+            model.detail = labelStr;
+            model.param = @"100000fgf150000";
+            model.key = @"price";
         } else if ([labelStr isEqualToString:@"15万以上"]) {
-            [weakSelf.param setValue:@"150000fgf99999999" forKey:@"price"];
-            [weakSelf.tempParam setValue:labelStr forKey:@"price"];
+            model.title = labelStr;
+            model.detail = labelStr;
+            model.param = @"150000fgf99999999";
+            model.key = @"price";
         } else {
-            [weakSelf.param setValue:labelStr forKey:@"brand"];
-            [weakSelf.tempParam setValue:labelStr forKey:@"brand"];
+            model.title = labelStr;
+            model.detail = labelStr;
+            model.param = labelStr;
+            model.key = @"brand";
         }
-        buy.param = weakSelf.param;
-        buy.tempParam = weakSelf.tempParam;
+        buy.paramModel = model;
         tab.selectedIndex = 1;
     };
     [header addSubview:hotCar];
@@ -162,6 +181,7 @@
         }
         [self.images addObject:model.img];
     }
+//    self.banner.images = self.images;
     self.banner.items = self.images;
 //    NSLog(@"banner:%@", banner);
     
@@ -204,20 +224,8 @@
         if ([responseObject[@"code"] isEqualToNumber:[NSNumber numberWithInt:400]]) {
             NSLog(@"bannerStr%@", responseObject[@"message"]);
         } else {
-            
             [weakSelf keyedArchiverObject:responseObject toFile:YLBannerPath];
             [weakSelf getLocationData];
-            
-//            [self.images removeAllObjects];
-//            NSArray *banners = [YLBannerModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"]];
-//            for (YLBannerModel *model in banners) {
-//                if (!model.img) {
-//                    break;
-//                }
-//                [self.images addObject:model.img];
-//            }
-////            NSLog(@"%@", self.images);
-//            self.banner.items = self.images;
         }
     } failed:nil];
 
@@ -227,21 +235,9 @@
         if ([responseObject[@"code"] isEqualToNumber:[NSNumber numberWithInt:400]]) {
             NSLog(@"notableStr%@", responseObject[@"message"]);
         } else {
-            
             [weakSelf keyedArchiverObject:responseObject toFile:YLNotablePath];
             [weakSelf getLocationData];
             
-//            [self.notableTitles removeAllObjects];
-//            NSArray *notables = [YLNotableModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"]];
-//            for (YLNotableModel *model in notables) {
-//                NSString *notable = model.text;
-//                if (!notable) {
-//                    break;
-//                }
-//                [self.notableTitles addObject:notable];
-//            }
-////            NSLog(@"%@", self.notableTitles);
-//            self.notableView.titles = self.notableTitles;
         }
     } failed:nil];
     
@@ -251,56 +247,10 @@
         if ([responseObject[@"code"] isEqualToNumber:[NSNumber numberWithInt:400]]) {
             NSLog(@"recommendStr%@", responseObject[@"message"]);
         } else {
-            
             [weakSelf keyedArchiverObject:responseObject toFile:YLMainPath];
             [weakSelf getLocationData];
-            
-//            [self.recommends removeAllObjects];
-//            NSArray *recomments = [YLTableViewModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"]];
-//            for (YLTableViewModel *model in recomments) {
-//                YLTableViewCellFrame *cellFrame = [[YLTableViewCellFrame alloc] init];
-//                cellFrame.model = model;
-//                [self.recommends addObject:cellFrame];
-//            }
-//            [self.tableView reloadData];
         }
     } failed:nil];
-    
-}
-
-- (void)getData {
-//    NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:YLMainPath];
-//    NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithContentsOfFile:YLMainPath];
-//    if (!dict) {
-//        [self loadData];
-//    } else {
-//        
-//    }
-//    NSDictionary *temp = [dict objectForKey:@"banner"];
-//    NSLog(@"%@", temp);
-//    NSArray *banners = [YLBannerModel mj_keyValuesArrayWithObjectArray:temp];
-//    for (YLBannerModel *model in temp) {
-//        if (!model.img) {
-//            break;
-//        }
-//        [self.images addObject:model.img];
-//    }
-//    self.banner.items = self.images;
-//
-//    NSArray *trades = [YLNotableModel mj_keyValuesArrayWithObjectArray:dict[@"trade"]];
-//    for (YLNotableModel *model in trades) {
-//        if (!model.text) {
-//            break;
-//        }
-//        [self.notableTitles addObject:model.text];
-//    }
-//    self.notableView.titles = self.notableTitles;
-//
-//    NSArray *recommends = [YLTableViewModel mj_keyValuesArrayWithObjectArray:dict[@"recommend"]];
-//    for (YLTableViewModel *model in recommends) {
-//        [self.recommends addObject:model];
-//    }
-//    [self.tableView reloadData];
     
 }
 
@@ -367,8 +317,9 @@
     YLTabBarController *tab = (YLTabBarController *)[UIApplication sharedApplication].keyWindow.rootViewController;
     YLNavigationController *nav = tab.viewControllers[1];
     YLBuyController *buy = nav.viewControllers.firstObject;
-    [self.param removeAllObjects];
-    buy.param = self.param;
+    YLBuyConditionModel *model = [[YLBuyConditionModel alloc] init];
+//    [self.param removeAllObjects];
+    buy.paramModel = model;
     [buy.titleBar setTitle:@"搜索您想要的车" forState:UIControlStateNormal];
     tab.selectedIndex = 1;
 }
@@ -385,19 +336,6 @@
     UIBarButtonItem *leftBtn = [[UIBarButtonItem alloc] initWithCustomView:barButton];
     self.navigationItem.leftBarButtonItem = leftBtn;
     
-//    [self.navigationController.navigationBar setBackgroundColor:YLColor(8.f, 169.f, 255.f)];
-//    // 设置导航栏背景为空
-//    [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
-//        // 设置导航栏底部线条为空
-//    [self.navigationController.navigationBar setShadowImage:[UIImage new]];
-//    //    // 修改导航标题
-//    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIFont systemFontOfSize:18], NSForegroundColorAttributeName:[UIColor whiteColor]}];
-//    //    // 修改导航栏按钮字体颜色
-//    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-//    // 创建一个假状态栏
-//    UIView *statusBarView = [[UIView alloc] initWithFrame:CGRectMake(0, -20, YLScreenWidth, 20)];
-//    statusBarView.backgroundColor = YLColor(8.f, 169.f, 255.f);
-//    [self.navigationController.navigationBar addSubview:statusBarView];
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 255, 44)];
     YLBarView *barView = [[YLBarView alloc] initWithFrame:CGRectMake(10, (44 - 36) / 2, 255, 36)];
     barView.layer.cornerRadius = 5.f;
@@ -445,19 +383,6 @@
     [self.navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
 }
 
-//- (void)titleClick {
-//
-//    NSLog(@"title被点击了！");
-//
-//    NSMutableDictionary *param = [NSMutableDictionary dictionary];
-//    [YLHomeTool hotBrandWithParam:param success:^(NSDictionary * _Nonnull result) {
-//        NSMutableArray *hotBrands = (NSMutableArray *)result[@"data"][@"keyword"];
-//        YLSearchController *search = [[YLSearchController alloc] init];
-//        search.hotSearch = hotBrands;
-//        [self.navigationController pushViewController:search animated:YES];
-//    } failure:^(NSError * _Nonnull error) {
-//    }];
-//}
 - (void)leftBarButtonItemClick {
     
     [self showMessage:@"暂时只支持阳江市"];

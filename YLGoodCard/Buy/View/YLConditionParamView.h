@@ -10,13 +10,22 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@protocol YLConditionParamViewDelegate <NSObject>
+
+- (void)paramViewRemoveWithIndex:(NSInteger)index;
+- (void)paramViewRemoveAllObject;
+
+@end
+
 typedef void(^ConditionParamBlock)(void);
 typedef void(^RemoveBlock)(NSInteger index, NSString *title);
+
 @interface YLConditionParamView : UIView
 
-@property (nonatomic, strong) NSArray *params;
+@property (nonatomic, strong) NSMutableArray *params;
 @property (nonatomic, copy) ConditionParamBlock conditionParamBlock;
 @property (nonatomic, copy) RemoveBlock removeBlock;
+@property (nonatomic, weak) id<YLConditionParamViewDelegate> delegate;
 
 @end
 

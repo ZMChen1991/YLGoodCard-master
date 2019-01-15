@@ -7,11 +7,13 @@
 //
 
 #import "YLConditionParamView.h"
+#import "YLBuyConditionModel.h"
+
 
 @interface YLConditionParamView ()
 
 @property (nonatomic, strong) UIScrollView *scroll;
-@property (nonatomic, strong) NSMutableArray *titles;
+@property (nonatomic, strong) NSMutableArray *models;
 
 @end
 
@@ -35,8 +37,8 @@
 - (void)setupUI {
     
     UIScrollView *scroll = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, YLScreenWidth - 70, self.frame.size.height)];
-//    scroll.backgroundColor = YLColor(233.f, 233.f, 233.f);
-    scroll.backgroundColor = [UIColor whiteColor];
+    scroll.backgroundColor = YLColor(233.f, 233.f, 233.f);
+//    scroll.backgroundColor = [UIColor whiteColor];
     [self addSubview:scroll];
     self.scroll = scroll;
     
@@ -49,9 +51,7 @@
 //    [delete addTarget:self action:@selector(deleteClick) forControlEvents:UIControlEventTouchUpInside];
 //    [self addSubview:delete];
     
-//    UIView *deleteView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 50, self.frame.size.height)];
     UIImageView *imageView = [[UIImageView alloc] init];
-//    imageView.backgroundColor = [UIColor redColor];
     imageView.frame = CGRectMake(CGRectGetMaxX(scroll.frame) + 10, 17, 43, self.frame.size.height - 34);
     imageView.image = [UIImage imageNamed:@"重置"];
     imageView.contentMode = UIViewContentModeScaleToFill;
@@ -64,11 +64,12 @@
 #pragma mark 清空参数label
 - (void)deleteClick {
     
-    [self.titles removeAllObjects];
-    [self.scroll.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
-    NSLog(@"清空字符串%@", self.titles);
-    if (self.conditionParamBlock) {
-        self.conditionParamBlock();
+    for (YLBuyConditionModel *model in self.params) {
+        model.isSelect = !model.isSelect;
+    }
+    NSLog(@"清空条件");
+    if (self.delegate && [self.delegate respondsToSelector:@selector(paramViewRemoveAllObject)]) {
+        [self.delegate paramViewRemoveAllObject];
     }
 }
 
@@ -77,38 +78,35 @@
     UILabel *label = (UILabel *)tap.view;
     NSInteger tag = label.tag - 100;
     NSLog(@"点击了第%ld个label", tag);
-    if (self.removeBlock) {
-        self.removeBlock(tag, self.titles[tag]);
+    // 将选中的条件设置为不选中状态
+    YLBuyConditionModel *model = self.params[tag];
+    model.isSelect = !model.isSelect;
+    
+    if (self.delegate && [self.delegate respondsToSelector:@selector(paramViewRemoveWithIndex:)]) {
+        [self.delegate paramViewRemoveWithIndex:tag];
     }
-    NSLog(@"self.titles.count:%@", self.titles);
-    [self.titles removeObjectAtIndex:tag];
-    [self refreshScrollView];
 }
 
 #pragma mark 刷新视图
 - (void)refreshScrollView {
     
-    if (!self.titles.count) {// 参数没有
-        if (self.conditionParamBlock) {
-            self.conditionParamBlock();
-        }
+    if (self.params.count == 0) {
+        return;
     }
-    
+    // 移除所有的子视图
     [self.scroll.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     CGFloat labelX = 10;
     CGFloat labelH = self.scroll.frame.size.height;
-    for (NSInteger i = 0; i < self.titles.count; i++) {
-        CGSize size = [self getSizeWithString:self.titles[i] font:[UIFont systemFontOfSize:14]];
+    for (NSInteger i = 0; i < self.params.count; i++) {
+        YLBuyConditionModel *model = self.params[i];
+        CGSize size = [self getSizeWithString:model.title font:[UIFont systemFontOfSize:14]];
         // 如果label背景出现一条竖线，可能是宽度没有取整导致的，使用ceil函数去精
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(labelX, 9, ceilf(size.width + 30), labelH - 18)];
-        label.text = self.titles[i];
+        label.text = model.title;
         label.textColor = YLColor(51.f, 51.f, 51.f);
         label.font = [UIFont systemFontOfSize:12];
         label.textAlignment = NSTextAlignmentCenter;
         label.backgroundColor = YLColor(245.f, 245.f, 245.f);
-//        label.clipsToBounds = NO;
-//        label.layer.masksToBounds = YES;
-//        label.layer.cornerRadius = 10.f;
         label.tag = 100 + i;
         label.userInteractionEnabled = YES;
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(labelClick:)];
@@ -129,16 +127,10 @@
     return [string boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin attributes:attrs context:nil].size;
 }
 
-- (void)setParams:(NSArray *)params {
+- (void)setParams:(NSMutableArray *)params {
     _params = params;
-    self.titles = [NSMutableArray arrayWithArray:params];
     [self refreshScrollView];
 }
 
-- (NSMutableArray *)titles {
-    if (!_titles) {
-        _titles = [NSMutableArray array];
-    }
-    return _titles;
-}
+
 @end

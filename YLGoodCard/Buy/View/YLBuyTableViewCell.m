@@ -55,6 +55,7 @@
     icon.backgroundColor = YLColor(233.f, 233.f, 233.f);
     icon.layer.cornerRadius = 5.f;
     icon.layer.masksToBounds = YES;
+    icon.contentMode = UIViewContentModeScaleAspectFill;
     [self addSubview:icon];
     self.icon = icon;
     

@@ -26,8 +26,8 @@
     
     
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
-    // 启动图片延时: 1秒
-    [NSThread sleepForTimeInterval:3];
+//    // 启动图片延时: 3秒
+    [NSThread sleepForTimeInterval:1];
     
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     self.window.rootViewController = [[YLTabBarController alloc] init];

@@ -84,6 +84,7 @@
         UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
         btn.frame = CGRectMake(btnX, btnY, btnW, btnH);
         [btn setImage:[UIImage imageNamed:images[i]] forState:UIControlStateNormal];
+        [btn setUserInteractionEnabled:NO];
         [view addSubview:btn];
         [self.btns addObject:btn];
     }
@@ -91,10 +92,15 @@
 
 - (void)tap:(UITapGestureRecognizer *)sender {
     
+    NSLog(@"点击了按钮");
     NSInteger index = sender.view.tag - 100;
     self.index = index;
     if (self.linkageBlock) {
         self.linkageBlock(index);
+    }
+    
+    if (self.delegate && [self.delegate respondsToSelector:@selector(linkageWithIndex:)]) {
+        [self.delegate linkageWithIndex:index];
     }
 }
 
@@ -121,23 +127,6 @@
         }
     }
 }
-
-//- (void)setIsSelect:(BOOL)isSelect {
-//    _isSelect = isSelect;
-//    if (isSelect) {
-//        if (self.index == 0 || self.index == 2) {
-//            self.selectLabel.textColor = [UIColor blackColor];
-//            [self.selectBtn setImage:[UIImage imageNamed:@"下拉"] forState:UIControlStateNormal];
-//            self.selectLabel = self.labels[self.index];
-//            self.selectBtn = self.btns[self.index];
-//            self.selectLabel.textColor = YLColor(8.f, 169.f, 255.f);
-//            [self.selectBtn setImage:[UIImage imageNamed:@"上拉"] forState:UIControlStateNormal];
-//        }
-//    } else {
-//        self.selectLabel.textColor = [UIColor blackColor];
-//        [self.selectBtn setImage:[UIImage imageNamed:@"下拉"] forState:UIControlStateNormal];
-//    }
-//}
 
 - (NSMutableArray *)labels {
     if (!_labels) {

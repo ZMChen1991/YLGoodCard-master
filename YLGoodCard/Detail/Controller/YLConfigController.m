@@ -97,6 +97,8 @@
     NSDictionary *dic = self.rows[indexPath.row];
     cell.textLabel.text = [dic valueForKey:@"key"];
     cell.detailTextLabel.text = [dic valueForKey:@"value"];
+    cell.textLabel.font = [UIFont systemFontOfSize:14];
+    cell.detailTextLabel.font = [UIFont systemFontOfSize:12];
     return cell;
 }
 
@@ -114,6 +116,7 @@
         _tableView.delegate = self;
         _tableView.dataSource = self;
         _tableView.tableFooterView = [[UIView alloc] init];
+        _tableView.bounces = NO;
     }
     return _tableView;
 }

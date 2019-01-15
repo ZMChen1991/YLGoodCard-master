@@ -13,6 +13,7 @@
 #import "YLTabBarController.h"
 #import "YLNavigationController.h"
 #import "YLHomeTool.h"
+#import "YLBuyConditionModel.h"
 
 /**
  搜索界面思路:本地
@@ -57,16 +58,23 @@
             NSLog(@"%@", string);
             [weakSelf saveSearchHistory:string];
             // 这里跳转到买车控制器
-            NSMutableDictionary *param = [NSMutableDictionary dictionary];
-            [param setValue:string forKey:@"brand"];
-            NSMutableDictionary *tempParam = [NSMutableDictionary dictionary];
-            [tempParam setValue:string forKey:@"brand"];
+            YLBuyConditionModel *model = [[YLBuyConditionModel alloc] init];
+            model.title = string;
+            model.detail = string;
+            model.param = string;
+            model.key = @"brand";
+            
+//            NSMutableDictionary *param = [NSMutableDictionary dictionary];
+//            [param setValue:string forKey:@"brand"];
+//            NSMutableDictionary *tempParam = [NSMutableDictionary dictionary];
+//            [tempParam setValue:string forKey:@"brand"];
             // 获取tabBarVC里的导航控制器存放的子控制器，传值到子控制器，再切换视图
             YLTabBarController *tab = (YLTabBarController *)[UIApplication sharedApplication].keyWindow.rootViewController;
             YLNavigationController *nav2 = tab.viewControllers[1];
             YLBuyController *buy = nav2.viewControllers.firstObject;
-            buy.param = param;
-            buy.tempParam = tempParam;
+            buy.paramModel = model;
+//            buy.param = param;
+//            buy.tempParam = tempParam;
             tab.selectedIndex = 1;
             [weakSelf.navigationController popToRootViewControllerAnimated:YES];
         };
@@ -74,14 +82,6 @@
     return _searchView;
 }
 
-//// 热门搜索
-//- (NSMutableArray *)hotSearch {
-//
-//    if (!_hotSearch) {
-//        _hotSearch = [NSMutableArray arrayWithObjects:@"雪佛兰",@"丰田",@"陆风",@"传祺",@"宝马",@"吉利",@"现代",@"本田",@"奥迪", nil];
-//    }
-//    return _hotSearch;
-//}
 - (void)setHotSearch:(NSMutableArray *)hotSearch {
     
     _hotSearch = hotSearch;
@@ -132,16 +132,16 @@
     if (![self isBlankString:self.searchBar.text]) {
         // 将搜索的条件以字典的形式传给控制器
         NSString *titleString = self.searchBar.text;
-        NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-        [dict setValue:titleString forKey:@"title"];
-        NSMutableDictionary *tempParam = [NSMutableDictionary dictionary];
-        [tempParam setValue:titleString forKey:@"title"];
+        YLBuyConditionModel *model = [[YLBuyConditionModel alloc] init];
+        model.title = titleString;
+        model.detail = titleString;
+        model.param = titleString;
+        model.key = @"title";
         // 跳转m到买车控制器
         YLTabBarController *tab = (YLTabBarController *)[UIApplication sharedApplication].keyWindow.rootViewController;
         YLNavigationController *nav = tab.viewControllers[1];
         YLBuyController *buy = nav.viewControllers.firstObject;
-        buy.param = dict;
-        buy.tempParam = tempParam;
+        buy.paramModel = model;
         [buy.titleBar setTitle:titleString forState:UIControlStateNormal];
         tab.selectedIndex = 1;
         [self.navigationController popToRootViewControllerAnimated:YES];

@@ -24,6 +24,7 @@
  */
 - (NSMutableAttributedString *)changeString:(NSString *)changeString color:(UIColor *)color;
 
+// 是否空白字符
 + (BOOL) isBlankString:(NSString *)string;
 
 + (NSString *)stringByDate:(NSDate *)date;

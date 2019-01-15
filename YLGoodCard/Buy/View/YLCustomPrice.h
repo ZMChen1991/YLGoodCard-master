@@ -7,20 +7,27 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "YLBuyConditionModel.h"
 
 
-typedef void(^customPriceBlock)(UIButton *sender);
-@class YLCustomPrice;
-@protocol YLCustomPriceDelegate <NSObject>
-@optional
-- (void)pushLowPrice:(NSString *)lowPrice highPrice:(NSString *)highPrice;
-@end
+typedef void(^CustomPriceBlock)(NSArray *priceModels);
+typedef void(^SurePriceBlock)(NSString *lowPrice, NSString *highPrice);
+//@class YLCustomPrice;
+//@protocol YLCustomPriceDelegate <NSObject>
+//@optional
+//- (void)pushLowPrice:(NSString *)lowPrice highPrice:(NSString *)highPrice;
+//@end
 
 
 @interface YLCustomPrice : UIView
 
-@property (nonatomic, copy) customPriceBlock customPriceBlock;
-@property (nonatomic, weak) id<YLCustomPriceDelegate> delegate;
+@property (nonatomic, copy) CustomPriceBlock customPriceBlock;
+@property (nonatomic, copy) SurePriceBlock surePriceBlock;
+//@property (nonatomic, weak) id<YLCustomPriceDelegate> delegate;
+
+@property (nonatomic, copy) NSArray *models;
+//@property (nonatomic, strong) YLBuyConditionModel *lowModel;
+//@property (nonatomic, strong) YLBuyConditionModel *highModel;
 
 
 @end

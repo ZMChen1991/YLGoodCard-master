@@ -8,7 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@class YLSortView;
+//@class YLSortView;
+@class YLBuyConditionModel;
 
 @protocol YLSortViewDelegate <NSObject>
 
@@ -16,11 +17,13 @@
 
 @end
 
-
-typedef void(^SortViewBlock)(NSInteger index, NSString *title);
+typedef void(^SortViewBlock)(NSArray *sortModels);
 @interface YLSortView : UIView
 
 @property (nonatomic, weak) id<YLSortViewDelegate> delegate;
 @property (nonatomic, copy) SortViewBlock sortViewBlock;
+
+@property (nonatomic, copy) NSArray *models;// 数据源
+
 
 @end

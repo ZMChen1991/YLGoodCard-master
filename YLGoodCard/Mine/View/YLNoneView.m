@@ -29,7 +29,7 @@
 - (void)setupUI {
     
     UIImageView *icon = [[UIImageView alloc] init];
-    icon.frame = CGRectMake(YLScreenWidth / 2 - 61, 0, 122, 122);
+    icon.frame = CGRectMake(YLScreenWidth / 2 - 61, 64, 122, 122);
     icon.image = [UIImage imageNamed:@"暂无收藏"];
     [self addSubview:icon];
     
@@ -46,6 +46,7 @@
     go.frame = CGRectMake(YLScreenWidth / 2 - 70, CGRectGetMaxY(title.frame) + 20, 141, 44);
     go.type = YLConditionTypeBlue;
     [go setTitle:@"现在去逛逛" forState:UIControlStateNormal];
+    go.titleLabel.font = [UIFont systemFontOfSize:14];
     [go addTarget:self action:@selector(go) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:go];
     
