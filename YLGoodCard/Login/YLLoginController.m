@@ -182,6 +182,7 @@
             }
             if ([result[@"code"] isEqualToNumber:[NSNumber numberWithInt:200]]) {
                 NSLog(@"登录成功:%@", result[@"message"]);
+                [self showMessage:@"登录成功"];
                 // 返回账号字典数据-->模型，存进沙盒
                 YLAccount *account = [YLAccount accountWithDict:result[@"data"]];
                 // 存储账号信息

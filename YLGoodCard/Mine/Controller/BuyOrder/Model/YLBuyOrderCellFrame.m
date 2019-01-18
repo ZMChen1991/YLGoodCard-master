@@ -17,8 +17,8 @@
     
     self.iconF = CGRectMake(YLLeftMargin, YLTopSpace, 120, 86);
     
-    float titleX = CGRectGetMaxX(self.iconF) + YLLeftMargin;
-    float titleW = YLScreenWidth - 120 - 2 * YLLeftMargin - YLTopSpace;
+    CGFloat titleX = CGRectGetMaxX(self.iconF) + YLLeftMargin;
+    CGFloat titleW = YLScreenWidth - 120 - 2 * YLLeftMargin - YLTopSpace;
     CGFloat priceW = [[self stringToNumber:model.detail.price] getSizeWithFont:[UIFont systemFontOfSize:18]].width + 10;
     self.titleF = CGRectMake(titleX, YLTopSpace, titleW, 34);
     self.courseF = CGRectMake(titleX, CGRectGetMaxY(self.titleF) + 5, titleW, 17);

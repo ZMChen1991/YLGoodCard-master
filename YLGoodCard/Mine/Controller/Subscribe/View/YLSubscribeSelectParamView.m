@@ -1,12 +1,12 @@
 //
-//  YLSelectView.m
+//  YLSubscribeSelectParamView.m
 //  YLGoodCard
 //
-//  Created by lm on 2018/11/10.
-//  Copyright © 2018 Chenzhiming. All rights reserved.
+//  Created by lm on 2019/1/18.
+//  Copyright © 2019 Chenzhiming. All rights reserved.
 //
 
-#import "YLSelectView.h"
+#import "YLSubscribeSelectParamView.h"
 #import "YLBuyConditionModel.h"
 #import "YLConditionCell.h"
 #import "YLCollectHeader.h"
@@ -15,13 +15,13 @@ static NSString *const cellID = @"YLSelectCell";
 static NSString *const footerID = @"YLSelectFooter";
 static NSString *const headerID = @"YLSelectheader";
 
-@interface YLSelectView () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
+@interface YLSubscribeSelectParamView () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 
 @property (nonatomic, strong) UICollectionView *collectionView;
 
 @end
 
-@implementation YLSelectView
+@implementation YLSubscribeSelectParamView
 
 - (instancetype)initWithFrame:(CGRect)frame {
     
@@ -183,5 +183,6 @@ static NSString *const headerID = @"YLSelectheader";
 - (void)setHeaderTitles:(NSArray *)headerTitles {
     _headerTitles = [headerTitles copy];
 }
+
 
 @end

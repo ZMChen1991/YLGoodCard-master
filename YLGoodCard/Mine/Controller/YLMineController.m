@@ -29,6 +29,7 @@
 #import "YLBuyOrderController.h"
 #import "YLBargainHistoryController.h"
 #import "YLDepreciateController.h"
+#import "YLSubscribeController.h"
 
 #import "YLTableGroupHeader.h"
 #import "YLFunctionView.h"
@@ -355,7 +356,21 @@
         [self.navigationController pushViewController:browse animated:YES];
     }
     if (index == 3) {
-        [self showMessage:@"开发中,敬请期待"];
+        
+        if (account) {
+            YLSubscribeController *subscribe = [[YLSubscribeController alloc] init];
+            subscribe.title = array[index];
+            [self.navigationController pushViewController:subscribe animated:YES];
+            return;
+        } else {
+            NSLog(@"没有登录");
+            [self.navigationController pushViewController:self.loginVc animated:YES];
+        }
+        
+//        YLSubscribeController *subscribe = [[YLSubscribeController alloc] init];
+//        subscribe.title = array[index];
+//        [self.navigationController pushViewController:subscribe animated:YES];
+//        [self showMessage:@"开发中,敬请期待"];
         return;
     }
     

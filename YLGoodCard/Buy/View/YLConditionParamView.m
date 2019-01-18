@@ -37,8 +37,8 @@
 - (void)setupUI {
     
     UIScrollView *scroll = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, YLScreenWidth - 70, self.frame.size.height)];
-    scroll.backgroundColor = YLColor(233.f, 233.f, 233.f);
-//    scroll.backgroundColor = [UIColor whiteColor];
+//    scroll.backgroundColor = YLColor(233.f, 233.f, 233.f);
+    scroll.backgroundColor = [UIColor whiteColor];
     [self addSubview:scroll];
     self.scroll = scroll;
     

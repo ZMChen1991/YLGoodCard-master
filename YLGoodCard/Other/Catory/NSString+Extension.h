@@ -11,7 +11,6 @@
 @interface NSString (Extension)
 // 获取字符串的长度
 - (CGSize)getSizeWithFont:(UIFont *)font maxWidth:(CGFloat)maxWidth;
-
 - (CGSize)getSizeWithFont:(UIFont *)font;
 
 
@@ -27,6 +26,10 @@
 // 是否空白字符
 + (BOOL) isBlankString:(NSString *)string;
 
+// 日期转字符串
 + (NSString *)stringByDate:(NSDate *)date;
+
+// 显示2秒弹窗
++ (void)showMessage:(NSString *)message;
 
 @end

@@ -20,6 +20,13 @@
 		8A0E3F51218A95F300275131 /* YLMineController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A0E3F50218A95F300275131 /* YLMineController.m */; };
 		8A0E3F67218AA14200275131 /* YLTitleBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A0E3F66218AA14200275131 /* YLTitleBar.m */; };
 		8A0E3F79218AEC8400275131 /* UIView+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A0E3F77218AEC8400275131 /* UIView+Extension.m */; };
+		8A1741B521EEC1AC00351359 /* YLSubscribeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A1741B421EEC1AC00351359 /* YLSubscribeModel.m */; };
+		8A1741B821EEC1CB00351359 /* YLSubscribeDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A1741B721EEC1CB00351359 /* YLSubscribeDetailModel.m */; };
+		8A1741BB21EEC1F500351359 /* YLSubscribeCellFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A1741BA21EEC1F500351359 /* YLSubscribeCellFrame.m */; };
+		8A1741BE21EEC5B000351359 /* YLSubscribeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A1741BD21EEC5B000351359 /* YLSubscribeCell.m */; };
+		8A1741C121EF09F200351359 /* YLSubcribeViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A1741C021EF09F200351359 /* YLSubcribeViewCell.m */; };
+		8A1741C421EF0FA700351359 /* YLCollectionFooterButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A1741C321EF0FA700351359 /* YLCollectionFooterButton.m */; };
+		8A1741C721EF1CF100351359 /* YLSubcribeParamView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A1741C621EF1CF100351359 /* YLSubcribeParamView.m */; };
 		8A1A846621C8D623001A1656 /* YLTitleLinkageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A1A846421C8D623001A1656 /* YLTitleLinkageView.m */; };
 		8A205FBC21B8BAAB009EA592 /* IXWheelV.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A205FBB21B8BAAB009EA592 /* IXWheelV.m */; };
 		8A205FC221B8C3DC009EA592 /* YLHotCarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A205FC121B8C3DC009EA592 /* YLHotCarView.m */; };
@@ -53,6 +60,7 @@
 		8A35F8EF218D3E9C00BDBC9E /* YLOrderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A35F8EE218D3E9C00BDBC9E /* YLOrderCell.m */; };
 		8A35F8F5218D541400BDBC9E /* YLOrderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A35F8F4218D541400BDBC9E /* YLOrderView.m */; };
 		8A35F8F8218D5F9F00BDBC9E /* YLReservationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A35F8F7218D5F9F00BDBC9E /* YLReservationController.m */; };
+		8A375DBF21F0704D00AB6521 /* YLSubscribeDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A375DBE21F0704D00AB6521 /* YLSubscribeDetailController.m */; };
 		8A37DEFB218C0D88003A18F0 /* YLSaleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A37DEFA218C0D88003A18F0 /* YLSaleView.m */; };
 		8A37DEFE218C0F22003A18F0 /* YLSaleViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A37DEFD218C0F22003A18F0 /* YLSaleViewModel.m */; };
 		8A37DF01218C2E77003A18F0 /* YLMessageController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A37DF00218C2E77003A18F0 /* YLMessageController.m */; };
@@ -86,6 +94,7 @@
 		8A9C60E921D0CA0600307701 /* YLLookedCarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A9C60E821D0CA0600307701 /* YLLookedCarController.m */; };
 		8A9C60EC21D0D48800307701 /* YLCollectingCarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A9C60EB21D0D48800307701 /* YLCollectingCarController.m */; };
 		8A9C60EF21D0D49400307701 /* YLCollectedCarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A9C60EE21D0D49400307701 /* YLCollectedCarController.m */; };
+		8AA75CFB21F1A3FD0044B717 /* YLSubscribeSelectParamView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AA75CFA21F1A3FD0044B717 /* YLSubscribeSelectParamView.m */; };
 		8AA8CB5D21CB36B90006B972 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AA8CB5C21CB36B90006B972 /* libz.tbd */; };
 		8AA8CB5F21CB36CB0006B972 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AA8CB5E21CB36CB0006B972 /* libsqlite3.tbd */; };
 		8AA8CB6121CB36DA0006B972 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AA8CB6021CB36DA0006B972 /* CoreTelephony.framework */; };
@@ -249,6 +258,20 @@
 		8A0E3F72218AE60300275131 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
 		8A0E3F77218AEC8400275131 /* UIView+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Extension.m"; sourceTree = "<group>"; };
 		8A0E3F78218AEC8400275131 /* UIView+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Extension.h"; sourceTree = "<group>"; };
+		8A1741B321EEC1AC00351359 /* YLSubscribeModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YLSubscribeModel.h; sourceTree = "<group>"; };
+		8A1741B421EEC1AC00351359 /* YLSubscribeModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YLSubscribeModel.m; sourceTree = "<group>"; };
+		8A1741B621EEC1CB00351359 /* YLSubscribeDetailModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YLSubscribeDetailModel.h; sourceTree = "<group>"; };
+		8A1741B721EEC1CB00351359 /* YLSubscribeDetailModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YLSubscribeDetailModel.m; sourceTree = "<group>"; };
+		8A1741B921EEC1F500351359 /* YLSubscribeCellFrame.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YLSubscribeCellFrame.h; sourceTree = "<group>"; };
+		8A1741BA21EEC1F500351359 /* YLSubscribeCellFrame.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YLSubscribeCellFrame.m; sourceTree = "<group>"; };
+		8A1741BC21EEC5B000351359 /* YLSubscribeCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YLSubscribeCell.h; sourceTree = "<group>"; };
+		8A1741BD21EEC5B000351359 /* YLSubscribeCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YLSubscribeCell.m; sourceTree = "<group>"; };
+		8A1741BF21EF09F200351359 /* YLSubcribeViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YLSubcribeViewCell.h; sourceTree = "<group>"; };
+		8A1741C021EF09F200351359 /* YLSubcribeViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YLSubcribeViewCell.m; sourceTree = "<group>"; };
+		8A1741C221EF0FA700351359 /* YLCollectionFooterButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YLCollectionFooterButton.h; sourceTree = "<group>"; };
+		8A1741C321EF0FA700351359 /* YLCollectionFooterButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YLCollectionFooterButton.m; sourceTree = "<group>"; };
+		8A1741C521EF1CF100351359 /* YLSubcribeParamView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YLSubcribeParamView.h; sourceTree = "<group>"; };
+		8A1741C621EF1CF100351359 /* YLSubcribeParamView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YLSubcribeParamView.m; sourceTree = "<group>"; };
 		8A1A846421C8D623001A1656 /* YLTitleLinkageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YLTitleLinkageView.m; sourceTree = "<group>"; };
 		8A1A846521C8D623001A1656 /* YLTitleLinkageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YLTitleLinkageView.h; sourceTree = "<group>"; };
 		8A205FBA21B8BAAB009EA592 /* IXWheelV.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXWheelV.h; sourceTree = "<group>"; };
@@ -316,6 +339,8 @@
 		8A35F8F4218D541400BDBC9E /* YLOrderView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YLOrderView.m; sourceTree = "<group>"; };
 		8A35F8F6218D5F9F00BDBC9E /* YLReservationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YLReservationController.h; sourceTree = "<group>"; };
 		8A35F8F7218D5F9F00BDBC9E /* YLReservationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YLReservationController.m; sourceTree = "<group>"; };
+		8A375DBD21F0704D00AB6521 /* YLSubscribeDetailController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YLSubscribeDetailController.h; sourceTree = "<group>"; };
+		8A375DBE21F0704D00AB6521 /* YLSubscribeDetailController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YLSubscribeDetailController.m; sourceTree = "<group>"; };
 		8A37DEF9218C0D88003A18F0 /* YLSaleView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YLSaleView.h; sourceTree = "<group>"; };
 		8A37DEFA218C0D88003A18F0 /* YLSaleView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YLSaleView.m; sourceTree = "<group>"; };
 		8A37DEFC218C0F22003A18F0 /* YLSaleViewModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YLSaleViewModel.h; sourceTree = "<group>"; };
@@ -378,6 +403,8 @@
 		8A9C60EB21D0D48800307701 /* YLCollectingCarController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YLCollectingCarController.m; sourceTree = "<group>"; };
 		8A9C60ED21D0D49400307701 /* YLCollectedCarController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YLCollectedCarController.h; sourceTree = "<group>"; };
 		8A9C60EE21D0D49400307701 /* YLCollectedCarController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YLCollectedCarController.m; sourceTree = "<group>"; };
+		8AA75CF921F1A3FD0044B717 /* YLSubscribeSelectParamView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YLSubscribeSelectParamView.h; sourceTree = "<group>"; };
+		8AA75CFA21F1A3FD0044B717 /* YLSubscribeSelectParamView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YLSubscribeSelectParamView.m; sourceTree = "<group>"; };
 		8AA8CB5C21CB36B90006B972 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		8AA8CB5E21CB36CB0006B972 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		8AA8CB6021CB36DA0006B972 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
@@ -1027,6 +1054,47 @@
 			path = Catory;
 			sourceTree = "<group>";
 		};
+		8A1741B021EE395B00351359 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				8A1741BC21EEC5B000351359 /* YLSubscribeCell.h */,
+				8A1741BD21EEC5B000351359 /* YLSubscribeCell.m */,
+				8A1741BF21EF09F200351359 /* YLSubcribeViewCell.h */,
+				8A1741C021EF09F200351359 /* YLSubcribeViewCell.m */,
+				8A1741C221EF0FA700351359 /* YLCollectionFooterButton.h */,
+				8A1741C321EF0FA700351359 /* YLCollectionFooterButton.m */,
+				8A1741C521EF1CF100351359 /* YLSubcribeParamView.h */,
+				8A1741C621EF1CF100351359 /* YLSubcribeParamView.m */,
+				8AA75CF921F1A3FD0044B717 /* YLSubscribeSelectParamView.h */,
+				8AA75CFA21F1A3FD0044B717 /* YLSubscribeSelectParamView.m */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		8A1741B121EE396900351359 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				8A1741B321EEC1AC00351359 /* YLSubscribeModel.h */,
+				8A1741B421EEC1AC00351359 /* YLSubscribeModel.m */,
+				8A1741B621EEC1CB00351359 /* YLSubscribeDetailModel.h */,
+				8A1741B721EEC1CB00351359 /* YLSubscribeDetailModel.m */,
+				8A1741B921EEC1F500351359 /* YLSubscribeCellFrame.h */,
+				8A1741BA21EEC1F500351359 /* YLSubscribeCellFrame.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		8A1741B221EE397000351359 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				8AC354F021B046CD00A464AF /* YLSubscribeController.h */,
+				8AC354F121B046CD00A464AF /* YLSubscribeController.m */,
+				8A375DBD21F0704D00AB6521 /* YLSubscribeDetailController.h */,
+				8A375DBE21F0704D00AB6521 /* YLSubscribeDetailController.m */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
 		8A2111242191633C0014132C /* Detail */ = {
 			isa = PBXGroup;
 			children = (
@@ -1562,8 +1630,9 @@
 		8ADEE4D321B0C49D00BAD2CD /* Subscribe */ = {
 			isa = PBXGroup;
 			children = (
-				8AC354F021B046CD00A464AF /* YLSubscribeController.h */,
-				8AC354F121B046CD00A464AF /* YLSubscribeController.m */,
+				8A1741B221EE397000351359 /* Controller */,
+				8A1741B121EE396900351359 /* Model */,
+				8A1741B021EE395B00351359 /* View */,
 			);
 			path = Subscribe;
 			sourceTree = "<group>";
@@ -1755,6 +1824,7 @@
 				8AB70C9321E5CCE900FB0D8C /* YLBuyConditionModel.m in Sources */,
 				8A0E3F45218A942D00275131 /* YLNavigationController.m in Sources */,
 				8A4A66F9219E7EB0001B3CC0 /* YLBrandModel.m in Sources */,
+				8A1741BE21EEC5B000351359 /* YLSubscribeCell.m in Sources */,
 				8A3E6AAB21B5136E008C5D6F /* YLDetailBargainView.m in Sources */,
 				8AA8CB7221CB4AA70006B972 /* YLTableViewCellFrame.m in Sources */,
 				8AB874492199149500FB0A93 /* YLLoginHeader.m in Sources */,
@@ -1795,6 +1865,7 @@
 				8AC348A521B3F09300BC9D11 /* YLChangePriceView.m in Sources */,
 				8A205FBC21B8BAAB009EA592 /* IXWheelV.m in Sources */,
 				8A265C72219A629700FB58A3 /* YLAboutController.m in Sources */,
+				8AA75CFB21F1A3FD0044B717 /* YLSubscribeSelectParamView.m in Sources */,
 				8A9C60E921D0CA0600307701 /* YLLookedCarController.m in Sources */,
 				8AC354FE21B0484500A464AF /* YLBrowseController.m in Sources */,
 				8A211130219163F20014132C /* YLSafeguardCell.m in Sources */,
@@ -1815,6 +1886,7 @@
 				8ADEE4DC21B0D0BB00BAD2CD /* YLCollectionModel.m in Sources */,
 				8ADEE50121B0E4D400BAD2CD /* YLSubController.m in Sources */,
 				8ADEE4D621B0C56B00BAD2CD /* YLSubCollectController.m in Sources */,
+				8A375DBF21F0704D00AB6521 /* YLSubscribeDetailController.m in Sources */,
 				8A0E3F4B218A949B00275131 /* YLBuyController.m in Sources */,
 				8A3E6A9C21B4CA75008C5D6F /* YLBargainHistoryDetailHeader.m in Sources */,
 				8AB70C9E21E5E9C400FB0D8C /* YLCollectHeader.m in Sources */,
@@ -1822,6 +1894,7 @@
 				8A35F8EC218D3DAF00BDBC9E /* YLOrderController.m in Sources */,
 				8AEFA6A6219D720C00C21452 /* YLTableViewCell.m in Sources */,
 				8AB8744C219918E100FB0A93 /* YLFunctionView.m in Sources */,
+				8A1741C421EF0FA700351359 /* YLCollectionFooterButton.m in Sources */,
 				8A3E6AA521B5053F008C5D6F /* YLLookCarNumberView.m in Sources */,
 				8A219FAC21CC8DF600C7904A /* YLBarView.m in Sources */,
 				8AFC7B3D21A398DA00570E83 /* YLDetailReportModel.m in Sources */,
@@ -1842,6 +1915,7 @@
 				8AEFA6A0219D55BB00C21452 /* YLNotableModel.m in Sources */,
 				8A265C6F219A5B6300FB58A3 /* YLSettingController.m in Sources */,
 				8AC082A121C0DC5000B97D02 /* YLSubAllBuyOrderController.m in Sources */,
+				8A1741BB21EEC1F500351359 /* YLSubscribeCellFrame.m in Sources */,
 				8ADEE50C21B0E4E000BAD2CD /* YLSubBuyOrderController.m in Sources */,
 				8AEFA690219D1D7B00C21452 /* YLTableGroupHeader.m in Sources */,
 				8A9C60E621D0C9F100307701 /* YLLookingCarController.m in Sources */,
@@ -1884,6 +1958,7 @@
 				8AC19BB721BA5CB000A9E52A /* YLAppointView.m in Sources */,
 				8AC348B721B403B800BC9D11 /* YLContactView.m in Sources */,
 				8A0E3F79218AEC8400275131 /* UIView+Extension.m in Sources */,
+				8A1741B821EEC1CB00351359 /* YLSubscribeDetailModel.m in Sources */,
 				8AC0829B21C0D86E00B97D02 /* YLSoldOutController.m in Sources */,
 				8AC3547D21AD14F400A464AF /* YLCityView.m in Sources */,
 				8ADE764021A6960A00C78F00 /* YLHomeTool.m in Sources */,
@@ -1893,8 +1968,10 @@
 				8AC082B321C202A400B97D02 /* YLBargainDetailCellFrame.m in Sources */,
 				8AC354F221B046CD00A464AF /* YLSubscribeController.m in Sources */,
 				8A35F8EF218D3E9C00BDBC9E /* YLOrderCell.m in Sources */,
+				8A1741C721EF1CF100351359 /* YLSubcribeParamView.m in Sources */,
 				8AFC7B4E21A53C3000570E83 /* YLMineIcon.m in Sources */,
 				8AC3868C21C49174009F063B /* YLVehicleModel.m in Sources */,
+				8A1741B521EEC1AC00351359 /* YLSubscribeModel.m in Sources */,
 				8AC354DD21AE64E300A464AF /* YLCarInformationModel.m in Sources */,
 				8AD7897D21A7FF830002946B /* YLCarTypeController.m in Sources */,
 				8A35F8F8218D5F9F00BDBC9E /* YLReservationController.m in Sources */,
@@ -1934,6 +2011,7 @@
 				8AF0DB1A2196DD6D00A3A11F /* YLSortView.m in Sources */,
 				8AC082BF21C233D600B97D02 /* YLSubSellerBargainHistoryCell.m in Sources */,
 				8A3E6AAE21B515BB008C5D6F /* YLDetailOrderTimeView.m in Sources */,
+				8A1741C121EF09F200351359 /* YLSubcribeViewCell.m in Sources */,
 				8AFC7B4121A3F21600570E83 /* UIBarButtonItem+Extension.m in Sources */,
 				8A0E3F51218A95F300275131 /* YLMineController.m in Sources */,
 				8A90399B21A285140099BC98 /* YLDetectCenterView.m in Sources */,

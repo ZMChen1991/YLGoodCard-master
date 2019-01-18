@@ -12,6 +12,7 @@
 @interface YLNoneView ()
 
 @property (nonatomic, strong) UILabel *titleL;
+@property (nonatomic, strong) YLCondition *goBtn;
 
 @end
 
@@ -49,7 +50,7 @@
     go.titleLabel.font = [UIFont systemFontOfSize:14];
     [go addTarget:self action:@selector(go) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:go];
-    
+    self.goBtn = go;
 }
 
 - (void)go {
@@ -62,6 +63,10 @@
     }
 }
 
+- (void)hideBtn {
+    self.goBtn.hidden = YES;
+}
+
 - (void)layoutSubviews {
     
     [super layoutSubviews];
@@ -72,5 +77,7 @@
     _title = title;
     self.titleL.text = title;
 }
+
+
 
 @end

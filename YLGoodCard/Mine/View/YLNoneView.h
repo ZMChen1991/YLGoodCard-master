@@ -18,6 +18,8 @@ typedef void(^NoneViewBlock)(void);
 @property (nonatomic, strong) NSString *title;
 @property (nonatomic, copy) NoneViewBlock noneViewBlock;
 
+- (void)hideBtn;
+
 @end
 
 NS_ASSUME_NONNULL_END
