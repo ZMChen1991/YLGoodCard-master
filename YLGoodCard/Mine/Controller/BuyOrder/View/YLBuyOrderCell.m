@@ -47,6 +47,7 @@
     icon.backgroundColor = YLColor(233.f, 233.f, 233.f);
     icon.layer.cornerRadius = 5.f;
     icon.layer.masksToBounds = YES;
+    icon.contentMode = UIViewContentModeScaleAspectFill;
     [self addSubview:icon];
     self.icon = icon;
     
@@ -101,7 +102,7 @@
     self.line.frame = buyOrderCellFrame.lineF;
     
     //  赋值
-        [self.icon sd_setImageWithURL:[NSURL URLWithString:buyOrderCellFrame.model.detail.displayImg] placeholderImage:nil];
+        [self.icon sd_setImageWithURL:[NSURL URLWithString:buyOrderCellFrame.model.detail.displayImg] placeholderImage:[UIImage imageNamed:@"占位图"]];
     self.title.text = buyOrderCellFrame.model.detail.title;
     self.price.text = [self stringToNumber:buyOrderCellFrame.model.detail.price];
     self.course.text = [NSString stringWithFormat:@"%@万公里/年", buyOrderCellFrame.model.detail.course];

@@ -41,6 +41,7 @@
         CGFloat height = 88;
         YLNumberView *numberView = [[YLNumberView alloc] init];
         numberView.frame = CGRectMake(width * i, 0, width, height);
+        [numberView setFrame:CGRectIntegral(numberView.frame)];
         numberView.number = self.numbers[i];
         numberView.title = array[i];
         numberView.tag = 200 + i;

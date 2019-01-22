@@ -7,13 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "YLDetectCenterModel.h"
+#import "YLDetectCenterCellFrame.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface YLDetectCenterCell : UITableViewCell
 
-@property (nonatomic, strong) YLDetectCenterModel *model;
+@property (nonatomic, strong) YLDetectCenterCellFrame *cellFrame;
 
 + (instancetype)cellWithTableView:(UITableView *)tableView;
 

@@ -98,6 +98,11 @@
     // 获取搜索列表数据
     self.noneView.hidden = YES;
     
+    MBProgressHUD *hub = [[MBProgressHUD alloc] initWithView:self.view];
+    hub.detailsLabel.text = @"加载中，请稍后";
+    [hub showAnimated:YES];
+    [self.view addSubview:hub];
+    
     NSString *urlString = @"http://ucarjava.bceapp.com/detail?method=search";
 //    NSString *urlString = @"http://192.168.0.104:8080/winglok/detail?method=search";
     __weak typeof(self) weakSelf = self;
@@ -105,9 +110,11 @@
     [YLRequest GET:urlString parameters:self.selectParam success:^(id  _Nonnull responseObject) {
         if ([responseObject[@"code"] isEqualToNumber:[NSNumber numberWithInt:400]]) {
             NSLog(@"buyCar:%@", responseObject[@"message"]);
+            [hub removeFromSuperview];
         } else {
             [weakSelf keyedArchiverObject:responseObject toFile:YLBuyPath];
             [weakSelf getLocationData];
+            [hub removeFromSuperview];
         }
     } failed:nil];
     
@@ -148,7 +155,7 @@
     [self.view addSubview:paramView];
     self.conditionParamView = paramView;
     
-    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(titleLinkageView.frame), YLScreenWidth, YLScreenHeight - CGRectGetHeight(self.linkage.frame))];
+    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(titleLinkageView.frame), YLScreenWidth, YLScreenHeight - CGRectGetHeight(titleLinkageView.frame) - 64 - 44)];
     tableView.delegate = self;
     tableView.dataSource = self;
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -287,8 +294,8 @@
     YLBuyConditionModel *highModel = [[YLBuyConditionModel alloc] init];
     self.highModel = highModel;
     
-    NSArray *titles1 = @[@"最新上架", @"价格最高", @"价格最低", @"车龄最短", @"里程最少"];
-    NSArray *params1 = @[@"0", @"1", @"2", @"3", @"4"];
+    NSArray *titles1 = @[@"最新上架", @"价格最低", @"价格最高", @"车龄最短", @"里程最少"];
+    NSArray *params1 = @[@"1", @"2", @"3", @"4", @"5"];
     for (NSInteger i = 0; i < titles1.count; i++) {
         YLBuyConditionModel *model = [[YLBuyConditionModel alloc] init];
         model.param = params1[i];
@@ -360,10 +367,10 @@
     NSLog(@"%@", self.selectParams);
     if (self.selectParams.count > 0) { // 表示有选中的参数
         self.conditionParamView.frame = CGRectMake(0, CGRectGetMaxY(self.linkage.frame), YLScreenWidth, 50);
-        self.tableView.frame = CGRectMake(0, CGRectGetMaxY(self.conditionParamView.frame), YLScreenWidth, YLScreenHeight - CGRectGetHeight(self.linkage.frame));
+        self.tableView.frame = CGRectMake(0, CGRectGetMaxY(self.conditionParamView.frame), YLScreenWidth, YLScreenHeight - CGRectGetHeight(self.linkage.frame) - 50 - 64);
     } else {
         self.conditionParamView.frame = CGRectMake(-YLScreenWidth, CGRectGetMaxY(self.linkage.frame), YLScreenWidth, 50);
-        self.tableView.frame = CGRectMake(0, CGRectGetMaxY(self.linkage.frame), YLScreenWidth, YLScreenHeight - CGRectGetHeight(self.linkage.frame));
+        self.tableView.frame = CGRectMake(0, CGRectGetMaxY(self.linkage.frame), YLScreenWidth, YLScreenHeight - CGRectGetHeight(self.linkage.frame) - 64);
     }
     self.conditionParamView.params = self.selectParams;
     
@@ -510,9 +517,23 @@
         self.customPrice.surePriceBlock = ^(NSString *lowPrice, NSString *highPrice) {
             [cover removeFromSuperview];
             weakSelf.linkage.isRest = YES;
+            
+//            // 判断最高价和最低价
+//            if ([lowPrice integerValue] > [highPrice integerValue]) {
+//                [NSString showMessage:@"最低价不能大于最高价"];
+//            } else {
+//
+//            }
+            if ([lowPrice isEqualToString:@""]) {
+                lowPrice = @"0";
+            }
+            if ([highPrice isEqualToString:@""]) {
+                highPrice = @"0";
+            }
+            
             // 将传回来价格改成模型
             NSString *title = [NSString stringWithFormat:@"%@-%@万", lowPrice, highPrice];
-            NSString *param = [NSString stringWithFormat:@"%ld-%ld", [lowPrice integerValue] * 10000, [highPrice integerValue] * 10000];
+            NSString *param = [NSString stringWithFormat:@"%ldfgf%ld", [lowPrice integerValue] * 10000, [highPrice integerValue] * 10000];
             YLBuyConditionModel *model = [[YLBuyConditionModel alloc] init];
             model.title = title;
             model.param = param;

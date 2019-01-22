@@ -16,11 +16,15 @@
 #import "YLAccount.h"
 #import "YLBuyOrderModel.h"
 #import "YLBuyOrderCellFrame.h"
+#import "YLNoneView.h"
 
 #define YLAllBuyOrderPath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"AllBuyOrder.txt"]
 
 @interface YLSubAllBuyOrderController ()
+
 @property (nonatomic, strong) NSMutableArray *buyOrders;
+@property (nonatomic, strong) YLNoneView *noneView;
+
 @end
 
 @implementation YLSubAllBuyOrderController
@@ -71,6 +75,11 @@
         YLBuyOrderCellFrame *cellFrame = [[YLBuyOrderCellFrame alloc] init];
         cellFrame.model = model;
         [self.buyOrders addObject:cellFrame];
+    }
+    if (self.buyOrders.count == 0 || self.buyOrders == nil) {
+        self.noneView.hidden = NO;
+    } else {
+        self.noneView.hidden = YES;
     }
     [self.tableView reloadData];
 }
@@ -127,8 +136,14 @@
     return _buyOrders;
 }
 
-//- (void)setParam:(NSMutableDictionary *)param {
-//    _param = param;
-//    [self loadData];
-//}
+- (YLNoneView *)noneView {
+    if (!_noneView) {
+        _noneView = [[YLNoneView alloc] initWithFrame:CGRectMake(0, 0, YLScreenWidth, YLScreenHeight)];
+        _noneView.title = @"暂无相关订单";
+        _noneView.hidden = YES;
+        [_noneView hideBtn];
+        [self.view addSubview:_noneView];
+    }
+    return _noneView;
+}
 @end

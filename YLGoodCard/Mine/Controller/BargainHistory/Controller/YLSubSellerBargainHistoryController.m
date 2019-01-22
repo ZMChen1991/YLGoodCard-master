@@ -17,12 +17,14 @@
 #import "YLAccount.h"
 #import "YLAccountTool.h"
 #import "YLSubSellerBargainHistoryCell.h"
+#import "YLNoneView.h"
 
 #define YLSellerBargainHistoryPath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"SellerBargainHistory.txt"]
 
 @interface YLSubSellerBargainHistoryController ()
 
 @property (nonatomic, strong) NSMutableArray *sellerBargainHistorys;
+@property (nonatomic, strong) YLNoneView *noneView;
 
 @end
 
@@ -80,6 +82,11 @@
         YLBargainHistoryCellFrame *cellFrame = [[YLBargainHistoryCellFrame alloc] init];
         cellFrame.model = model;
         [self.sellerBargainHistorys addObject:cellFrame];
+    }
+    if (self.sellerBargainHistorys.count == 0 || self.sellerBargainHistorys == nil) {
+        self.noneView.hidden = NO;
+    } else {
+        self.noneView.hidden = YES;
     }
     [self.tableView reloadData];
 }
@@ -175,4 +182,16 @@
     }
     return _sellerBargainHistorys;
 }
+
+- (YLNoneView *)noneView {
+    if (!_noneView) {
+        _noneView = [[YLNoneView alloc] initWithFrame:CGRectMake(0, 0, YLScreenWidth, YLScreenHeight)];
+        _noneView.title = @"暂无相关记录";
+        _noneView.hidden = YES;
+        [_noneView hideBtn];
+        [self.view addSubview:_noneView];
+    }
+    return _noneView;
+}
+
 @end

@@ -11,11 +11,12 @@
 #import "YLDetectBrandController.h"
 #import "YLDetectCenterController.h"
 
-#import "YLCourseView.h"
-#import "YLCityView.h"
-#import "YLYearMonthPicker.h"
-#import "YLAllTimePicker.h"
 #import "YLOrderView.h"
+#import "YLSaleCarWriteCell.h"
+#import "YLSaleCarChoiceCell.h"
+#import "YLTimePicker.h"
+#import "YLYearMonthPicker.h"
+#import "YLYearMonthDayPicker.h"
 
 #import "YLRequest.h"
 
@@ -25,22 +26,10 @@
 @property (nonatomic, strong) UIView *cover; // 蒙板
 @property (nonatomic, strong) NSMutableArray *detailArray;
 @property (nonatomic, strong) NSMutableArray *brands;
-//
-//@property (nonatomic, strong) YLBrandView *brandView;
-//@property (nonatomic, strong) YLSeriesView *seriesView;
-//@property (nonatomic, strong) YLCartypeView *carTypeView;
-@property (nonatomic, strong) YLCourseView *courseView;
-@property (nonatomic, strong) YLCityView *cityView;
-@property (nonatomic, strong) YLYearMonthPicker *licenseTimeView;
-@property (nonatomic, strong) YLAllTimePicker *checkTimeView;
 
 // 预约卖车-咨询
 @property (nonatomic, strong) YLOrderView *orderView;
 
-
-//@property (nonatomic, strong) NSString *brand;
-//@property (nonatomic, strong) NSString *series;
-//@property (nonatomic, strong) NSString *carType;
 @property (nonatomic, strong) NSArray *titles;
 
 // 提交的参数
@@ -59,21 +48,21 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     [self setupUI];
-    [self addNotification];
+//    [self addNotification];
 }
 
 - (void)dealloc {
     NSLog(@"____dealloc____");
 }
 
-- (void)addNotification {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(transformView:) name:@"UIKeyboardWillChangeFrameNotification" object:nil];
-}
+//- (void)addNotification {
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(transformView:) name:@"UIKeyboardWillChangeFrameNotification" object:nil];
+//}
 
-- (void)viewWillDisappear:(BOOL)animated {
-    NSLog(@"viewWillDisappear");
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"UIKeyboardWillChangeFrameNotification" object:nil];
-}
+//- (void)viewWillDisappear:(BOOL)animated {
+//    NSLog(@"viewWillDisappear");
+//    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"UIKeyboardWillChangeFrameNotification" object:nil];
+//}
 
 - (void)setupUI {
     
@@ -90,6 +79,8 @@
     orderView.orderSaleBlock = ^{
         NSLog(@"确认预约卖车");
         if ([weakSelf isFullMessage]) {
+            NSString *examineTime = [NSString stringWithFormat:@"%@ %@", self.detailArray[6], self.detailArray[7]];
+            [weakSelf.param setValue:examineTime forKey:@"examineTime"];
             // 提交卖车信息到后台
             NSString *urlString = @"http://ucarjava.bceapp.com/sell?method=order";
             [YLRequest GET:urlString parameters:weakSelf.param success:^(id  _Nonnull responseObject) {
@@ -99,7 +90,7 @@
                     YLReservationController *reservationVc = [[YLReservationController alloc] init];
                     // 这里传需要的参数，可以使用数组或字典存放相关的参数
                     reservationVc.detectCenterModel = weakSelf.detectCenterModel;
-                    reservationVc.checkOut = weakSelf.checkOut;
+                    reservationVc.checkOut = examineTime;
                     [weakSelf.navigationController pushViewController:reservationVc animated:YES];
                 } else {
                     NSLog(@"预约卖车失败：%@", responseObject[@"message"]);
@@ -112,17 +103,10 @@
         }
     };
     
-//    orderView.consultBlock = ^{
-//
-//    };
     self.tableView.tableFooterView = orderView;
     self.orderView = orderView;
     
     [self.view addSubview:self.cover];
-    [self.cover addSubview:self.cityView];
-    [self.cover addSubview:self.courseView];
-    [self.cover addSubview:self.licenseTimeView];
-    [self.cover addSubview:self.checkTimeView];
     
 }
 
@@ -136,86 +120,211 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ID"];
-    if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"ID"];
+    __weak typeof(self) weakSelf = self;
+    if (indexPath.row == 0) {
+        YLSaleCarChoiceCell *cell = [YLSaleCarChoiceCell cellWithTableView:tableView];
+        cell.choiceBlock = ^{
+            [weakSelf showMessage:@"目前只支持阳江地区"];
+        };
+        cell.title = self.titles[indexPath.row];
+        cell.detailTitle = self.detailArray[indexPath.row];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        return cell;
+    } else if (indexPath.row == 1) {
+        YLSaleCarChoiceCell *cell = [YLSaleCarChoiceCell cellWithTableView:tableView];
+        cell.choiceBlock = ^{
+            YLDetectCenterController *detcetCenter = [[YLDetectCenterController alloc] init];
+            detcetCenter.city = self.detailArray[0];
+            detcetCenter.detectCenterBlock = ^(YLDetectCenterModel * _Nonnull model) {
+                NSLog(@"选择的检测中心是：%@", model.name);
+                weakSelf.detectCenterModel = model;
+                [weakSelf.param setValue:model.ID forKey:@"centerId"];
+                [weakSelf.param setValue:@"阳江" forKey:@"city"];
+                [weakSelf.detailArray replaceObjectAtIndex:1 withObject:model.name];
+                [weakSelf.tableView reloadData];
+            };
+            [weakSelf.navigationController pushViewController:detcetCenter animated:YES];
+        };
+        cell.title = self.titles[indexPath.row];
+        cell.detailTitle = self.detailArray[indexPath.row];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        return cell;
+    } else if (indexPath.row == 2) {
+        YLSaleCarChoiceCell *cell = [YLSaleCarChoiceCell cellWithTableView:tableView];
+        cell.choiceBlock = ^{
+            YLDetectBrandController *brand = [[YLDetectBrandController alloc] init];
+            brand.brandBlock = ^(NSString * _Nonnull carType, NSString * _Nonnull typeId) {
+                NSLog(@"carType%@- %@", carType, typeId);
+                [weakSelf.param setValue:typeId forKey:@"typeId"];
+                [weakSelf.detailArray replaceObjectAtIndex:2 withObject:carType];
+                [weakSelf.tableView reloadData];
+            };
+            [weakSelf.navigationController pushViewController:brand animated:YES];
+        };
+        cell.title = self.titles[indexPath.row];
+        cell.detailTitle = self.detailArray[indexPath.row];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        return cell;
+    } else if (indexPath.row == 3) {
+        YLSaleCarWriteCell *cell = [YLSaleCarWriteCell cellWithTableView:tableView];
+        cell.writeBlock = ^(NSString * _Nonnull detailTitle) {// 上牌城市
+            NSLog(@"%ld--:%@",indexPath.row, detailTitle);
+            [weakSelf.param setValue:detailTitle forKey:@"location"];
+            [weakSelf.detailArray replaceObjectAtIndex:indexPath.row withObject:detailTitle];
+        };
+        cell.title = self.titles[indexPath.row];
+        cell.detailTitle = self.detailArray[indexPath.row];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        return cell;
+    } else if (indexPath.row == 4) {
+        YLSaleCarChoiceCell *cell = [YLSaleCarChoiceCell cellWithTableView:tableView];
+        cell.choiceBlock = ^{
+            NSLog(@"弹出时间弹窗");
+            UIWindow *window = [[UIApplication sharedApplication].windows lastObject];
+            UIView *cover = [[UIView alloc] initWithFrame:CGRectMake(0, 0, YLScreenWidth, YLScreenHeight)];
+            cover.backgroundColor = [UIColor colorWithRed:0.f green:0.f blue:0.f alpha:0.1];
+            [window addSubview:cover];
+            YLYearMonthPicker *pick = [[YLYearMonthPicker alloc] initWithFrame:CGRectMake(0, 250, YLScreenWidth, 150)];
+            pick.cancelBlock = ^{
+                [cover removeFromSuperview];
+            };
+            pick.sureBlock = ^(NSString * _Nonnull licenseTime) {
+                NSLog(@"licenseTime:%@", licenseTime);
+                [weakSelf.param setValue:licenseTime forKey:@"licenseTime"];
+                [weakSelf.detailArray replaceObjectAtIndex:indexPath.row withObject:licenseTime];
+                [weakSelf.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+                [cover removeFromSuperview];
+            };
+            [cover addSubview:pick];
+        };
+        cell.title = self.titles[indexPath.row];
+        cell.detailTitle = self.detailArray[indexPath.row];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        return cell;
+    } else if (indexPath.row == 5) {
+        YLSaleCarWriteCell *cell = [YLSaleCarWriteCell cellWithTableView:tableView];
+        cell.writeBlock = ^(NSString * _Nonnull detailTitle) { // 行驶里程
+            NSLog(@"%ld--:%@",indexPath.row, detailTitle);
+            [weakSelf.param setValue:detailTitle forKey:@"course"];
+            [weakSelf.detailArray replaceObjectAtIndex:indexPath.row withObject:detailTitle];
+        };
+        cell.title = self.titles[indexPath.row];
+        cell.detailTitle = self.detailArray[indexPath.row];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        return cell;
+    }else if (indexPath.row == 6) { // 验车日期
+        YLSaleCarChoiceCell *cell = [YLSaleCarChoiceCell cellWithTableView:tableView];
+        cell.choiceBlock = ^{
+            UIWindow *window = [[UIApplication sharedApplication].windows lastObject];
+            UIView *cover = [[UIView alloc] initWithFrame:CGRectMake(0, 0, YLScreenWidth, YLScreenHeight)];
+            cover.backgroundColor = [UIColor colorWithRed:0.f green:0.f blue:0.f alpha:0.1];
+            [window addSubview:cover];
+            YLYearMonthDayPicker *pick = [[YLYearMonthDayPicker alloc] initWithFrame:CGRectMake(0, 250, [UIScreen mainScreen].bounds.size.width, 150)];
+            pick.cancelBlock = ^{
+                [cover removeFromSuperview];
+            };
+            pick.sureBlock = ^(NSString * _Nonnull licenseTime) {
+//                NSLog(@"licenseTime:%@", licenseTime);
+//                [weakSelf.param setValue:licenseTime forKey:@"examineTime"];
+                [weakSelf.detailArray replaceObjectAtIndex:indexPath.row withObject:licenseTime];
+                [weakSelf.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+                [cover removeFromSuperview];
+            };
+            [cover addSubview:pick];
+            
+            
+        };
+        cell.title = self.titles[indexPath.row];
+        cell.detailTitle = self.detailArray[indexPath.row];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        return cell;
+    } else if (indexPath.row == 7) { // 验车时间
+        YLSaleCarChoiceCell *cell = [YLSaleCarChoiceCell cellWithTableView:tableView];
+        cell.choiceBlock = ^{
+            UIWindow *window = [[UIApplication sharedApplication].windows lastObject];
+            UIView *cover = [[UIView alloc] initWithFrame:CGRectMake(0, 0, YLScreenWidth, YLScreenHeight)];
+            cover.backgroundColor = [UIColor colorWithRed:0.f green:0.f blue:0.f alpha:0.1];
+            [window addSubview:cover];
+            YLTimePicker *pick = [[YLTimePicker alloc] initWithFrame:CGRectMake(0, 250, [UIScreen mainScreen].bounds.size.width, 150)];
+            pick.cancelBlock = ^{
+                [cover removeFromSuperview];
+            };
+            pick.sureBlock = ^(NSString * _Nonnull time) {
+                NSLog(@"licenseTime:%@", time);
+                [weakSelf.detailArray replaceObjectAtIndex:indexPath.row withObject:time];
+                [weakSelf.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+                [cover removeFromSuperview];
+            };
+            [cover addSubview:pick];
+        };
+        cell.title = self.titles[indexPath.row];
+        cell.detailTitle = self.detailArray[indexPath.row];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        return cell;
+    } else {
+        YLSaleCarChoiceCell *cell = [YLSaleCarChoiceCell cellWithTableView:tableView];
+        cell.choiceBlock = ^{
+            NSLog(@"弹出电话弹窗");
+        };
+        cell.title = self.titles[indexPath.row];
+        cell.detailTitle = self.detailArray[indexPath.row];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        return cell;
     }
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.textLabel.text = self.titles[indexPath.row];
-    cell.textLabel.font = [UIFont systemFontOfSize:14];
-    cell.detailTextLabel.text = self.detailArray[indexPath.row];
-    cell.detailTextLabel.font = [UIFont systemFontOfSize:14];
-    return cell;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    __weak typeof(self) weakSelf = self;
-    
-    if (indexPath == 0) { // 城市
-        [self showMessage:@"目前只支持阳江地区"];
-    }
-    if (indexPath.row == 1) {// 检测中心
-        YLDetectCenterController *detcetCenter = [[YLDetectCenterController alloc] init];
-        detcetCenter.city = self.detailArray[0];
-        detcetCenter.detectCenterBlock = ^(YLDetectCenterModel * _Nonnull model) {
-            NSLog(@"选择的检测中心是：%@", model.name);
-            weakSelf.detectCenterModel = model;
-            [weakSelf.param setValue:model.ID forKey:@"centerId"];
-            [weakSelf.param setValue:@"阳江" forKey:@"city"];
-            [weakSelf.detailArray replaceObjectAtIndex:1 withObject:model.name];
-            [weakSelf.tableView reloadData];
-        };
-        [self.navigationController pushViewController:detcetCenter animated:YES];
-    }
-    
-    if (indexPath.row == 2) {// 品牌-车系-车型
-        YLDetectBrandController *brand = [[YLDetectBrandController alloc] init];
-        brand.brandBlock = ^(NSString * _Nonnull carType, NSString * _Nonnull typeId) {
-            NSLog(@"carType%@- %@", carType, typeId);
-            [weakSelf.param setValue:typeId forKey:@"typeId"];
-            [weakSelf.detailArray replaceObjectAtIndex:2 withObject:carType];
-            [weakSelf.tableView reloadData];
-        };
-        [self.navigationController pushViewController:brand animated:YES];
-    }
-    if (indexPath.row == 3) {// 上牌城市
-        self.cover.hidden = NO;
-        self.cityView.hidden = NO;
-    }
-    if (indexPath.row == 4) {// 上牌时间
-        self.cover.hidden = NO;
-        self.licenseTimeView.hidden = NO;
-    }
-    if (indexPath.row == 5) {// 行驶里程:(万公里)
-        self.cover.hidden = NO;
-        self.courseView.hidden = NO;
-    }
-    if (indexPath.row == 6) {//验车时间
-        self.cover.hidden = NO;
-        self.checkTimeView.hidden = NO;
-    }
-}
+//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+//
+//    __weak typeof(self) weakSelf = self;
+//
+//    if (indexPath == 0) { // 城市
+//        [self showMessage:@"目前只支持阳江地区"];
+//    }
+//    if (indexPath.row == 1) {// 检测中心
+//        YLDetectCenterController *detcetCenter = [[YLDetectCenterController alloc] init];
+//        detcetCenter.city = self.detailArray[0];
+//        detcetCenter.detectCenterBlock = ^(YLDetectCenterModel * _Nonnull model) {
+//            NSLog(@"选择的检测中心是：%@", model.name);
+//            weakSelf.detectCenterModel = model;
+//            [weakSelf.param setValue:model.ID forKey:@"centerId"];
+//            [weakSelf.param setValue:@"阳江" forKey:@"city"];
+//            [weakSelf.detailArray replaceObjectAtIndex:1 withObject:model.name];
+//            [weakSelf.tableView reloadData];
+//        };
+//        [self.navigationController pushViewController:detcetCenter animated:YES];
+//    }
+//
+//    if (indexPath.row == 2) {// 品牌-车系-车型
+//        YLDetectBrandController *brand = [[YLDetectBrandController alloc] init];
+//        brand.brandBlock = ^(NSString * _Nonnull carType, NSString * _Nonnull typeId) {
+//            NSLog(@"carType%@- %@", carType, typeId);
+//            [weakSelf.param setValue:typeId forKey:@"typeId"];
+//            [weakSelf.detailArray replaceObjectAtIndex:2 withObject:carType];
+//            [weakSelf.tableView reloadData];
+//        };
+//        [self.navigationController pushViewController:brand animated:YES];
+//    }
+//}
 
 #pragma mark 弹出键盘，视图往上移动
-- (void)transformView:(NSNotification *)notification {
-    // 获取键盘弹出的rect
-    NSValue *keyBoardBeginBounds = [[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey];
-    CGRect beginRect = [keyBoardBeginBounds CGRectValue];
-    
-    // 获取键盘弹出后的rect
-    NSValue *keyBoardEndBounds = [[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey];
-    CGRect endRect = [keyBoardEndBounds CGRectValue];
-    
-    // 获取键盘位置变化前后纵坐标Y的变化值
-    CGFloat deltaY = endRect.origin.y - beginRect.origin.y;
-    NSLog(@"%f", deltaY);
-    __weak typeof(self) weakSelf = self;
-    [UIView animateWithDuration:0.25 animations:^{
-        [weakSelf.cityView setFrame:CGRectMake(weakSelf.cityView.frame.origin.x, weakSelf.cityView.frame.origin.y + deltaY, weakSelf.cityView.frame.size.width, weakSelf.cityView.frame.size.height)];
-        [weakSelf.courseView setFrame:CGRectMake(weakSelf.courseView.frame.origin.x, weakSelf.courseView.frame.origin.y + deltaY, weakSelf.courseView.frame.size.width, weakSelf.courseView.frame.size.height)];
-    }];
-}
+//- (void)transformView:(NSNotification *)notification {
+//    // 获取键盘弹出的rect
+//    NSValue *keyBoardBeginBounds = [[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey];
+//    CGRect beginRect = [keyBoardBeginBounds CGRectValue];
+//
+//    // 获取键盘弹出后的rect
+//    NSValue *keyBoardEndBounds = [[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey];
+//    CGRect endRect = [keyBoardEndBounds CGRectValue];
+//
+//    // 获取键盘位置变化前后纵坐标Y的变化值
+//    CGFloat deltaY = endRect.origin.y - beginRect.origin.y;
+//    NSLog(@"%f", deltaY);
+////    __weak typeof(self) weakSelf = self;
+////    [UIView animateWithDuration:0.25 animations:^{
+////        [weakSelf.cityView setFrame:CGRectMake(weakSelf.cityView.frame.origin.x, weakSelf.cityView.frame.origin.y + deltaY, weakSelf.cityView.frame.size.width, weakSelf.cityView.frame.size.height)];
+////        [weakSelf.courseView setFrame:CGRectMake(weakSelf.courseView.frame.origin.x, weakSelf.courseView.frame.origin.y + deltaY, weakSelf.courseView.frame.size.width, weakSelf.courseView.frame.size.height)];
+////    }];
+//}
 
 - (BOOL)isFullMessage {
     
@@ -260,20 +369,7 @@
 }
 
 - (void)tap {
-    //    NSLog(@"tap");
     self.cover.hidden = YES;
-    self.cityView.hidden = YES;
-    self.checkTimeView.hidden = YES;
-    self.courseView.hidden = YES;
-    self.licenseTimeView.hidden = YES;
-}
-
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
-    if ([touch.view isDescendantOfView:self.cityView] || [touch.view isDescendantOfView:self.checkTimeView] || [touch.view isDescendantOfView:self.courseView] || [touch.view isDescendantOfView:self.licenseTimeView]) {
-
-        return NO;
-    }
-    return YES;
 }
 
 #pragma mark 懒加载
@@ -299,116 +395,15 @@
 }
 
 
-- (YLCourseView *)courseView {
-    if (!_courseView) {
-        _courseView = [[YLCourseView alloc] initWithFrame:CGRectMake(0, YLScreenHeight - 150 - 64, YLScreenWidth, 150)];
-        _courseView.hidden = YES;
-        __weak typeof(self) weakSelf = self;
-        _courseView.cancelBlock = ^{
-            weakSelf.cover.hidden = YES;
-            weakSelf.courseView.hidden = YES;
-            [weakSelf.detailArray replaceObjectAtIndex:5 withObject:@"请输入(单位:万公里)"];
-            [weakSelf.tableView reloadData];
-        };
-        _courseView.sureBlock = ^(NSString * _Nonnull course) {
-            NSLog(@"%@", course);
-            [weakSelf.param setValue:course forKey:@"course"];
-            if ([NSString isBlankString:course]) {
-                [weakSelf.detailArray replaceObjectAtIndex:5 withObject:@"请输入"];
-            } else {
-                [weakSelf.detailArray replaceObjectAtIndex:5 withObject:course];
-            }
-            [weakSelf.tableView reloadData];
-            weakSelf.cover.hidden = YES;
-            weakSelf.courseView.hidden = YES;
-        };
-    }
-    return _courseView;
-}
-
-- (YLAllTimePicker *)checkTimeView {
-    if (!_checkTimeView) {
-        _checkTimeView = [[YLAllTimePicker alloc] initWithFrame:CGRectMake(0, 200, YLScreenWidth, 140)];
-        _checkTimeView.hidden = YES;
-        __weak typeof(self) weakSelf = self;
-        _checkTimeView.cancelBlock = ^{
-            weakSelf.cover.hidden = YES;
-            weakSelf.checkTimeView.hidden = YES;
-            [weakSelf.detailArray replaceObjectAtIndex:6 withObject:@"请输入"];
-            [weakSelf.tableView reloadData];
-        };
-        _checkTimeView.sureBlock = ^(NSString * _Nonnull checkOut) {
-            NSLog(@"checkOut :%@", checkOut);
-            [weakSelf.param setValue:checkOut forKey:@"examineTime"];
-            weakSelf.checkOut = checkOut;
-            [weakSelf.detailArray replaceObjectAtIndex:6 withObject:checkOut];
-            [weakSelf.tableView reloadData];
-            weakSelf.cover.hidden = YES;
-            weakSelf.checkTimeView.hidden = YES;
-        };
-    }
-    return _checkTimeView;
-}
-
-- (YLYearMonthPicker *)licenseTimeView {
-    if (!_licenseTimeView) {
-        _licenseTimeView = [[YLYearMonthPicker alloc] initWithFrame:CGRectMake(0, 200, YLScreenWidth, 155)];
-        _licenseTimeView.hidden = YES;
-        __weak typeof(self) weakSelf = self;
-        _licenseTimeView.cancelBlock = ^{
-            weakSelf.cover.hidden = YES;
-            weakSelf.licenseTimeView.hidden = YES;
-            [weakSelf.detailArray replaceObjectAtIndex:4 withObject:@"请输入"];
-            [weakSelf.tableView reloadData];
-        };
-        _licenseTimeView.sureBlock = ^(NSString * _Nonnull licenseTime) {
-            [weakSelf.param setValue:licenseTime forKey:@"licenseTime"];
-            weakSelf.checkOut = licenseTime;
-            [weakSelf.detailArray replaceObjectAtIndex:4 withObject:licenseTime];
-            [weakSelf.tableView reloadData];
-            weakSelf.cover.hidden = YES;
-            weakSelf.licenseTimeView.hidden = YES;
-        };
-    }
-    return _licenseTimeView;
-}
-
-- (YLCityView *)cityView {
-    if (!_cityView) {
-        _cityView = [[YLCityView alloc] initWithFrame:CGRectMake(0, YLScreenHeight - 150 - 15 - 45, YLScreenWidth, 150)];
-        _cityView.hidden = YES;
-        __weak typeof(self) weakSelf = self;
-        _cityView.cancelBlock = ^{
-            weakSelf.cover.hidden = YES;
-            weakSelf.cityView.hidden = YES;
-            [weakSelf.detailArray replaceObjectAtIndex:3 withObject:@"请输入"];
-            [weakSelf.tableView reloadData];
-        };
-        _cityView.sureBlock = ^(NSString * _Nonnull location) {
-            NSLog(@"%@", location);
-            if ([NSString isBlankString:location]) {
-                [weakSelf.detailArray replaceObjectAtIndex:3 withObject:@"请输入"];
-            } else {
-                [weakSelf.detailArray replaceObjectAtIndex:3 withObject:location];
-            }
-            [weakSelf.param setValue:location forKey:@"location"];
-            [weakSelf.tableView reloadData];
-            weakSelf.cover.hidden = YES;
-            weakSelf.cityView.hidden = YES;
-        };
-    }
-    return _cityView;
-}
-
 - (NSArray *)titles {
     if (!_titles) {
-        _titles = @[@"城市", @"检测中心", @"选择车型",@"上牌城市", @"上牌时间", @"行驶里程(:万公里)", @"验车时间", @"联系电话"];
+        _titles = @[@"城市", @"检测中心", @"选择车型",@"上牌城市", @"上牌时间", @"行驶里程(:万公里)", @"验车日期", @"验车时间", @"联系电话"];
     }
     return _titles;
 }
 - (NSMutableArray *)detailArray {
     if (!_detailArray) {
-        _detailArray = [NSMutableArray arrayWithObjects:@"阳江",@"请选择",@"请选择",@"请输入",@"请输入",@"请输入(单位:万公里)",@"请输入",@"请选择", nil];
+        _detailArray = [NSMutableArray arrayWithObjects:@"阳江",@"请选择",@"请选择",@"请输入",@"请选择",@"请输入",@"请选择",@"请选择", @"请选择", nil];
     }
     return _detailArray;
 }

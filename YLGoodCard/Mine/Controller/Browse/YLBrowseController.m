@@ -11,6 +11,7 @@
 #import "YLTableViewModel.h"
 #import "YLDetailController.h"
 #import "YLTableViewCellFrame.h"
+#import "YLNoneView.h"
 
 // 浏览记录路径
 #define YLBrowsingHistoryPath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"browsingHistory.plist"]
@@ -18,6 +19,7 @@
 @interface YLBrowseController ()
 
 @property (nonatomic, strong) NSMutableArray *browsingHistory;
+@property (nonatomic, strong) YLNoneView *noneView;
 
 @end
 
@@ -28,6 +30,11 @@
     
     // 获取本地浏览记录个数
     NSInteger count = self.browsingHistory.count;
+    if (count == 0) {
+        self.noneView.hidden = NO;
+    } else {
+        self.noneView.hidden = YES;
+    }
     NSLog(@"count:%ld", count);
     self.tableView.tableFooterView = [[UIView alloc] init];
 }
@@ -75,4 +82,14 @@
     return _browsingHistory;
 }
 
+- (YLNoneView *)noneView {
+    if (!_noneView) {
+        _noneView = [[YLNoneView alloc] initWithFrame:CGRectMake(0, 0, YLScreenWidth, YLScreenHeight)];
+        _noneView.title = @"暂无相关记录";
+        _noneView.hidden = YES;
+        [_noneView hideBtn];
+        [self.view addSubview:_noneView];
+    }
+    return _noneView;
+}
 @end

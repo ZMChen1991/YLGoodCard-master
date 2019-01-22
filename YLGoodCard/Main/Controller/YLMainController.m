@@ -75,7 +75,7 @@
     
     [self setNav];
     [self createTableView];
-    NSLog(@"%f-%f %f-%f--%f %f",self.tableView.frame.origin.x,self.tableView.frame.origin.y, self.tableView.frame.size.width, self.tableView.frame.size.height, self.tableView.contentOffset.x, self.tableView.contentOffset.y);
+//    NSLog(@"%f-%f %f-%f--%f %f",self.tableView.frame.origin.x,self.tableView.frame.origin.y, self.tableView.frame.size.width, self.tableView.frame.size.height, self.tableView.contentOffset.x, self.tableView.contentOffset.y);
     
     [self getLocationData];
     [self loadData];
@@ -251,7 +251,6 @@
             [weakSelf getLocationData];
         }
     } failed:nil];
-    
 }
 
 
@@ -335,6 +334,9 @@
     [barButton addTarget:self action:@selector(leftBarButtonItemClick) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *leftBtn = [[UIBarButtonItem alloc] initWithCustomView:barButton];
     self.navigationItem.leftBarButtonItem = leftBtn;
+    
+    // 修改导航标题
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:18], NSForegroundColorAttributeName:[UIColor whiteColor]}];
     
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 255, 44)];
     YLBarView *barView = [[YLBarView alloc] initWithFrame:CGRectMake(10, (44 - 36) / 2, 255, 36)];

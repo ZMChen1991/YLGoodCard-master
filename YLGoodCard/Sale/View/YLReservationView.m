@@ -111,6 +111,7 @@
     contact.type = YLConditionTypeWhite;
     contact.frame = CGRectMake(YLLeftMargin, CGRectGetMaxY(view.frame) + 20, (width - 5) / 2, 40);
     [contact setTitle:@"现在联系" forState:UIControlStateNormal];
+    contact.titleLabel.font = [UIFont systemFontOfSize:14];
     [contact addTarget:self action:@selector(contact) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:contact];
     
@@ -118,6 +119,7 @@
     complete.type = YLConditionTypeBlue;
     complete.frame = CGRectMake(CGRectGetMaxX(contact.frame) + 5, CGRectGetMaxY(view.frame) + 20, (width - 5) / 2, 40);
     [complete setTitle:@"完成" forState:UIControlStateNormal];
+    complete.titleLabel.font = [UIFont systemFontOfSize:14];
     [complete addTarget:self action:@selector(complete) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:complete];
     

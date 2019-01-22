@@ -43,6 +43,7 @@
 - (void)setupUI {
     
     UIImageView *icon = [[UIImageView alloc] init];
+    icon.contentMode = UIViewContentModeScaleAspectFill;
     icon.backgroundColor = YLColor(233.f, 233.f, 233.f);
     icon.layer.cornerRadius = 5.f;
     icon.layer.masksToBounds = YES;
@@ -100,7 +101,7 @@
     self.line.frame = saleOrderCellFrame.lineF;
 
     //  赋值
-    [self.icon sd_setImageWithURL:[NSURL URLWithString:saleOrderCellFrame.model.detail.displayImg] placeholderImage:nil];
+    [self.icon sd_setImageWithURL:[NSURL URLWithString:saleOrderCellFrame.model.detail.displayImg] placeholderImage:[UIImage imageNamed:@"占位图"]];
     self.title.text = saleOrderCellFrame.model.detail.title;
     self.price.text = [NSString stringWithFormat:@"%@", [self stringToNumber:saleOrderCellFrame.model.detail.price]];;
     self.course.text = [NSString stringWithFormat:@"%@万公里/年", saleOrderCellFrame.model.detail.course];

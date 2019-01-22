@@ -16,10 +16,10 @@
 - (void)setModel:(YLTableViewModel *)model {
     _model = model;
     
-    self.displayImgF = CGRectMake(YLLeftSpace, YLTopSpace, 120, 86);
-    CGFloat courseW = YLScreenWidth - 120 - 2 * YLLeftSpace - YLTopSpace;
-    CGFloat titleX = CGRectGetMaxX(self.displayImgF) + YLLeftSpace;
-    CGFloat titleW = YLScreenWidth - CGRectGetMaxX(self.displayImgF) - YLLeftSpace;
+    self.displayImgF = CGRectMake(YLLeftMargin, YLTopSpace, 120, 86);
+    CGFloat courseW = YLScreenWidth - 120 - 2 * YLLeftMargin - YLTopSpace;
+    CGFloat titleX = CGRectGetMaxX(self.displayImgF) + YLLeftMargin;
+    CGFloat titleW = YLScreenWidth - CGRectGetMaxX(self.displayImgF) - 2 * YLLeftMargin;
     NSString *price = [self stringToNumber:model.price];
     CGFloat priceW = [price getSizeWithFont:[UIFont systemFontOfSize:18]].width + 10;
     self.titleF = CGRectMake(titleX, YLTopSpace, titleW, 34);

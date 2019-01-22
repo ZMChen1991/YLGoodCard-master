@@ -8,6 +8,7 @@
 
 #import "YLDetectCenterController.h"
 #import "YLDetectCenterCell.h"
+#import "YLDetectCenterCellFrame.h"
 #import "YLRequest.h"
 
 #define YLDetectCenterPath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"DetectCenter.txt"]
@@ -26,6 +27,7 @@
     [super viewDidLoad];
     self.title = @"检测中心";
     
+    
     [self createTableView];
     [self getLocationData];
     [self loadData];
@@ -43,16 +45,20 @@
             NSLog(@"获取检测中心数据成功");
             [self keyedArchiverObject:responseObject toFile:YLDetectCenterPath];
             [self getLocationData];
-//            self.detectCenters = [YLDetectCenterModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"]];
-//            [self.tableView reloadData];
         }
     } failed:nil];
 }
 
 - (void)getLocationData {
     
+    [self.detectCenters removeAllObjects];
     NSDictionary *dict = [NSKeyedUnarchiver unarchiveObjectWithFile:YLDetectCenterPath];
-    self.detectCenters = [YLDetectCenterModel mj_objectArrayWithKeyValuesArray:dict[@"data"]];
+    NSArray *models = [YLDetectCenterModel mj_objectArrayWithKeyValuesArray:dict[@"data"]];
+    for (YLDetectCenterModel *model in models) {
+        YLDetectCenterCellFrame *cellFrame = [[YLDetectCenterCellFrame alloc] init];
+        cellFrame.model = model;
+        [self.detectCenters addObject:cellFrame];
+    }
     [self.tableView reloadData];
 }
 
@@ -70,6 +76,9 @@
     UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, YLScreenWidth, YLScreenHeight)];
     tableView.delegate = self;
     tableView.dataSource = self;
+    tableView.separatorColor = [UIColor clearColor];
+    tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    tableView.tableFooterView = [[UIView alloc] init];
     [self.view addSubview:tableView];
     self.tableView = tableView;
 }
@@ -79,6 +88,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    NSLog(@"%ld", self.detectCenters.count);
     return self.detectCenters.count;
 }
 
@@ -86,24 +96,32 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     YLDetectCenterCell *cell = [YLDetectCenterCell cellWithTableView:tableView];
-    YLDetectCenterModel *model = self.detectCenters[indexPath.row];
-    cell.model = model;
+    YLDetectCenterCellFrame *cellFrame = self.detectCenters[indexPath.row];
+    cell.cellFrame = cellFrame;
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    
-    return 97;
+    YLDetectCenterCellFrame *cellFrame = self.detectCenters[indexPath.row];
+    return cellFrame.cellHeight;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    YLDetectCenterModel *model = self.detectCenters[indexPath.row];
+//    YLDetectCenterModel *model = self.detectCenters[indexPath.row];
+    YLDetectCenterCellFrame *cellFrame = self.detectCenters[indexPath.row];
     if (self.detectCenterBlock) {
-        self.detectCenterBlock(model);
+        self.detectCenterBlock(cellFrame.model);
     }
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (NSMutableArray *)detectCenters {
+    if (!_detectCenters) {
+        _detectCenters = [NSMutableArray array];
+    }
+    return _detectCenters;
 }
 
 @end

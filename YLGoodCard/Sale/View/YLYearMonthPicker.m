@@ -12,6 +12,9 @@
 
 #define YLPICKERHEIGHT 40
 #define YLPICKERWIDTH self.frame.size.width / 4
+#define YLScreenWidth [UIScreen mainScreen].bounds.size.width
+#define YLScreenHeight [UIScreen mainScreen].bounds.size.height
+#define YLLeftMargin 15
 
 @interface YLYearMonthPicker () <UIPickerViewDelegate, UIPickerViewDataSource> {
     
@@ -35,11 +38,6 @@
     if (self) {
         self.backgroundColor = [UIColor whiteColor];
         [self setupUI];
-//        selectYear = [self.years objectAtIndex:0];
-//        selectMonth = [self.months objectAtIndex:0];
-//        NSString *time = [NSString stringWithFormat:@"%@-%@", selectYear, selectMonth];
-//        NSLog(@"%@", time);
-        
     }
     return self;
 }
@@ -148,14 +146,29 @@
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
     if (self.yearPicker == pickerView) {
         selectYear = [self.years objectAtIndex:row];
+        // 选中年份，刷新月份
+        [self restMonthsWtithYear:[selectYear integerValue]];
+        [self.monthPicker reloadAllComponents];
+        
     }if (self.monthPicker == pickerView) {
         selectMonth = [self.months objectAtIndex:row];
     }
-    
-//    NSString *time = [NSString stringWithFormat:@"%@-%@", selectYear, selectMonth];
-//    if (self.YearMonthBlock) {
-//        self.YearMonthBlock(time);
-//    }
+}
+
+#pragma mark 重置月份
+- (void)restMonthsWtithYear:(NSInteger)year {
+    NSInteger totalMonth = 1;
+    [self.months removeAllObjects];
+    if ([self currentYear] == year) {
+        totalMonth = [self currentMonth];
+        for (NSInteger i = 1; i < totalMonth + 1; i++) {
+            [self.months addObject:[NSString stringWithFormat:@"%ld", i]];
+        }
+    } else {
+        for (NSInteger i = 1; i < 13; i++) {
+            [self.months addObject:[NSString stringWithFormat:@"%ld", i]];
+        }
+    }
 }
 
 // 当前年份
@@ -185,11 +198,11 @@
 - (NSMutableArray *)months {
     if (!_months) {
         _months = [NSMutableArray array];
-        for (NSInteger i = 1; i < 13; i++) {
+        NSInteger totalMonth = [self currentMonth];
+        for (NSInteger i = 1; i < totalMonth + 1; i++) {
             [_months addObject:[NSString stringWithFormat:@"%ld", i]];
         }
-        NSInteger index = [self currentMonth] - 1;
-        selectMonth = [_months objectAtIndex:index];
+        selectMonth = [NSString stringWithFormat:@"%ld", [self currentMonth]];
     }
     return _months;
 }

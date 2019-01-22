@@ -96,7 +96,6 @@ static NSString *const footerID = @"YLCustomPriceFooter";
     if (self.surePriceBlock) {
         self.surePriceBlock(self.lowPrice.text, self.highPrice.text);
     }
-    
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {

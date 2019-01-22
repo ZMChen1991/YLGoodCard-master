@@ -10,14 +10,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-//typedef void(^YearMonthBlock)(NSString *yearMonth);
 typedef void(^CancelBlock)(void);
 typedef void(^SureBlock)(NSString *licenseTime);
 
-
 @interface YLYearMonthPicker : UIView
 
-//@property (nonatomic, copy) YearMonthBlock YearMonthBlock;
 @property (nonatomic, copy) CancelBlock cancelBlock;
 @property (nonatomic, copy) SureBlock sureBlock;
 

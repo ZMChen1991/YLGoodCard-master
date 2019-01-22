@@ -14,12 +14,14 @@
 #import "YLLookCarDetailController.h"
 #import "YLAccountTool.h"
 #import "YLAccount.h"
+#import "YLNoneView.h"
 
 #define YLLookedCarPath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"LookedCar.txt"]
 
 @interface YLLookedCarController ()
 
 @property (nonatomic, strong) NSMutableArray *lookCars;
+@property (nonatomic, strong) YLNoneView *noneView;
 
 @end
 
@@ -64,6 +66,11 @@
         YLSubCellModel *cellFrame = [[YLSubCellModel alloc] init];
         cellFrame.lookCarModel = model;
         [self.lookCars addObject:cellFrame];
+    }
+    if (self.lookCars.count == 0 || self.lookCars == nil) {
+        self.noneView.hidden = NO;
+    } else {
+        self.noneView.hidden = YES;
     }
     [self.tableView reloadData];
 }
@@ -117,7 +124,14 @@
     return _lookCars;
 }
 
-//- (void)setParam:(NSMutableDictionary *)param {
-//    _param = param;
-//}
+- (YLNoneView *)noneView {
+    if (!_noneView) {
+        _noneView = [[YLNoneView alloc] initWithFrame:CGRectMake(0, 0, YLScreenWidth, YLScreenHeight)];
+        _noneView.title = @"暂无相关订单";
+        _noneView.hidden = YES;
+        [_noneView hideBtn];
+        [self.view addSubview:_noneView];
+    }
+    return _noneView;
+}
 @end

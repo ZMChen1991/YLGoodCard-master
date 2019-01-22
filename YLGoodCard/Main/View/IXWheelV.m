@@ -223,6 +223,7 @@ UICollectionViewDataSource
         _collectionV.pagingEnabled = YES;
         _collectionV.bounces = NO;
         _collectionV.showsHorizontalScrollIndicator = NO;
+        _collectionV.backgroundColor = [UIColor whiteColor];
         [_collectionV registerClass:[IXWheelCell class] forCellWithReuseIdentifier:cellIdent];
     }
     return _collectionV;

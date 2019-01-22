@@ -14,12 +14,14 @@
 #import "YLAccountTool.h"
 #import "YLRequest.h"
 #import "YLSaleDetailController.h"
+#import "YLNoneView.h"
 
 #define YLSellingPath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"Selling.txt"]
 
 @interface YLSellingController ()
 
 @property (nonatomic, strong) NSMutableArray *saleOrders;
+@property (nonatomic, strong) YLNoneView *noneView;
 
 @end
 
@@ -66,6 +68,11 @@
         YLSaleOrderCellFrame *cellFrame = [[YLSaleOrderCellFrame alloc] init];
         cellFrame.model = model;
         [self.saleOrders addObject:cellFrame];
+    }
+    if (self.saleOrders.count == 0 || self.saleOrders == nil) {
+        self.noneView.hidden = NO;
+    } else {
+        self.noneView.hidden = YES;
     }
     [self.tableView reloadData];
 }
@@ -126,9 +133,15 @@
     return _saleOrders;
 }
 
-//- (void)setParam:(NSMutableDictionary *)param {
-//    _param = param;
-//    [self loadData];
-//}
+- (YLNoneView *)noneView {
+    if (!_noneView) {
+        _noneView = [[YLNoneView alloc] initWithFrame:CGRectMake(0, 0, YLScreenWidth, YLScreenHeight)];
+        _noneView.title = @"暂无相关订单";
+        _noneView.hidden = YES;
+        [_noneView hideBtn];
+        [self.view addSubview:_noneView];
+    }
+    return _noneView;
+}
 
 @end

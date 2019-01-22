@@ -55,18 +55,20 @@
     self.favorite.frame = CGRectMake(CGRectGetMaxX(self.customer.frame) + 10, YLTopMargin, 35, self.frame.size.height - 2 * YLTopMargin);
     [self.favorite addTarget:self action:@selector(clickFavorite:) forControlEvents:UIControlEventTouchUpInside];
     
+    
+    CGFloat btnW = YLScreenWidth - CGRectGetMaxX(self.favorite.frame) - 2 * YLLeftMargin - 10;
     self.bargain = [YLCondition buttonWithType:UIButtonTypeCustom];
     [self.bargain setTitle:@"砍价" forState:UIControlStateNormal];
     self.bargain.type = YLConditionTypeWhite;
     self.bargain.titleLabel.font = [UIFont systemFontOfSize:14];
-    self.bargain.frame = CGRectMake(CGRectGetMaxX(self.favorite.frame) + YLTopMargin + 5, YLTopMargin, 125, self.frame.size.height - 2 * YLTopMargin);
+    self.bargain.frame = CGRectMake(CGRectGetMaxX(self.favorite.frame) + YLLeftMargin, YLTopMargin, btnW / 2, self.frame.size.height - 2 * YLTopMargin);
 //    [self.bargain addTarget:self action:@selector(clickBargain) forControlEvents:UIControlEventTouchUpInside];
     
     self.order = [YLCondition buttonWithType:UIButtonTypeCustom];
     [self.order setTitle:@"预约看车" forState:UIControlStateNormal];
     self.order.type = YLConditionTypeBlue;
     self.order.titleLabel.font = [UIFont systemFontOfSize:14];
-    self.order.frame = CGRectMake(CGRectGetMaxX(self.bargain.frame) + YLTopMargin, YLTopMargin, 125, self.frame.size.height - 2 * YLTopMargin);
+    self.order.frame = CGRectMake(CGRectGetMaxX(self.bargain.frame) + 10, YLTopMargin, btnW / 2, self.frame.size.height - 2 * YLTopMargin);
 //    [self.order addTarget:self action:@selector(clickOrder) forControlEvents:UIControlEventTouchUpInside];
     
     [self addSubview:self.favorite];

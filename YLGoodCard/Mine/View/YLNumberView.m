@@ -61,6 +61,7 @@
     CGFloat height = self.frame.size.height;
     self.numberL.frame = CGRectMake(0, 10, width, height * 0.5);
     self.titleL.frame = CGRectMake(0, CGRectGetMaxY(self.numberL.frame), width, height * 0.3);
+    [self.titleL setFrame:CGRectIntegral(self.titleL.frame)];
 }
 
 //- (void)viewClick:(UIGestureRecognizer *)tap {

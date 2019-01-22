@@ -15,12 +15,14 @@
 #import "YLAccountTool.h"
 #import "YLAccount.h"
 #import "YLRequest.h"
+#import "YLNoneView.h"
 
 #define YLCollectedCarPath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"collectedCar.txt"]
 
 @interface YLCollectedCarController ()
 
 @property (nonatomic, strong) NSMutableArray *collectArray;
+@property (nonatomic, strong) YLNoneView *noneView;
 
 @end
 
@@ -66,6 +68,11 @@
         YLCollectCellFrame *cellFrame = [[YLCollectCellFrame alloc] init];
         cellFrame.collectionModel = model;
         [self.collectArray addObject:cellFrame];
+    }
+    if (self.collectArray.count == 0 || self.collectArray == nil) {
+        self.noneView.hidden = NO;
+    } else {
+        self.noneView.hidden = YES;
     }
     [self.tableView reloadData];
 }
@@ -120,4 +127,16 @@
     }
     return _collectArray;
 }
+
+- (YLNoneView *)noneView {
+    if (!_noneView) {
+        _noneView = [[YLNoneView alloc] initWithFrame:CGRectMake(0, 0, YLScreenWidth, YLScreenHeight)];
+        _noneView.title = @"暂无相关订单";
+        _noneView.hidden = YES;
+        [_noneView hideBtn];
+        [self.view addSubview:_noneView];
+    }
+    return _noneView;
+}
+
 @end

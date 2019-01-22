@@ -94,7 +94,7 @@
         } else {
             // 反之沙盒中不存在这个文件
             // 下载前显示占位图片
-            cell.image = [UIImage imageNamed:@"占位图"];
+            cell.image = [UIImage imageNamed:@"永乐科技"];
             // 下载图片
             [self downLoad:self.images[indexPath.row] indexPath:indexPath];
         }

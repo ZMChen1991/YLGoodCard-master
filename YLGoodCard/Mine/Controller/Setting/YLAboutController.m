@@ -19,7 +19,7 @@
     self.view.backgroundColor = [UIColor whiteColor];
     self.navigationItem.title = @"优卡二手车";
     
-    UIImage *image = [UIImage imageNamed:@"内页"];
+    UIImage *image = [UIImage imageNamed:@"banner内页"];
     NSLog(@"%.f-%.f", image.size.width, image.size.height);
     CGFloat imageH = YLScreenWidth / image.size.width * image.size.height;
     UIScrollView *scroll = [[UIScrollView alloc] init];

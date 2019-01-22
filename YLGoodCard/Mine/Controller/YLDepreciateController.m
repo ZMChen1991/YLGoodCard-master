@@ -17,12 +17,14 @@
 #import "YLDepreciateModel.h"
 #import "YLDepreciateCellFrame.h"
 #import "YLTableViewModel.h"
+#import "YLNoneView.h"
 
 #define YLDepreciatePath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"Depreciate.txt"]
 
 @interface YLDepreciateController ()
 
 @property (nonatomic, strong) NSMutableArray *depreciates;
+@property (nonatomic, strong) YLNoneView *noneView;
 
 @end
 
@@ -80,6 +82,11 @@
         cellFrame.model = model;
         [self.depreciates addObject:cellFrame];
     }
+    if (self.depreciates.count == 0 || self.depreciates == nil) {
+        self.noneView.hidden = NO;
+    } else {
+        self.noneView.hidden = YES;
+    }
     [self.tableView reloadData];
 }
 
@@ -132,6 +139,17 @@
         _depreciates = [NSMutableArray array];
     }
     return _depreciates;
+}
+
+- (YLNoneView *)noneView {
+    if (!_noneView) {
+        _noneView = [[YLNoneView alloc] initWithFrame:CGRectMake(0, 0, YLScreenWidth, YLScreenHeight)];
+        _noneView.title = @"暂无相关记录";
+        _noneView.hidden = YES;
+        [_noneView hideBtn];
+        [self.view addSubview:_noneView];
+    }
+    return _noneView;
 }
 
 @end

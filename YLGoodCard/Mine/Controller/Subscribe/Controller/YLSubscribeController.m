@@ -22,6 +22,10 @@
 #import "YLSelectView.h"
 #import "YLSubcribeParamView.h"
 #import "YLSubscribeDetailController.h"
+#import "YLSubscribeSelectParamView.h"
+#import "YLBrandController.h"
+#import "YLSeriesController.h"
+#import "YLSubscribeMultiSelectController.h"
 
 #define YLMySubscribePath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"MySubscribe.txt"]
 
@@ -38,9 +42,12 @@ static NSString *const headerID = @"YLSubscribeHeader";
 @property (nonatomic, strong) NSMutableArray *results;
 @property (nonatomic, strong) YLNoneView *noneView;
 @property (nonatomic, strong) NSMutableArray *multiSelectModels;
+@property (nonatomic, strong) NSArray *headerTitles;
 @property (nonatomic, strong) NSMutableArray *params;
 
-//@property (nonatomic, assign) NSInteger groupSection;
+@property (nonatomic, strong) NSString *lowPrice;
+@property (nonatomic, strong) NSString *highPrice;
+
 
 @end
 
@@ -63,11 +70,7 @@ static NSString *const headerID = @"YLSubscribeHeader";
     
     [self.multiSelectModels removeAllObjects];
     // 详细参数
-    /**
-     price:@[@"不限", @"3万以下", @"3-5万",@"5-7万", @"7-9万", @"9-12万",@"12-16万", @"16-20万", @"20万以上"]
-     brand:@[@"不限",@"雪佛兰", @"大众", @"丰田", @"日产", @"本田", @"现代", @"别克", @"现代", @"马自达", @"福特", @"起亚"]
-     */
-    NSArray *data = @[@[@"品牌选择"],
+    NSArray *data = @[@[@"品牌"],
                       @[@"两厢轿车", @"三厢轿车", @"跑车", @"SUV", @"MPV", @"面包车", @"皮卡"],
                       @[@"3万以下", @"3-5万",@"5-7万", @"7-9万", @"9-12万",@"12-16万", @"16-20万", @"20万以上"],
                       @[@"本地牌照", @"外地牌照"],
@@ -109,80 +112,7 @@ static NSString *const headerID = @"YLSubscribeHeader";
         }
         [self.multiSelectModels addObject:details];
     }
-}
-
-- (void)yl__initMultiSelectView:(NSString *)urlString subcribeId:(NSString *)subcribeId {
-    UIWindow *window = [[UIApplication sharedApplication].windows lastObject];
-    UIView *cover = [[UIView alloc] initWithFrame:CGRectMake(0, 0, YLScreenWidth, YLScreenHeight)];
-    cover.backgroundColor = [UIColor colorWithRed:0.f green:0.f blue:0.f alpha:0.3];
-    [window addSubview:cover];
-    NSArray *headerTitles = @[@"品牌", @"车型", @"价格", @"车牌所在地", @"变速箱", @"车龄 (单位:年)", @"行驶里程 (单位:万公里)", @"排量 (单位:升)", @"排放标准", @"颜色", @"座位数", @"燃油类型", @"国别",  @"亮点配置"];
-    CGFloat viewX = 0;
-    CGFloat viewH = [UIScreen mainScreen].bounds.size.height;
-    YLSelectView *selectView = [[YLSelectView alloc] initWithFrame:CGRectMake(viewX, 0, YLScreenWidth - viewX, viewH)];
-    selectView.headerTitles = headerTitles;
-    selectView.multiSelectModels = self.multiSelectModels;
-    // 重置筛选条件
-    __weak typeof(self) weakSelf = self;
-    // ------------------------重置筛选条件----------------------------
-    selectView.restAllConditionBlock = ^(NSArray *multiSelectModels) {
-        // 替换原来的数组数据
-        weakSelf.multiSelectModels = [NSMutableArray arrayWithArray:multiSelectModels];
-        [cover removeFromSuperview];
-    };
-    
-    // ------------------------确定筛选条件----------------------------
-    selectView.sureBlock = ^(NSArray *multiSelectModels) {
-        // 替换原来的数组数据
-//        weakSelf.multiSelectModels = [NSMutableArray arrayWithArray:multiSelectModels];
-        [cover removeFromSuperview];
-        
-        NSMutableArray *selectParamModels = [NSMutableArray array];
-        // 筛选出选中的条件模型
-        for (NSInteger i = 0; i < multiSelectModels.count; i++) {
-            NSArray *arr = multiSelectModels[i];
-            for (YLBuyConditionModel *model in arr) {
-                if (model.isSelect) {
-                    [selectParamModels addObject:model];
-                }
-            }
-        }
-        // 将选中的条件模型转换成字典参数
-        NSMutableDictionary *selectParam = [NSMutableDictionary dictionary];
-        // 由于只支持阳江，所以不管是本地还是外地，location只填写阳江
-        for (YLBuyConditionModel *model in selectParamModels) {
-            if ([model.key isEqualToString:@"isLocal"]) {
-                [selectParam setObject:@"阳江" forKey:@"location"];
-            }
-            // 如果字典中包含有这个key，那么值需要拼接
-            if ([[selectParam allKeys] containsObject:model.key]) {
-                // 将当前键值取出来
-                NSString *obj = [selectParam objectForKey:model.key];
-                // 拼接键值
-                [selectParam setObject:[NSString stringWithFormat:@"%@fgf%@", obj, model.param] forKey:model.key];
-            } else {
-                [selectParam setObject:model.param forKey:model.key];
-            }
-        }
-        
-        YLAccount *account = [YLAccountTool account];
-        [selectParam setObject:account.telephone forKey:@"telephone"];
-        if (subcribeId) {
-            [selectParam setObject:subcribeId forKey:@"id"];
-        }
-        
-        [YLRequest GET:urlString parameters:selectParam success:^(id  _Nonnull responseObject) {
-            if ([responseObject[@"code"] isEqualToNumber:[NSNumber numberWithInteger:200]]) {
-                [weakSelf loadData];
-                [NSString showMessage:@"订阅成功"];
-            } else {
-                [weakSelf loadData];
-                NSString *string = responseObject[@"message"];
-                [NSString showMessage:string];
-            }
-        } failed:nil];
-    };
-    [cover addSubview:selectView];
+    self.headerTitles = @[@"品牌", @"车型", @"价格", @"车牌所在地", @"变速箱", @"车龄 (单位:年)", @"行驶里程 (单位:万公里)", @"排量 (单位:升)", @"排放标准", @"颜色", @"座位数", @"燃油类型", @"国别",  @"亮点配置"];
 }
 
 - (void)setNav {
@@ -233,9 +163,11 @@ static NSString *const headerID = @"YLSubscribeHeader";
             [weakSelf getLocationData];
             [NSString showMessage:@"加载完成"];
             [hub removeFromSuperview];
+        } else {
+            [NSString showMessage:@"加载失败，请重新刷新"];
+            [hub removeFromSuperview];
         }
     } failed:nil];
-    
 }
 
 - (void)getLocationData {
@@ -396,15 +328,14 @@ static NSString *const headerID = @"YLSubscribeHeader";
     NSMutableDictionary *dict = [model mj_keyValues];
     // ----------------亮点配置外的条件抽取----------------
     // 遍历字典，将有值的抽取出来分隔成模型
+//#warning 价格不需要拆分出来，直接转成文字显示出来
     for (NSInteger i = 0; i < params2.count; i++) {
-        NSString *string = [dict objectForKey:params2[i]];
-        if (![string isEqualToString:@""]) {
-            // 根据fgf分隔字符串
-            NSArray *arr = [string componentsSeparatedByString:@"fgf"];
-            for (NSString *title in arr) {
-                if ([title isEqualToString:@""]) {
-                    break;
-                }
+        if(i == 2) { // 等于价格时
+            NSString *string = [dict objectForKey:params2[i]];
+            if (![string isEqualToString:@""]) { // 判断是否为空，不为空再执行
+                // 根据fgf分隔字符串
+                NSArray *arr = [string componentsSeparatedByString:@"fgf"];
+                NSString *title = [NSString stringWithFormat:@"%ld万-%ld万", [arr[0] integerValue] / 10000, [arr[1] integerValue] / 10000];
                 YLBuyConditionModel *model = [[YLBuyConditionModel alloc] init];
                 model.title = title;
                 model.detail = title;
@@ -412,9 +343,32 @@ static NSString *const headerID = @"YLSubscribeHeader";
                 model.key = params2[i];
                 model.isSelect = YES;
                 [params addObject:model];
+
+//                NSString *tempTitle = [string stringByReplacingOccurrencesOfString:@"0000" withString:@"万"];
+//                NSString *title = [tempTitle stringByReplacingOccurrencesOfString:@"fgf" withString:@"-"];
+//                NSLog(@"%@", title);
+            }
+        } else { // 不为价格
+            NSString *string = [dict objectForKey:params2[i]];
+            if (![string isEqualToString:@""]) {
+                // 根据fgf分隔字符串
+                NSArray *arr = [string componentsSeparatedByString:@"fgf"];
+                for (NSString *title in arr) {
+                    if ([title isEqualToString:@""]) {
+                        break;
+                    }
+                    YLBuyConditionModel *model = [[YLBuyConditionModel alloc] init];
+                    model.title = title;
+                    model.detail = title;
+                    model.param = title;
+                    model.key = params2[i];
+                    model.isSelect = YES;
+                    [params addObject:model];
+                }
             }
         }
     }
+        
     // ----------------亮点配置----------------
     for (NSInteger i = 0; i < param3.count; i++) {
         NSString *str = [dict objectForKey:param3[i]];
@@ -431,11 +385,128 @@ static NSString *const headerID = @"YLSubscribeHeader";
     return params;
 }
 
+#pragma mark 没有价格参数的条件参数数组
+- (NSMutableArray *)noPriceParamsWithSubscribeModel:(YLSubscribeModel *)model {
+    NSArray *params2 = @[@"brand", @"bodyStructure", @"price", @"isLocal", @"gearbox", @"vehicleAge", @"course", @"emission", @"emissionStandard", @"color", @"seatsNum", @"fuelForm", @"country"];
+    NSArray *param3 = @[@"panoramicSunroof", @"stabilityControl", @"reverseVideo", @"genuineLeather", @"keylessEntrySystem", @"childSeatInterface", @"parkingRadar", @"gps"];
+    NSArray *param4 = @[@"全景天窗", @"车身稳定控制", @"倒车影像系统", @"真皮座椅", @"无钥匙进入",@"儿童座椅接口", @"倒车雷达", @"GPS导航"];
+    // 获取当前组的数据
+    //    YLSubscribeModel *model = self.groups[indexPath.section];
+    NSMutableArray *params = [NSMutableArray array];
+    // 转换成字典
+    NSMutableDictionary *dict = [model mj_keyValues];
+    // ----------------亮点配置外的条件抽取----------------
+    // 遍历字典，将有值的抽取出来分隔成模型
+    //#warning 价格不需要拆分出来，直接转成文字显示出来
+    for (NSInteger i = 0; i < params2.count; i++) {
+        if(i == 2) { // 等于价格时
+            NSString *string = [dict objectForKey:params2[i]];
+            if (![string isEqualToString:@""]) { // 判断是否为空，不为空再执行
+                // 根据fgf分隔字符串
+                NSArray *arr = [string componentsSeparatedByString:@"fgf"];
+                self.lowPrice = [NSString stringWithFormat:@"%ld", [arr[0] integerValue] / 10000];
+                self.highPrice = [NSString stringWithFormat:@"%ld", [arr[1] integerValue] / 10000];
+                
+            }
+        } else { // 不为价格
+            NSString *string = [dict objectForKey:params2[i]];
+            if (![string isEqualToString:@""]) {
+                // 根据fgf分隔字符串
+                NSArray *arr = [string componentsSeparatedByString:@"fgf"];
+                for (NSString *title in arr) {
+                    if ([title isEqualToString:@""]) {
+                        break;
+                    }
+                    YLBuyConditionModel *model = [[YLBuyConditionModel alloc] init];
+                    model.title = title;
+                    model.detail = title;
+                    model.param = title;
+                    model.key = params2[i];
+                    model.isSelect = YES;
+                    [params addObject:model];
+                }
+            }
+        }
+    }
+    
+    // ----------------亮点配置----------------
+    for (NSInteger i = 0; i < param3.count; i++) {
+        NSString *str = [dict objectForKey:param3[i]];
+        if ([str isEqualToString:@"1"]) {
+            YLBuyConditionModel *model = [[YLBuyConditionModel alloc] init];
+            model.title = param4[i];
+            model.detail = param4[i];
+            model.param = str;
+            model.key = param3[i];
+            model.isSelect = YES;
+            [params addObject:model];
+        }
+    }
+    return params;
+}
+
+#pragma mark 根据模型数组转成字典参数
+- (NSMutableDictionary *)selectParamWithMultiSelectModels:(NSArray *)multiSelectModels {
+    NSMutableArray *selectParamModels = [NSMutableArray array];
+    // 筛选出选中的条件模型
+    for (NSInteger i = 0; i < multiSelectModels.count; i++) {
+        NSArray *arr = multiSelectModels[i];
+        for (YLBuyConditionModel *model in arr) {
+            if (model.isSelect) {
+                [selectParamModels addObject:model];
+            }
+        }
+    }
+    // 将选中的条件模型转换成字典参数
+    NSMutableDictionary *selectParam = [NSMutableDictionary dictionary];
+    // 由于只支持阳江，所以不管是本地还是外地，location只填写阳江
+    for (YLBuyConditionModel *model in selectParamModels) {
+        if ([model.key isEqualToString:@"isLocal"]) {
+            [selectParam setObject:@"阳江" forKey:@"location"];
+        }
+        // 如果字典中包含有这个key，那么值需要拼接
+        if ([[selectParam allKeys] containsObject:model.key]) {
+            // 将当前键值取出来
+            NSString *obj = [selectParam objectForKey:model.key];
+            // 拼接键值
+            [selectParam setObject:[NSString stringWithFormat:@"%@fgf%@", obj, model.param] forKey:model.key];
+        } else {
+            [selectParam setObject:model.param forKey:model.key];
+        }
+    }
+    return selectParam;
+}
+
 - (void)rightClick {
     NSLog(@"新增");
-    NSString *urlString = @"http://ucarjava.bceapp.com/subscribe?method=add";
-    [self yl__initData];
-    [self yl__initMultiSelectView:urlString subcribeId:nil];
+    YLSubscribeMultiSelectController *multi = [[YLSubscribeMultiSelectController alloc] init];
+    __weak typeof(self) weakSelf = self;
+    // ------------------------重置筛选条件----------------------------
+    multi.restAllConditionBlock = ^(NSArray *multiSelectModels) {
+        // 替换原来的数组数据
+    };
+    
+    // ------------------------确定筛选条件----------------------------
+    multi.sureBlock = ^(NSArray *multiSelectModels) {
+        
+        NSMutableDictionary *selectParam = [weakSelf selectParamWithMultiSelectModels:multiSelectModels];
+        YLAccount *account = [YLAccountTool account];
+        [selectParam setObject:account.telephone forKey:@"telephone"];
+        NSString *urlString = @"http://ucarjava.bceapp.com/subscribe?method=add";
+        [YLRequest GET:urlString parameters:selectParam success:^(id  _Nonnull responseObject) {
+            if ([responseObject[@"code"] isEqualToNumber:[NSNumber numberWithInteger:200]]) {
+                [weakSelf loadData];
+                [NSString showMessage:@"订阅成功"];
+            } else {
+                [weakSelf loadData];
+                NSString *string = responseObject[@"message"];
+                [NSString showMessage:string];
+            }
+        } failed:nil];
+        [weakSelf.navigationController popViewControllerAnimated:YES];
+    };
+    
+    [self.navigationController pushViewController:multi animated:YES];
 }
 
 - (void)moreClick:(UITapGestureRecognizer *)sender {
@@ -452,55 +523,12 @@ static NSString *const headerID = @"YLSubscribeHeader";
 
 - (void)editorClick:(NSIndexPath *)indexPath {
     NSLog(@"编辑");
-    NSLog(@"section:%ld", indexPath.section);
-//    [self restMutilSelectModels];
+//    NSLog(@"section:%ld", indexPath.section);
     [self yl__initData];
-    
-    NSArray *params2 = @[@"brand", @"bodyStructure", @"price",  @"isLocal", @"gearbox", @"vehicleAge", @"course", @"emission", @"emissionStandard", @"color", @"seatsNum", @"fuelForm", @"country"];
-    NSArray *param3 = @[@"panoramicSunroof", @"stabilityControl", @"reverseVideo", @"genuineLeather", @"keylessEntrySystem", @"childSeatInterface", @"parkingRadar", @"gps"];
-    NSArray *param4 = @[@"全景天窗", @"车身稳定控制", @"倒车影像系统", @"真皮座椅", @"无钥匙进入",@"儿童座椅接口", @"倒车雷达", @"GPS导航"];
+
     // 获取当前组的数据
     YLSubscribeModel *model = self.groups[indexPath.section];
-    NSMutableArray *params = [NSMutableArray array];
-//    [self.params removeAllObjects];
-    // 转换成字典
-    NSMutableDictionary *dict = [model mj_keyValues];
-    // ----------------亮点配置外的条件抽取----------------
-    // 遍历字典，将有值的抽取出来分隔成模型
-    for (NSInteger i = 0; i < params2.count; i++) {
-        NSString *string = [dict objectForKey:params2[i]];
-        if (![string isEqualToString:@""]) {
-            // 根据fgf分隔字符串
-            NSArray *arr = [string componentsSeparatedByString:@"fgf"];
-            for (NSString *title in arr) {
-                if ([title isEqualToString:@""]) {
-                    break;
-                }
-                YLBuyConditionModel *model = [[YLBuyConditionModel alloc] init];
-                model.title = title;
-                model.detail = title;
-                model.param = title;
-                model.key = params2[i];
-                model.isSelect = YES;
-                [params addObject:model];
-            }
-        }
-    }
-    // ----------------亮点配置----------------
-    for (NSInteger i = 0; i < param3.count; i++) {
-        NSString *str = [dict objectForKey:param3[i]];
-        if ([str isEqualToString:@"1"]) {
-            YLBuyConditionModel *model = [[YLBuyConditionModel alloc] init];
-            model.title = param4[i];
-            model.detail = param4[i];
-            model.param = str;
-            model.key = param3[i];
-            model.isSelect = YES;
-            [params addObject:model];
-        }
-    }
-    NSLog(@"params:%@", params);
-    
+    NSMutableArray *params = [self noPriceParamsWithSubscribeModel:model];
     // 判断选中的模型在self.multiSelectModels的位置并替换
     for (NSInteger i = 0; i < params.count; i++) {
         YLBuyConditionModel *model = params[i];
@@ -517,8 +545,50 @@ static NSString *const headerID = @"YLSubscribeHeader";
         }
     }
     
-    NSString *urlString = @"http://ucarjava.bceapp.com/subscribe?method=upd";
-    [self yl__initMultiSelectView:urlString subcribeId:model.subscribeId];
+    // 将上面修改好的数组传给控制器
+//    YLSubscribeMultiSelectController *multi = [[YLSubscribeMultiSelectController alloc] init];
+//    multi.lowPrice = self.lowPrice;
+//    multi.highPrice = self.highPrice;
+//    __weak typeof(self) weakSelf = self;
+    
+    YLSubscribeMultiSelectController *multi = [[YLSubscribeMultiSelectController alloc] init];
+    multi.lowPrice = self.lowPrice;
+    multi.highPrice = self.highPrice;
+    multi.selectParamModels = self.multiSelectModels;
+    multi.headerTitles = self.headerTitles;
+    __weak typeof(self) weakSelf = self;
+
+    // ------------------------重置筛选条件----------------------------
+    multi.restAllConditionBlock = ^(NSArray *multiSelectModels) {
+        // 替换原来的数组数据
+    };
+    
+    // ------------------------确定筛选条件----------------------------
+    multi.sureBlock = ^(NSArray *multiSelectModels) {
+        
+        NSMutableDictionary *selectParam = [weakSelf selectParamWithMultiSelectModels:multiSelectModels];
+        YLAccount *account = [YLAccountTool account];
+        [selectParam setObject:account.telephone forKey:@"telephone"];
+        [selectParam setObject:model.subscribeId forKey:@"id"];
+        NSString *urlString = @"http://ucarjava.bceapp.com/subscribe?method=upd";
+        [YLRequest GET:urlString parameters:selectParam success:^(id  _Nonnull responseObject) {
+            if ([responseObject[@"code"] isEqualToNumber:[NSNumber numberWithInteger:200]]) {
+                [weakSelf loadData];
+                [NSString showMessage:@"修改成功"];
+            } else {
+                [weakSelf loadData];
+                NSString *string = responseObject[@"message"];
+                [NSString showMessage:string];
+            }
+        } failed:nil];
+        [weakSelf.navigationController popViewControllerAnimated:YES];
+    };
+    
+    [self.navigationController pushViewController:multi animated:YES];
+    
+    
+//    NSString *urlString = @"http://ucarjava.bceapp.com/subscribe?method=upd";
+//    [self yl__initMultiSelectView:urlString subcribeId:model.subscribeId];
 }
 
 - (void)deleteClick:(NSIndexPath *)indexPath {

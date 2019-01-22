@@ -50,6 +50,7 @@
     icon.backgroundColor = YLColor(233.f, 233.f, 233.f);
     icon.layer.cornerRadius = 5.f;
     icon.layer.masksToBounds = YES;
+    icon.contentMode = UIViewContentModeScaleAspectFill;
     [self addSubview:icon];
     self.icon = icon;
     
@@ -115,7 +116,7 @@
     self.originalPrice.frame = CGRectMake(CGRectGetMaxX(self.price.frame), CGRectGetMaxY(self.course.frame) + 9, YLScreenWidth - CGRectGetMaxX(self.price.frame) - YLTopSpace, 17);
     self.line.frame = CGRectMake(0, CGRectGetMaxY(self.icon.frame) + YLLeftMargin, YLScreenWidth, 1);
     
-    [self.icon sd_setImageWithURL:[NSURL URLWithString:model.detail.displayImg] placeholderImage:nil];
+    [self.icon sd_setImageWithURL:[NSURL URLWithString:model.detail.displayImg] placeholderImage:[UIImage imageNamed:@"占位图"]];
     self.title.text = model.detail.title;
     self.price.text = [self stringToNumber:model.detail.price];
     NSString *str = [NSString stringWithFormat:@"新车价%@", [self stringToNumber:model.detail.originalPrice]];

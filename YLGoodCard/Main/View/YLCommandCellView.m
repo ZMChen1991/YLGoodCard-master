@@ -169,7 +169,7 @@
     self.originalPrice.frame = cellFrame.originalPriceF;
     self.line.frame = cellFrame.lineF;
     
-    [self.icon sd_setImageWithURL:[NSURL URLWithString:cellFrame.model.displayImg] placeholderImage:nil];
+    [self.icon sd_setImageWithURL:[NSURL URLWithString:cellFrame.model.displayImg] placeholderImage:[UIImage imageNamed:@"占位图"]];
     self.title.text = cellFrame.model.title;
     NSString *course = [NSString stringWithFormat:@"%@年 / %@万公里", [cellFrame.model.licenseTime substringToIndex:4],cellFrame.model.course];
     self.course.text = course;

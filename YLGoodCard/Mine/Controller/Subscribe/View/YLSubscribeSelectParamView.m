@@ -10,6 +10,8 @@
 #import "YLBuyConditionModel.h"
 #import "YLConditionCell.h"
 #import "YLCollectHeader.h"
+#import "YLBrandController.h"
+#import "YLSeriesController.h"
 
 static NSString *const cellID = @"YLSelectCell";
 static NSString *const footerID = @"YLSelectFooter";
@@ -40,7 +42,7 @@ static NSString *const headerID = @"YLSelectheader";
     CGFloat btnH = 44;
     UIButton *restBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     restBtn.frame = CGRectMake(0, btnY, btnW, btnH);
-    [restBtn setTitle:@"重置" forState:UIControlStateNormal];
+    [restBtn setTitle:@"取消" forState:UIControlStateNormal];
     [restBtn setTitleColor:YLColor(8.f, 169.f, 255.f) forState:UIControlStateNormal];
     restBtn.backgroundColor = [UIColor whiteColor];
     restBtn.titleLabel.font = [UIFont systemFontOfSize:14];
@@ -117,12 +119,6 @@ static NSString *const headerID = @"YLSelectheader";
     CGSize itemSize = CGSizeMake([UIScreen mainScreen].bounds.size.width, 30);
     return itemSize;
 }
-//
-//- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section {
-//    CGSize itemSize = CGSizeMake([UIScreen mainScreen].bounds.size.width, 100);
-//    return itemSize;
-//}
-
 
 #pragma mark <UICollectionViewDelegate>
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -136,6 +132,13 @@ static NSString *const headerID = @"YLSelectheader";
             model.param = @"0";
         }
         [self.collectionView reloadItemsAtIndexPaths:@[indexPath]];
+    } else if (indexPath.section == 0) {
+//        YLBrandController *brand = [[YLBrandController alloc] init];
+        NSLog(@"你好");
+        if (self.controllerBlock) {
+            self.controllerBlock();
+        }
+        
     } else {
         YLBuyConditionModel *model = self.multiSelectModels[indexPath.section][indexPath.row];
         model.isSelect = !model.isSelect;

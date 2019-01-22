@@ -74,8 +74,8 @@
     if (cell == nil) {
         cell = [[YLDetectCenterCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ID];
     }
-    YLDetectCenterModel *model = self.detectCenters[indexPath.row];
-    cell.model = model;
+//    YLDetectCenterModel *model = self.detectCenters[indexPath.row];
+//    cell.model = model;
     return cell;
 }
 

@@ -124,6 +124,7 @@
 //            NSLog(@"%@", responseObject);
 //        } failed:nil];
         
+        __weak typeof(self) weakSelf = self;
         [YLMineTool favoriteWithParam:param1 success:^(NSDictionary * _Nonnull result) {
             NSLog(@"result:%@", result);
             // 即将看车数：
@@ -135,22 +136,20 @@
             NSString *bargainNumber = [NSString stringWithFormat:@"%@", [result valueForKey:@"bargain"]];
             NSLog(@"即将看车:%@--我的收藏:%@--降价提醒:%@", book, collect, reduce);
             NSMutableArray *mineArray = [NSMutableArray array];
-            if (!book) {
-            } else {
+            if (book) {
                 [mineArray addObject:book];
             }
-            if (!collect) {
-            } else {
+            if (collect) {
                 [mineArray addObject:collect];
             }
-            [mineArray addObject:[NSString stringWithFormat:@"%ld", self.browsingHistoryCount]];
+            [mineArray addObject:[NSString stringWithFormat:@"%ld", weakSelf.browsingHistoryCount]];
             [mineArray addObject:@"0"];
             
-            [self keyedArchiverObject:mineArray toFile:YLMineNumberPath];
-            [self getLoacation];
+            [weakSelf keyedArchiverObject:mineArray toFile:YLMineNumberPath];
+            [weakSelf getLoacation];
         
-            self.functionView.depreciateNumber = reduce;
-            self.functionView.bargainNumber = bargainNumber;
+            weakSelf.functionView.depreciateNumber = reduce;
+            weakSelf.functionView.bargainNumber = bargainNumber;
         } failure:nil];
     } else {
         NSString *count = [NSString stringWithFormat:@"%ld", self.browsingHistoryCount];
